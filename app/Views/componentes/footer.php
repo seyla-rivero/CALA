@@ -6,27 +6,30 @@
     <title>CALA Delivery Sandwich</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-     <link rel="stylesheet" href="<?= base_url('css/paginaPrincipal.css') ?>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="<?= base_url('css/paginaPrincipal.css') ?>">
 </head>
 <body>
-    <!-- Footer -->
-    <footer class="text-center py-3">
+    <div class="border-top">
+        <!-- Footer -->
+        <footer class="text-center py-3">
 
-        <div class="d-flex justify-content-center gap-3 mb-2">
-            <a href="#" class="icono-red">
-                <i class="bi bi-instagram"></i>
-            </a>
+            <div class="d-flex justify-content-center gap-3 mb-2">
+                <a href="#" class="icono-red">
+                    <i class="bi bi-instagram"></i>
+                </a>
 
-            <a href="#" class="icono-red">
-                <i class="bi bi-whatsapp"></i>
-            </a>
-        </div>
+                <a href="#" class="icono-red">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+            </div>
 
-        <p class="mb-0">
-            2026 CALA Delivery Sandwich
-        </p>
+            <p class="mb-0">
+                2026 CALA Delivery Sandwich
+            </p>
 
-    </footer>
+        </footer>
+    </div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

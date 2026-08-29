@@ -6,11 +6,12 @@
     <title>CALA Delivery Sandwich</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-     <link rel="stylesheet" href="<?= base_url('css/paginaPrincipal.css') ?>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="<?= base_url('css/paginaPrincipal.css') ?>">
 </head>
 <body>
 <?= $this->include('componentes/header') ?>
-<div class="container bg-white p-0">
+<div class="container-fluid bg-white p-0">
     <!-- Portada -->
     <div class="p-4">
         <div class="portada">
@@ -19,7 +20,7 @@
     </div>
 
     <!-- Cards -->
-    <div class="container pb-4">
+    <div class="container-fluid px-4">
         <div class="row g-3">
 
             <div class="col-md-4">
@@ -89,22 +90,26 @@
                     SUCURSAL 1
                 </h4>
 
-                <p>
-                    <i class="icono-red bi-geo-alt-fill"></i>
-                    Montes de Oca 394, Godoy Cruz
-                </p>
-                <p>
-                    <i class="icono-red bi-clock-fill"></i> 
-                    Miercoles a Domingos 20:00pm - 23:59pm
-                </p>
-                <p>
-                    <i class="icono-red bi-whatsapp"></i>
-                    2615726223
-                </p>
+                <div class="sucursal-contenido">
+                    <div class="sucursal-datos">
+                        <p>
+                            <img src="<?= base_url('img/ubicacion.png') ?>" alt="Ubicación" height="30">
+                            Montes de Oca 394, Godoy Cruz
+                        </p>
+                        <p>
+                            <img src="<?= base_url('img/horario.png') ?>" alt="Horario" height="30">
+                            Miercoles a Domingos 20:00pm - 23:59pm
+                        </p>
+                        <p>
+                            <img src="<?= base_url('img/what.png') ?>" alt="WhatsApp" height="25">
+                            2615726223
+                        </p>
+                    </div>
 
-                <div class="mapa">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1469.4242509176713!2d-68.86805619576329!3d-32.91951596119259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x967e0984c3423023%3A0x686009755c123bec!2sMontes%20de%20Oca%20394%2C%20M5504%20Godoy%20Cruz%2C%20Mendoza%2C%20Argentina!5e0!3m2!1sen!2sus!4v1788018191682!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
-                    </iframe>
+                    <div class="mapa">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1469.4242509176713!2d-68.86805619576329!3d-32.91951596119259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x967e0984c3423023%3A0x686009755c123bec!2sMontes%20de%20Oca%20394%2C%20M5504%20Godoy%20Cruz%2C%20Mendoza%2C%20Argentina!5e0!3m2!1sen!2sus!4v1788018191682!5m2!1sen!2sus" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
+                        </iframe>
+                    </div>
                 </div>
 
             </div>
@@ -114,23 +119,25 @@
                 <h4 class="titulo-sucursal">
                     SUCURSAL 2
                 </h4>
-                <p>
-                    <i class="icono-red bi-geo-alt-fill"></i>
-                    Pres.R.Ortiz 1665, Godoy Cruz
-                </p>
-                <p>
-                    <i class="icono-red bi-clock-fill"></i>  
-                    Miercoles a Domingos 21:00pm - 23:59pm
-                    Viernes a Domingos 12:30pm - 14:00pm
-                </p>
-                <p>
-                    <i class="icono-red bi-whatsapp"></i>
-                    WhatsApp
-                </p>
+                <div class="sucursal-contenido">
+                    <div class="sucursal-datos">
+                        <p>
+                            <img src="<?= base_url('img/ubicacion.png') ?>" alt="Ubicación" height="30">
+                            Pres.R.Ortiz 1665, Godoy Cruz
+                        </p>
+                        <p>
+                            <img src="<?= base_url('img/horario.png') ?>" alt="Horario" height="30">
+                            Miercoles a Domingos 21:00pm - 23:59pm<br>
+                            Viernes a Domingos 12:30pm - 14:00pm
+                        </p>
+                        <p>
+                            <img src="<?= base_url('img/what.png') ?>" alt="WhatsApp" height="25">
+                            2615687706
+                        </p>
+                    </div>
 
-                <div class="mapa">
                     <div class="mapa">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1674.7650510413835!2d-68.862573!3d-32.91059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x967e099eec405ccb%3A0x8af2665564d85eb0!2sPres.%20Roberto%20M.%20Ortiz%201665%2C%20M5501%20Godoy%20Cruz%2C%20Mendoza%2C%20Argentina!5e0!3m2!1sen!2sus!4v1788018016343!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1674.7650510413835!2d-68.862573!3d-32.91059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x967e099eec405ccb%3A0x8af2665564d85eb0!2sPres.%20Roberto%20M.%20Ortiz%201665%2C%20M5501%20Godoy%20Cruz%2C%20Mendoza%2C%20Argentina!5e0!3m2!1sen!2sus!4v1788018016343!5m2!1sen!2sus" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
                         </iframe>
                     </div>
                 </div>
