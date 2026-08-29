@@ -1,0 +1,96 @@
+body{
+    /*background:#b8b8b8;*/
+    background:red !important;
+}
+
+/*Nav*/
+.navbar-logo{
+    background:#000;
+}
+
+.nav-link{
+    color:white !important;
+    font-weight:bold;
+}
+
+.nav-link.active{
+    color:#ff2f7d !important;
+    border-bottom:2px solid #ff2f7d;
+}
+
+/*Seccion*/
+.portada{
+    height:300px;
+    background:#d9d9d9;
+    border:1px solid #555;
+    border-radius:15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:2rem;
+    font-weight:bold;
+}
+
+.card-promo{
+    border:1px solid #555;
+    border-radius:15px;
+    padding:15px;
+    height:100%;
+}
+
+.precio{
+    color:#ec407a;
+    font-size:2rem;
+    font-weight:bold;
+}
+
+.btn-cala{
+    background:#ec407a;
+    color:white;
+    border:none;
+    font-weight:bold;
+}
+
+.btn-cala:hover{
+    background:#d81b60;
+}
+
+.sucursales{
+    background:black;
+    color:white;
+}
+
+.titulo-sucursal{
+    color:#ff2f7d;
+    font-weight:bold;
+}
+
+.mapa{
+    height:130px;
+    background:#d9d9d9;
+    color:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:12px;
+    font-size:2rem;
+    font-weight:bold;
+}
+
+/*Footer*/
+footer{
+    background:black;
+    color:white;
+}
+.icono-red{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#ec407a;
+    color:white;
+    font-size:22px;
+    text-decoration:none;
+}
