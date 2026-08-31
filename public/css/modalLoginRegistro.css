@@ -1,0 +1,56 @@
+/*Modal Login*/
+.modal-cala{
+    background-color: black;
+    color: white;
+    border: 3px solid #ff4fa3;
+    border-radius: 20px;
+}
+
+.titulo-login{
+    color: white;
+    font-weight: bold;
+}
+.logo-login{
+    width: 120px;
+}
+
+.input-cala{
+    background-color: #222;
+    border: 2px solid #ff4fa3;
+    color: white;
+}
+
+.input-cala:focus{
+    background-color: #222;
+    color: white;
+    border-color: #ff4fa3;
+    box-shadow: none;
+}
+
+.boton-login{
+    background-color: #ff4fa3;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.boton-login:hover{
+    background-color: #ff2e8a;
+}
+
+.link-cala{
+    color: #ff4fa3;
+    text-decoration: none;
+}
+.link-cala:hover{
+    color: #ff2e8a;
+    text-decoration: underline;
+}
+
+.toggle-eye{
+    position: absolute;
+    right: 15px;
+    top: 42px;
+    cursor: pointer;
+    color: #ff4fa3;
+}
