@@ -10,7 +10,7 @@ class Autenticacion extends BaseController
     {
     $rules = [
         'email' => [
-            'rules' => 'required|valid_email|is_not_unique[usuarios.email]',
+            'rules' => 'required|valid_email|is_not_unique[cliente.email]',
             'errors' => [
                 'required' => 'El email es obligatorio',
                 'valid_email' => 'Ingresá un email válido',
@@ -75,49 +75,89 @@ class Autenticacion extends BaseController
     public function validarRegistro()
     {
     $rules = [
-    'nombre' => [
-        'rules' => 'required|min_length[3]',
-        'errors' => [
-            'required' => 'El nombre es obligatorio',
-            'min_length' => 'El nombre debe tener al menos 3 caracteres'
+        'nombre' => [
+            'rules' => 'required|min_length[3]',
+            'errors' => [
+                'required' => 'El nombre es obligatorio',
+                'min_length' => 'El nombre debe tener al menos 3 caracteres'
+            ]
+        ],
+        'apellido' => [
+            'rules' => 'required|min_length[3]',
+            'errors' => [
+                'required' => 'El apellido es obligatorio',
+                'min_length' => 'El apellido debe tener al menos 3 caracteres'
+            ]
+        ],
+        'email' => [
+            'rules' => 'required|valid_email|is_unique[cliente.email]',
+            'errors' => [
+                'required' => 'El email es obligatorio',
+                'valid_email' => 'Ingresá un email válido',
+                'is_unique' => 'Este correo ya está registrado'
+            ]
+        ],
+        'telefono' => [
+            'rules' => 'required|min_length[10]',
+            'errors' => [
+                'required' => 'El teléfono es obligatorio',
+                'min_length' => 'Coloque un telefono valido'
+            ]
+        ],
+        'password' => [
+            'rules' => 'required|min_length[6]',
+            'errors' => [
+                'required' => 'La contraseña es obligatoria',
+                'min_length' => 'La contraseña debe tener al menos 6 caracteres'
+            ]
+        ],
+        'confirmar' => [
+            'rules' => 'required|matches[password]',
+            'errors' => [
+                'required' => 'Debés confirmar la contraseña',
+                'matches' => 'Las contraseñas no coinciden'
+            ]
         ]
-    ],
-    'email' => [
-        'rules' => 'required|valid_email|is_unique[usuarios.email]',
-        'errors' => [
-            'required' => 'El email es obligatorio',
-            'valid_email' => 'Ingresá un email válido',
-            'is_unique' => 'Este correo ya está registrado'
-        ]
-    ],
-    'password' => [
-        'rules' => 'required|min_length[6]',
-        'errors' => [
-            'required' => 'La contraseña es obligatoria',
-            'min_length' => 'La contraseña debe tener al menos 6 caracteres'
-        ]
-    ],
-    'confirmar' => [
-        'rules' => 'required|matches[password]',
-        'errors' => [
-            'required' => 'Debés confirmar la contraseña',
-            'matches' => 'Las contraseñas no coinciden'
-        ]
-    ]
-    ];
+        ];
 
-    if (!$this->validate($rules)) {
-    return redirect()->back()
-        ->withInput()
-        ->with('errors', $this->validator->getErrors())
-        ->with('modal', 'registro');
-    }
+        if (!$this->validate($rules)) {
+        return redirect()->back()
+            ->withInput()
+            ->with('errores', $this->validator->getErrors())
+            ->with('modal', 'registro');
+        }
 
-    $clienteModel = new ClienteModel();
-     
-    $nombre = $this->request->getPost('nombre');
-    $email = $this->request->getPost('email');
-    $password = $this->request->getPost('password');
+        $clienteModel = new ClienteModel();
+        
+        $clienteModel->save([
+            'nombre'     => $this->request->getPost('nombre'),
+            'apellido'   => $this->request->getPost('apellido'),
+            'email'      => $this->request->getPost('email'),
+            'telefono'   => $this->request->getPost('telefono'),
+            'contraseña' => password_hash(
+                $this->request->getPost('password'),
+                PASSWORD_DEFAULT
+            )
+        ]);
 
-    }
+        $cliente = $clienteModel
+            ->where('email', $this->request->getPost('email'))
+            ->first();
+
+        session()->set([
+            'idCliente' => $cliente['idCliente'],
+            'nombre'    => $cliente['nombre'],
+            'logueado'  => true
+        ]);
+
+        return redirect()->to('/')
+            ->with('success', 'Cuenta creada correctamente');
+
+        }
+        public function logout()
+        {
+            session()->destroy();
+
+            return redirect()->to('/');
+        }
 }

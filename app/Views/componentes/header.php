@@ -22,19 +22,40 @@
                 <a class="nav-link" href="#">PROMOCIONES</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="#">MIS PEDIDOS</a>
-            </li>
+            <?php if(session('logueado')): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">MIS PEDIDOS</a>
+                </li>
+            <?php endif; ?>
         </ul>
 
         <div class="text-white">
-            <a class="text-white me-4" href="#">
-                <img src="<?= base_url('img/carritoo.jpeg') ?>" class="icono-nav" alt="Carrito">
-            </a>
+            
+            <?php if(session('logueado')): ?>
 
-            <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
-                <img src="<?= base_url('img/login.png') ?>" class="icono-nav" alt="Login">
-            </a>
+                <div class="d-flex align-items-center gap-3">
+
+                    <a class="text-white me-4" href="#">
+                        <img src="<?= base_url('img/carritoo.jpeg') ?>" class="icono-nav" alt="Carrito">
+                    </a>
+
+                    <span class="text-white fw-bold">
+                        Hola, <?= session('nombre') ?>
+                    </span>
+
+                    <a href="<?= site_url('logout') ?>" class="text-white">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            <?php else: ?>
+
+                <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <img src="<?= base_url('img/login.png') ?>" class="icono-nav" alt="Login">
+                </a>
+
+            <?php endif; ?>
         </div>
     </div>
 </nav>

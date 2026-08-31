@@ -1,0 +1,69 @@
+ERROR - 2026-08-31 14:19:55 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\CALA\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\xampp\htdocs\CALA\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), 'cala', 3306, '', 0)
+#1 C:\xampp\htdocs\CALA\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\CALA\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\CALA\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT 1\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\CALA\system\Validation\Rules.php(175): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CALA\system\Validation\StrictRules\Rules.php(187): CodeIgniter\Validation\Rules->is_unique('seylagiselriver...', 'cliente.email', Array)
+#6 C:\xampp\htdocs\CALA\system\Validation\Validation.php(345): CodeIgniter\Validation\StrictRules\Rules->is_unique('seylagiselriver...', 'cliente.email', Array, NULL, 'email')
+#7 C:\xampp\htdocs\CALA\system\Validation\Validation.php(210): CodeIgniter\Validation\Validation->processRules('email', 'email', 'seylagiselriver...', Array, Array, 'email')
+#8 C:\xampp\htdocs\CALA\system\Controller.php(136): CodeIgniter\Validation\Validation->run()
+#9 C:\xampp\htdocs\CALA\app\Controllers\Autenticacion.php(123): CodeIgniter\Controller->validate(Array)
+#10 C:\xampp\htdocs\CALA\system\CodeIgniter.php(951): App\Controllers\Autenticacion->validarRegistro()
+#11 C:\xampp\htdocs\CALA\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Autenticacion))
+#12 C:\xampp\htdocs\CALA\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#13 C:\xampp\htdocs\CALA\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#14 C:\xampp\htdocs\CALA\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#15 C:\xampp\htdocs\CALA\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#16 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'localhost' (using password: NO) in C:\xampp\htdocs\CALA\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 C:\xampp\htdocs\CALA\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\CALA\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\CALA\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT 1\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\CALA\system\Validation\Rules.php(175): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\CALA\system\Validation\StrictRules\Rules.php(187): CodeIgniter\Validation\Rules->is_unique('seylagiselriver...', 'cliente.email', Array)
+#5 C:\xampp\htdocs\CALA\system\Validation\Validation.php(345): CodeIgniter\Validation\StrictRules\Rules->is_unique('seylagiselriver...', 'cliente.email', Array, NULL, 'email')
+#6 C:\xampp\htdocs\CALA\system\Validation\Validation.php(210): CodeIgniter\Validation\Validation->processRules('email', 'email', 'seylagiselriver...', Array, Array, 'email')
+#7 C:\xampp\htdocs\CALA\system\Controller.php(136): CodeIgniter\Validation\Validation->run()
+#8 C:\xampp\htdocs\CALA\app\Controllers\Autenticacion.php(123): CodeIgniter\Controller->validate(Array)
+#9 C:\xampp\htdocs\CALA\system\CodeIgniter.php(951): App\Controllers\Autenticacion->validarRegistro()
+#10 C:\xampp\htdocs\CALA\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Autenticacion))
+#11 C:\xampp\htdocs\CALA\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\xampp\htdocs\CALA\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\CALA\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\xampp\htdocs\CALA\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 {main}
+CRITICAL - 2026-08-31 14:19:55 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user ''@'localhost' (using password: NO)
+[Method: POST, Route: validar-registro]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT 1
+FROM `cliente`
+WHERE `email` = :email:
+ LIMIT 1', [...], false)
+ 3 SYSTEMPATH\Validation\Rules.php(175): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\Validation\StrictRules\Rules.php(187): CodeIgniter\Validation\Rules->is_unique('seylagiselrivero@gmail.com', 'cliente.email', [...])
+ 5 SYSTEMPATH\Validation\Validation.php(345): CodeIgniter\Validation\StrictRules\Rules->is_unique('seylagiselrivero@gmail.com', 'cliente.email', [...], null, 'email')
+ 6 SYSTEMPATH\Validation\Validation.php(210): CodeIgniter\Validation\Validation->processRules('email', 'email', 'seylagiselrivero@gmail.com', [...], [...], 'email')
+ 7 SYSTEMPATH\Controller.php(136): CodeIgniter\Validation\Validation->run()
+ 8 APPPATH\Controllers\Autenticacion.php(123): CodeIgniter\Controller->validate([...])
+ 9 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Autenticacion->validarRegistro()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Autenticacion))
+11 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-08-31 15:51:34 --> ErrorException: Undefined array key "password"
+[Method: POST, Route: validar-login]
+in APPPATH\Controllers\Autenticacion.php on line 59.
+ 1 APPPATH\Controllers\Autenticacion.php(59): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "password"', 'C:\\xampp\\htdocs\\CALA\\app\\Controllers\\Autenticacion.php', 59)
+ 2 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Autenticacion->validarLogin()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Autenticacion))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

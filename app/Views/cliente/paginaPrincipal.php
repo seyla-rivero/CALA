@@ -74,7 +74,6 @@
         </h3>
 
         <div class="row">
-
             <div class="col-md-6 border-end">
 
                 <h4 class="titulo-sucursal">
@@ -139,4 +138,44 @@
     </section>
 
 </div>
+<?php if(session()->getFlashdata('success')): ?>
+
+<div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-cala">
+
+            <div class="modal-body text-center p-4">
+
+                <i class="bi bi-check-circle-fill text-success"
+                   style="font-size: 4rem;">
+                </i>
+
+                <h3 class="mt-3">¡Registro exitoso!</h3>
+
+                <p>
+                    <?= session()->getFlashdata('success') ?>
+                </p>
+
+                <button type="button"
+                        class="btn boton-login mt-3"
+                        data-bs-dismiss="modal">
+                    Aceptar
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let modal = new bootstrap.Modal(
+        document.getElementById('successModal')
+    );
+    modal.show();
+});
+</script>
+
+<?php endif; ?>
 <?= $this->endSection() ?>

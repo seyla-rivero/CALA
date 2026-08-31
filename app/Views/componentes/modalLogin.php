@@ -7,22 +7,15 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
                     </button>
             </div>
-            <div class="text-center mb-4">
-                <img src="<?= base_url('img/logo Cala.png') ?>" class="logo-login" alt="Logo CALA">
-            </div>
-            
-            <div class="text-center">
-                <h3 class="titulo-login mt-3">
-                    ¡Bienvenido de nuevo!
-                </h3>
 
-                <p class="text-light">
-                    Iniciá sesión para continuar.
-                </p>
-            </div>
+            <img src="<?= base_url('img/logo Cala.png') ?>" class="logo-login d-block mx-auto mb-4" alt="Logo CALA">
+            
+            <h4 class="titulo-login text-center mt-3">
+                Iniciá sesión
+            </h4>
             
             <div class="modal-body">
-                <form method="post" action="<?= site_url('login') ?>"><?= csrf_field() ?>
+                <form method="post" action="<?= site_url('validar-login') ?>"><?= csrf_field() ?>
                     <div class="mb-3">
                          <label class="form-label text-white">
                             <i class="bi bi-envelope-fill"></i>
@@ -49,13 +42,13 @@
                             </small>
                         <?php endif; ?>
                     </div>
-                    <div class="text-end mt-3 mt-1">
+                    <div class="text-end mt-1">
                         <a href="#" class="link-cala">
                             ¿Olvidaste tu contraseña?
                         </a>
                     </div>
 
-                    <button type="submit" class="btn boton-login w-100">
+                    <button type="submit" class="btn boton-login w-100 mt-3">
                         Ingresar
                     </button>
                 </form>
