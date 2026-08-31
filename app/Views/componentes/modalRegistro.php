@@ -1,4 +1,4 @@
-<?php $errors = session()->getFlashdata('errors') ?? []; ?>
+<?php $errors = session()->getFlashdata('erroresRegistro') ?? []; ?>
 
 <div class="modal fade" id="loginRegistro" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -15,16 +15,17 @@
             </h4>
            
             <div class="modal-body">
-                <form method="post" action="<?= site_url('validar-registro') ?>"><?= csrf_field() ?>
+                <form method="post" action="<?= site_url('validar-registro') ?>" novalidate>
+                <?= csrf_field() ?>
                     <div class="mb-3">
                          <label class="form-label text-white">
                             <i class="bi bi-person"></i>
                             Nombre
                         </label>
                         <input type="text" name="nombre" class="form-control input-cala" value="<?= old('nombre') ?>" placeholder="Nombre">
-                        <?php if(session('errores.nombre')): ?>
+                        <?php if(isset($errors['nombre'])): ?>
                             <small class="text-danger">
-                                <?= session('errores.nombre') ?>
+                                <?= $errors['nombre'] ?>
                             </small>
                         <?php endif; ?>
                     </div>
@@ -35,9 +36,9 @@
                             Apellido
                         </label>
                         <input type="text" name="apellido" class="form-control input-cala" value="<?= old('apellido') ?>" placeholder="Apellido">
-                        <?php if(session('errores.apellido')): ?>
+                        <?php if(isset($errors['apellido'])): ?>
                             <small class="text-danger">
-                                <?= session('errores.apellido') ?>
+                                <?= $errors['apellido'] ?>
                             </small>
                         <?php endif; ?>
                     </div>
@@ -48,9 +49,9 @@
                             Teléfono
                         </label>
                         <input type="text" name="telefono" class="form-control input-cala" value="<?= old('telefono') ?>" placeholder="Telefono">
-                        <?php if(session('errores.telefono')): ?>
+                        <?php if(isset($errors['telefono'])): ?>
                             <small class="text-danger">
-                                <?= session('errores.telefono') ?>
+                                <?= $errors['telefono'] ?>
                             </small>
                         <?php endif; ?>
                     </div>
@@ -61,9 +62,9 @@
                             Correo electrónico
                         </label>
                         <input type="email" name="email" class="form-control input-cala" value="<?= old('email') ?>" placeholder="Correo electrónico">
-                        <?php if(session('errores.email')): ?>
+                        <?php if(isset($errors['email'])): ?>
                             <small class="text-danger">
-                                <?= session('errores.email') ?>
+                                <?= $errors['email'] ?>
                             </small>
                         <?php endif; ?>
                     </div>
@@ -75,9 +76,9 @@
                         </label>
                         <input type="password" name="password" id="registroPassword" class="form-control input-cala" placeholder="Contraseña">
                         <i class="fa-solid fa-eye toggle-eye" onclick="togglePassword('registroPassword',  this)"></i>
-                        <?php if(session('errores.password')): ?>
+                        <?php if(isset($errors['npassword'])): ?>
                             <small class="text-danger">
-                                <?= session('errores.password') ?>
+                                <?= $errors['password'] ?>
                             </small>
                         <?php endif; ?>
                     </div>
@@ -89,9 +90,9 @@
                         </label>
                         <input type="password" name="confirmar" id="confirmPassword" class="form-control input-cala" placeholder="Contraseña">
                         <i class="fa-solid fa-eye toggle-eye" onclick="togglePassword('confirmPassword',  this)"></i>
-                        <?php if(session('errores.confirmar')): ?>
+                        <?php if(isset($errors['confirmar'])): ?>
                             <small class="text-danger">
-                                <?= session('errores.confirmar') ?>
+                                <?= $errors['confirmar'] ?>
                             </small>
                         <?php endif; ?>
                     </div>
@@ -119,4 +120,16 @@ function togglePassword(id, icon) {
         icon.classList.add("fa-eye");
     }
 }
+</script>
+<script>
+document.getElementById('loginRegistro').addEventListener('hidden.bs.modal', function () {
+
+    this.querySelectorAll('.text-danger').forEach(function(error) {
+        error.remove();
+    });
+
+    this.querySelectorAll('input').forEach(function(input) {
+        input.value = '';
+    });
+});
 </script>

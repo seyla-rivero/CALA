@@ -67,3 +67,13 @@ in APPPATH\Controllers\Autenticacion.php on line 59.
  5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-08-31 21:28:45 --> ErrorException: Undefined array key "password"
+[Method: POST, Route: validar-login]
+in APPPATH\Controllers\Autenticacion.php on line 59.
+ 1 APPPATH\Controllers\Autenticacion.php(59): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "password"', 'C:\\xampp\\htdocs\\CALA\\app\\Controllers\\Autenticacion.php', 59)
+ 2 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Autenticacion->validarLogin()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Autenticacion))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

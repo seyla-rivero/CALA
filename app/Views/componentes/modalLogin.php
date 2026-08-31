@@ -1,4 +1,4 @@
-<?php $errors = session()->getFlashdata('errors') ?? []; ?>
+<?php $errors = session()->getFlashdata('erroresLogin') ?? []; ?>
 
 <div class="modal fade" id="loginModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -22,9 +22,9 @@
                             Correo electrónico
                         </label>
                         <input type="email" name="email" class="form-control input-cala" placeholder="Correo electrónico">
-                        <?php if(session('errores.email')): ?>
+                        <?php if(isset($errors['email'])): ?>
                             <small class="text-danger">
-                                <?= session('errores.email') ?>
+                                <?= $errors['email'] ?>
                             </small>
                         <?php endif; ?>
                     </div>
@@ -36,9 +36,9 @@
                         </label>
                         <input type="password" name="password" id="loginPassword" class="form-control input-cala" placeholder="Contraseña">
                         <i class="fa-solid fa-eye toggle-eye" onclick="togglePassword('loginPassword',  this)"></i>
-                        <?php if(session('errores.password')): ?>
+                        <?php if(isset($errors['password'])): ?>
                             <small class="text-danger">
-                                <?= session('errores.password') ?>
+                                <?= $errors['password'] ?>
                             </small>
                         <?php endif; ?>
                     </div>
@@ -78,4 +78,14 @@ function togglePassword(id, icon) {
         icon.classList.add("fa-eye");
     }
 }
+</script>
+<script>
+document.getElementById('loginModal').addEventListener('hidden.bs.modal', function () {
+
+    this.querySelectorAll('.text-danger').forEach(function (error) {
+        error.remove();
+    });
+
+    this.querySelector('form').reset();
+});
 </script>

@@ -29,7 +29,7 @@ class Autenticacion extends BaseController
         if (!$this->validate($rules)) {
             return redirect()->back()
                 ->withInput()
-                ->with('validation', $this->validator) 
+                ->with('erroresLogin', $this->validator->getErrors())
                 ->with('modal', 'login');
         }
 
@@ -38,30 +38,15 @@ class Autenticacion extends BaseController
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
-        if ($email === '' || $password === '') {
-        return redirect()->back()
-            ->withInput()
-            ->with('validation', $this->validator)
-            ->with('modal', 'login');
-        }
-
         $cliente = $clienteModel ->where('email', $email) ->first();
 
-        if (!$cliente) {
-            return redirect()->back()
-               ->withInput()
-               ->with('error_login', 'El email no está registrado')
-               ->with('modal', 'login');
-                
-        }
-
-        if (!$this->validator->getErrors() &&
-           !password_verify($password, $cliente['password'])
-        ) {
-           return redirect()->back()
-                ->withInput()
-               ->with('error_login', 'Contraseña incorrecta')
-                ->with('modal', 'login');
+        if (!password_verify($password, $cliente['contraseña'])) {
+        return redirect()->back()
+            ->withInput()
+            ->with('erroresLogin', [
+                'password' => 'La contraseña es incorrecta'
+            ])
+            ->with('modal', 'login');
         }
 
         session()->set([
@@ -123,7 +108,7 @@ class Autenticacion extends BaseController
         if (!$this->validate($rules)) {
         return redirect()->back()
             ->withInput()
-            ->with('errores', $this->validator->getErrors())
+            ->with('erroresRegistro', $this->validator->getErrors())
             ->with('modal', 'registro');
         }
 
@@ -140,9 +125,7 @@ class Autenticacion extends BaseController
             )
         ]);
 
-        $cliente = $clienteModel
-            ->where('email', $this->request->getPost('email'))
-            ->first();
+        $cliente = $clienteModel ->where('email', $this->request->getPost('email'))->first();
 
         session()->set([
             'idCliente' => $cliente['idCliente'],
@@ -154,6 +137,7 @@ class Autenticacion extends BaseController
             ->with('success', 'Cuenta creada correctamente');
 
         }
+        
         public function logout()
         {
             session()->destroy();
