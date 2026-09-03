@@ -79,6 +79,7 @@ function togglePassword(id, icon) {
     }
 }
 </script>
+<!--Si el cliente cierra el modal, se limpian los campos-->
 <script>
 document.getElementById('loginModal').addEventListener('hidden.bs.modal', function () {
 

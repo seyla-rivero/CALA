@@ -11,11 +11,11 @@
     <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav mx-auto gap-5">
             <li class="nav-item">
-                <a class="nav-link active" href="#">INICIO</a>
+                <a class="nav-link" href="<?= base_url('paginaPrincipal') ?>">INICIO</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">MENÚ</a>
+                <a class="nav-link" href="<?= base_url('menu') ?>">MENÚ</a>
             </li>
 
             <li class="nav-item">
