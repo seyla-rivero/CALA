@@ -22,19 +22,13 @@
 <?= $this->include('componentes/modalRegistro') ?>
 <?= $this->include('componentes/footer') ?>
 
-<?php if(session('modal') === 'registro'): ?> 
-<script> document.addEventListener("DOMContentLoaded", function() {
-    let modal = new bootstrap.Modal( document.getElementById('loginRegistro') );
-    modal.show(); });
+<script>
+    const modalAbrir = "<?= session('modal') ?? '' ?>";
 </script>
-<?php endif; ?> <?php if(session('modal') === 'login'): ?> 
-<script> document.addEventListener("DOMContentLoaded", function() {
-let modal = new bootstrap.Modal( document.getElementById('loginModal') );
-modal.show(); }); 
-</script> 
-<?php endif; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="<?= base_url('js/modales.js') ?>"></script>
 
 </body>
 </html>

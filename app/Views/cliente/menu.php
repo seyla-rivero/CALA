@@ -1,6 +1,8 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('contenido') ?>
+<?php /** @var array $categorias */ ?>
+<?php /** @var array $productos */ ?>
 
 <section class="menu-section">
 
@@ -9,149 +11,73 @@
         <p>Elegí tus productos favoritos</p>
     </div>
 
-    <!-- Categorías -->
+    <!-- Filtro categorias-->
     <div class="menu-categorias">
-        <button class="categoria active">Todos</button>
-        <button class="categoria">Hamburguesas</button>
-        <button class="categoria">Lomos</button>
-        <button class="categoria">Milanesas</button>
-        <button class="categoria">Pizzas</button>
-        <button class="categoria">Empanadas</button>
-        <button class="categoria">Panchos</button>
-    </div>
 
-    <div class="categoria-seccion">
+        <button class="categoria active" data-categoria="todos"> Todos </button>
 
-        <h2>Hamburguesas</h2>
-
-        <div class="productos-grid">
-
-            <!-- CARD 1 -->
-            <div class="producto-card">
-
-                <img src="img/hamburguesa.jpg"
-                     alt="Hamburguesa clásica">
-
-                <div class="producto-info">
-
-                    <h3>Hamburguesa Clásica</h3>
-
-                    <span class="precio">$8.500</span>
-
-                    <button
-                        class="btn-ver"
-                        onclick="abrirModal(
-                            'Hamburguesa Clásica',
-                            'Carne, queso, lechuga, tomate y aderezos.',
-                            '$8.500',
-                            'img/hamburguesa.jpg'
-                        )">
-                        Ver más
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- CARD 2 -->
-            <div class="producto-card">
-
-                <img src="img/hamburguesa-especial.jpg"
-                     alt="Hamburguesa especial">
-
-                <div class="producto-info">
-
-                    <h3>Hamburguesa Especial</h3>
-
-                    <span class="precio">$9.500</span>
-
-                    <button
-                        class="btn-ver"
-                        onclick="abrirModal(
-                            'Hamburguesa Especial',
-                            'Carne, doble queso, jamón, huevo, lechuga y tomate.',
-                            '$9.500',
-                            'img/hamburguesa-especial.jpg'
-                        )">
-                        Ver más
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- CARD 3 -->
-            <div class="producto-card">
-
-                <img src="img/hamburguesa-doble.jpg"
-                     alt="Hamburguesa doble">
-
-                <div class="producto-info">
-
-                    <h3>Hamburguesa Doble</h3>
-
-                    <span class="precio">$10.500</span>
-
-                    <button
-                        class="btn-ver"
-                        onclick="abrirModal(
-                            'Hamburguesa Doble',
-                            'Doble carne, doble queso y aderezos.',
-                            '$10.500',
-                            'img/hamburguesa-doble.jpg'
-                        )">
-                        Ver más
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
+        <?php foreach ($categorias as $categoria): ?>
+            <button class="categoria" data-categoria="<?= esc($categoria['idCategoria']) ?>">
+                <?= esc($categoria['nombre']) ?>
+            </button>
+        <?php endforeach; ?>    
 
     </div>
+    <?php foreach ($categorias as $categoria): ?> 
 
-    <div class="categoria-seccion">
+        <?php
+            $productosCategoria = array_filter(
+                $productos,
+                function ($producto) use ($categoria) {
+                    return $producto['idCategoria'] == $categoria['idCategoria'];
+                }
+            );
+            ?>
 
-        <h2>Lomos</h2>
+        <!--Seccion categorias-->
+                
+        <?php if (!empty($productosCategoria)): ?>
 
-        <div class="productos-grid">
+            <div class="categoria-seccion" data-seccion="<?= esc($categoria['idCategoria']) ?>">
 
-            <div class="producto-card">
+                <h2>
+                    <?= esc($categoria['nombre']) ?>
+                </h2>
 
-                <img src="img/lomo.jpg"
-                     alt="Lomo completo">
+                <div class="productos-grid">
 
-                <div class="producto-info">
+                    <?php foreach ($productosCategoria as $producto): ?>
+                        <div class="producto-card">
 
-                    <h3>Lomo Completo</h3>
+                            <img src="<?= base_url('img/' . $producto['urlImagen']) ?>" alt="<?= esc($producto['nombre']) ?>">
 
-                    <span class="precio">$9.000</span>
+                            <div class="producto-info">
 
-                    <button
-                        class="btn-ver"
-                        onclick="abrirModal(
-                            'Lomo Completo',
-                            'Carne de lomo, jamón, queso, lechuga, tomate y aderezos.',
-                            '$9.000',
-                            'img/lomo.jpg'
-                        )">
-                        Ver más
-                    </button>
+                                <h3>
+                                    <?= esc($producto['nombre']) ?>
+                                </h3>
 
+                                <span class="precio"> $<?= number_format($producto['precio'], 0, ',', '.') ?> </span>
+
+                                <button class="btn-ver" 
+                                    onclick="abrirModal(
+                                    '<?= esc($producto['nombre'], 'js') ?>',
+                                    '<?= esc($producto['descripcion'], 'js') ?>',
+                                    <?= $producto['precio'] ?>,
+                                    '<?= base_url('img/' . $producto['urlImagen']) ?>'
+                                )">
+                                Ver más
+                                </button>
+                            </div>
+
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-
             </div>
-
-        </div>
-
-    </div>
-
+        <?php endif; ?>      
+    <?php endforeach; ?>         
 </section>
-
-
+<!--Modal detalle-->
 <div id="modalProducto" class="modal-producto">
 
     <div class="modal-contenido">
@@ -160,10 +86,8 @@
             &times;
         </button>
 
-        <img id="modalImagen"
-             src=""
-             alt="Producto">
-
+        <img id="modalImagen" src="" alt="Producto">
+    
         <div class="modal-info">
 
             <h2 id="modalNombre"></h2>
@@ -172,18 +96,15 @@
 
             <span id="modalPrecio" class="modal-precio"></span>
 
-
-            <!-- CANTIDAD -->
-
             <div class="cantidad">
 
                 <span>Cantidad:</span>
 
-                <button onclick="disminuirCantidad()">−</button>
+                <button type="button" onclick="disminuirCantidad()">−</button>
 
                 <span id="cantidad">1</span>
 
-                <button onclick="aumentarCantidad()">+</button>
+                <button type="button" onclick="aumentarCantidad()">+</button>
 
             </div>
 
@@ -198,46 +119,107 @@
 
 </div>
 <script>
+
 let cantidadActual = 1;
+let precioUnitario = 0;
 // Abrir modal detalle
 function abrirModal(nombre, descripcion, precio, imagen) {
+
     document.getElementById("modalNombre").textContent = nombre;
     document.getElementById("modalDescripcion").textContent = descripcion;
-    document.getElementById("modalPrecio").textContent = precio;
     document.getElementById("modalImagen").src = imagen;
+
+    precioUnitario = precio;
+
     cantidadActual = 1;
     document.getElementById("cantidad").textContent = cantidadActual;
+
+    actualizarPrecio();
+
     document.getElementById("modalProducto").style.display = "flex";
 }
 
-function cerrarModal() {
-    document.getElementById("modalProducto").style.display = "none";
+function actualizarPrecio() {
+
+    const precioTotal = precioUnitario *cantidadActual;
+
+    document.getElementById("modalPrecio").textContent = "$" + precioTotal.toLocaleString("es-AR");
 
 }
 
+function cerrarModal() {
+
+    document.getElementById("modalProducto").style.display = "none";
+}
+
 function aumentarCantidad() {
+
     cantidadActual++;
+
     document.getElementById("cantidad").textContent = cantidadActual;
 
+    actualizarPrecio();
 }
 
 function disminuirCantidad() {
 
     if (cantidadActual > 1) {
+
         cantidadActual--;
+
         document.getElementById("cantidad").textContent = cantidadActual;
 
+        actualizarPrecio();
     }
-
 }
 
 window.addEventListener("click", function(event) {
+
     const modal = document.getElementById("modalProducto");
 
     if (event.target === modal) {
         cerrarModal();
     }
+
 });
+
+</script>
+<!--Filtro de categorias-->
+<script>
+const botonesCategoria = document.querySelectorAll(".categoria");
+const seccionesCategoria = document.querySelectorAll(".categoria-seccion");
+
+botonesCategoria.forEach(boton => {
+
+    boton.addEventListener("click", function() {
+
+        botonesCategoria.forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+        const categoriaSeleccionada = this.getAttribute("data-categoria");
+
+        seccionesCategoria.forEach(seccion => {
+
+            const categoriaSeccion = seccion.getAttribute("data-seccion");
+
+            if (
+                categoriaSeleccionada === "todos" ||
+                categoriaSeccion === categoriaSeleccionada
+            ) {
+                seccion.style.display = "";
+            } else {
+                seccion.style.display = "none";
+            }
+
+        });
+
+    });
+
+});
+
 </script>
 
 <?= $this->endSection() ?>
