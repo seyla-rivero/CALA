@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\ProductoModel;
 use App\Models\CategoriaModel;
+use App\Models\PromocionModel;
 
 
 class Home extends BaseController
@@ -20,6 +21,15 @@ class Home extends BaseController
         $data['categorias'] = $categoriaModel->findAll();
 
         return view('cliente/menu', $data);
+    }
+
+    public function promocion(): string{
+
+        $promocionModel = new PromocionModel();
+
+        $data['productos'] = $promocionModel->obtenerPromociones();
+
+        return view('cliente/promociones', $data);
     }
     
 }

@@ -108,8 +108,17 @@
 
             </div>
 
+            <div class="comentario-producto">
+                <label for="comentario">Comentario:</label>
 
-            <button class="btn-agregar">
+                <textarea
+                    id="comentario"
+                    name="comentario"
+                    placeholder="Ej.: Sin mayonesa, sin cebolla..."
+                    maxlength="200"></textarea>
+            </div>
+
+            <button class="btn-agregar mt-3">
                 Agregar al pedido
             </button>
 
@@ -119,73 +128,7 @@
 
 </div>
 <script>
-
-let cantidadActual = 1;
-let precioUnitario = 0;
-// Abrir modal detalle
-function abrirModal(nombre, descripcion, precio, imagen) {
-
-    document.getElementById("modalNombre").textContent = nombre;
-    document.getElementById("modalDescripcion").textContent = descripcion;
-    document.getElementById("modalImagen").src = imagen;
-
-    precioUnitario = precio;
-
-    cantidadActual = 1;
-    document.getElementById("cantidad").textContent = cantidadActual;
-
-    actualizarPrecio();
-
-    document.getElementById("modalProducto").style.display = "flex";
-}
-
-function actualizarPrecio() {
-
-    const precioTotal = precioUnitario *cantidadActual;
-
-    document.getElementById("modalPrecio").textContent = "$" + precioTotal.toLocaleString("es-AR");
-
-}
-
-function cerrarModal() {
-
-    document.getElementById("modalProducto").style.display = "none";
-}
-
-function aumentarCantidad() {
-
-    cantidadActual++;
-
-    document.getElementById("cantidad").textContent = cantidadActual;
-
-    actualizarPrecio();
-}
-
-function disminuirCantidad() {
-
-    if (cantidadActual > 1) {
-
-        cantidadActual--;
-
-        document.getElementById("cantidad").textContent = cantidadActual;
-
-        actualizarPrecio();
-    }
-}
-
-window.addEventListener("click", function(event) {
-
-    const modal = document.getElementById("modalProducto");
-
-    if (event.target === modal) {
-        cerrarModal();
-    }
-
-});
-
-</script>
-<!--Filtro de categorias-->
-<script>
+//Filtro de categorias    
 const botonesCategoria = document.querySelectorAll(".categoria");
 const seccionesCategoria = document.querySelectorAll(".categoria-seccion");
 

@@ -221,6 +221,39 @@
     text-align: center;
 }
 
+.comentario-producto {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.comentario-producto label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.comentario-producto textarea {
+    width: 100%;
+    height: 100px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+.comentario-producto textarea:focus {
+    border-color: #f7931e;
+    box-shadow: 0 0 0 2px rgba(247, 147, 30, 0.15);
+}
+
+.comentario-producto textarea::placeholder {
+    color: #999;
+}
+
 .btn-agregar {
     width: 100%;
     border: none;

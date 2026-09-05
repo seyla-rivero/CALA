@@ -11,20 +11,29 @@
     <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav mx-auto gap-5">
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('paginaPrincipal') ?>">INICIO</a>
+                <a class="nav-link <?= uri_string() == '' ? 'active' : '' ?>" href="<?= base_url('/') ?>">
+                INICIO
+                </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('menu') ?>">MENÚ</a>
+                <a class="nav-link <?= uri_string() == 'menu' ? 'active' : '' ?>" href="<?= base_url('menu') ?>">
+                MENÚ
+            </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">PROMOCIONES</a>
+                <a class="nav-link <?= uri_string() == 'promociones' ? 'active' : '' ?>" href="<?= base_url('promociones') ?>">
+                PROMOCIONES
+                </a>
             </li>
 
             <?php if(session('logueado')): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">MIS PEDIDOS</a>
+                    <a class="nav-link <?= uri_string() == 'mis-pedidos' ? 'active' : '' ?>"
+                    href="<?= base_url('mis-pedidos') ?>">
+                    MIS PEDIDOS
+                </a>
                 </li>
             <?php endif; ?>
         </ul>

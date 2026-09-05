@@ -1,0 +1,84 @@
+CRITICAL - 2026-09-05 21:32:49 --> ErrorException: Undefined variable $categorias
+[Method: GET, Route: promociones]
+in APPPATH\Views\cliente\promociones.php on line 14.
+ 1 APPPATH\Views\cliente\promociones.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $categorias', 'C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php', 14)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('cliente/promociones', [], true)
+ 5 APPPATH\Controllers\Home.php(33): view('cliente/promociones', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->promocion()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-09-05 21:34:36 --> ErrorException: Undefined variable $categorias
+[Method: GET, Route: promociones]
+in APPPATH\Views\cliente\promociones.php on line 14.
+ 1 APPPATH\Views\cliente\promociones.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $categorias', 'C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php', 14)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('cliente/promociones', [], true)
+ 5 APPPATH\Controllers\Home.php(33): view('cliente/promociones', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->promocion()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-09-05 21:35:32 --> ErrorException: Undefined variable $categorias
+[Method: GET, Route: promociones]
+in APPPATH\Views\cliente\promociones.php on line 14.
+ 1 APPPATH\Views\cliente\promociones.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $categorias', 'C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php', 14)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('cliente/promociones', [], true)
+ 5 APPPATH\Controllers\Home.php(33): view('cliente/promociones', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->promocion()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-09-05 21:39:01 --> ErrorException: Undefined variable $categorias
+[Method: GET, Route: promociones]
+in APPPATH\Views\cliente\promociones.php on line 14.
+ 1 APPPATH\Views\cliente\promociones.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $categorias', 'C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php', 14)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('cliente/promociones', [], true)
+ 5 APPPATH\Controllers\Home.php(32): view('cliente/promociones', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->promocion()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-09-05 21:39:14 --> ErrorException: Undefined variable $categorias
+[Method: GET, Route: promociones]
+in APPPATH\Views\cliente\promociones.php on line 14.
+ 1 APPPATH\Views\cliente\promociones.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $categorias', 'C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php', 14)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('cliente/promociones', [], true)
+ 5 APPPATH\Controllers\Home.php(32): view('cliente/promociones', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->promocion()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-09-05 21:39:42 --> ErrorException: Undefined variable $categorias
+[Method: GET, Route: promociones]
+in APPPATH\Views\cliente\promociones.php on line 14.
+ 1 APPPATH\Views\cliente\promociones.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $categorias', 'C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php', 14)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\promociones.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('cliente/promociones', [], true)
+ 5 APPPATH\Controllers\Home.php(32): view('cliente/promociones', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->promocion()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
