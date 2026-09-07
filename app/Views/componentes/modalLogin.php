@@ -10,9 +10,9 @@
 
             <img src="<?= base_url('img/logo Cala.png') ?>" class="logo-login d-block mx-auto mb-4" alt="Logo CALA">
             
-            <h4 class="titulo-login text-center mt-3">
-                Iniciá sesión
-            </h4>
+            <h5 class="titulo-login text-center mt-3">
+                ¡Iniciá sesión para hacer tu pedido!
+            </h5>
             
             <div class="modal-body">
                 <form method="post" action="<?= site_url('validar-login') ?>"><?= csrf_field() ?>

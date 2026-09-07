@@ -13,6 +13,9 @@
             <h4 class="titulo-login text-center mt-3">
                 Crea tu cuenta
             </h4>
+            <p class="text-center">
+                ¡Registrate y disfrutá de CALA!
+            </p>
            
             <div class="modal-body">
                 <form method="post" action="<?= site_url('validar-registro') ?>" novalidate>

@@ -8,7 +8,7 @@
 
     <div class="menu-header">
         <h1>Promociones</h1>
-        <p>Las mejores promociones</p>
+        <p>¡Aprovechá nuestras promos!</p>
     </div>
     
     <div class="productos-grid">
