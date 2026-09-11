@@ -22,8 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
 // Abrir modal detalle de Producto y Promocion
 let cantidadActual = 1;
 let precioUnitario = 0;
+let idItemActual = null;
 
-function abrirModal(nombre, descripcion, precio, imagen) {
+function abrirModal(idItem, nombre, descripcion, precio, imagen) {
+
+    idItemActual = idItem;
 
     document.getElementById("modalNombre").textContent = nombre;
     document.getElementById("modalDescripcion").textContent = descripcion;

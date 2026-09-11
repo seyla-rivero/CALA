@@ -61,6 +61,7 @@
 
                                 <button class="btn-ver" 
                                     onclick="abrirModal(
+                                    '<?= $producto['idItem'] ?>',
                                     '<?= esc($producto['nombre'], 'js') ?>',
                                     '<?= esc($producto['descripcion'], 'js') ?>',
                                     <?= $producto['precio'] ?>,
@@ -115,12 +116,47 @@
                     id="comentario"
                     name="comentario"
                     placeholder="Ej.: Sin mayonesa, sin cebolla..."
-                    maxlength="200"></textarea>
+                    maxlength="200">
+                </textarea>
             </div>
 
-            <button class="btn-agregar mt-3">
+            <button type="button" class="btn-agregar mt-3" onclick="agregarAlCarrito()">
                 Agregar al pedido
             </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- Modal producto agregado -->
+<div class="modal fade" id="productoAgregadoModal" tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content modal-cala">
+
+            <div class="modal-body text-center p-4">
+
+                <i class="bi bi-check-circle-fill text-success"
+                   style="font-size: 4rem;">
+                </i>
+
+                <h3 class="mt-3">¡Producto agregado!</h3>
+
+                <p>
+                    El producto fue agregado correctamente a tu pedido.
+                </p>
+
+                <button type="button"
+                        class="btn boton-login mt-3"
+                        data-bs-dismiss="modal">
+
+                    Aceptar
+
+                </button>
+
+            </div>
 
         </div>
 
@@ -163,6 +199,58 @@ botonesCategoria.forEach(boton => {
 
 });
 
+</script>
+<script>
+function agregarAlCarrito() {
+
+    const comentario =
+        document.getElementById("comentario").value.trim();
+
+    fetch("<?= base_url('carrito/agregar') ?>", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            idItem: idItemActual,
+            cantidad: cantidadActual,
+            comentario: comentario
+        })
+
+    })
+    .then(response => response.json())
+
+    .then(data => {
+
+       if (data.ok) {
+
+            cerrarModal();
+
+            document.getElementById("comentario").value = "";
+
+            const modal = new bootstrap.Modal(
+                document.getElementById("productoAgregadoModal")
+            );
+
+            modal.show();
+
+        } else {
+            alert(data.mensaje);
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert("Ocurrió un error al agregar el producto.");
+
+    });
+}
 </script>
 
 <?= $this->endSection() ?>
