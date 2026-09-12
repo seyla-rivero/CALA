@@ -1,29 +1,47 @@
-
 .carrito-titulo {
     font-weight: 700;
     margin-bottom: 30px;
+    color: #111;
 }
 
 .carrito-item {
-    border: none;
+    border: 1px solid #e2e2e2;
     border-radius: 15px;
     overflow: hidden;
+    background-color: #fff;
+    transition: 0.2s ease;
+}
+
+.carrito-item:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .carrito-imagen {
-    width: 100px;
-    height: 100px;
+    width: 150px !important;
+    height: 110px !important;
     object-fit: cover;
     border-radius: 12px;
+    display: block;
+    margin: auto;
 }
 
 .carrito-nombre {
     font-weight: 600;
-    margin-bottom: 5px;
+    font-size: 19px;
+    margin-bottom: 6px;
+    color: #111;
 }
 
 .carrito-precio {
+    color: #ed2b72;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.carrito-comentario {
     color: #666;
+    font-size: 14px;
+    margin-top: 8px;
 }
 
 .carrito-cantidad {
@@ -34,33 +52,85 @@
 }
 
 .carrito-cantidad button {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     padding: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    border: 1px solid #ed2b72;
+    color: #ed2b72;
+    background-color: white;
+
     border-radius: 50%;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+.carrito-cantidad button:hover {
+    background-color: #ed2b72;
+    color: white;
 }
 
 .carrito-cantidad span {
     min-width: 25px;
     text-align: center;
     font-weight: 600;
+    font-size: 17px;
 }
 
 .carrito-subtotal {
     font-weight: 700;
-    font-size: 18px;
+    font-size: 19px;
+    color: #ed2b72;
 }
 
 .carrito-total {
     border: none;
     border-radius: 15px;
+    background-color: #f8f8f8;
 }
 
 .carrito-total h4 {
     font-weight: 700;
+    color: #111;
+}
+
+.carrito-total h4:last-child {
+    color: #ed2b72;
+}
+
+.carrito-continuar {
+    background-color: #ed2b72;
+    border: 2px solid #ed2b72;
+    color: white;
+    font-weight: 600;
+    border-radius: 25px;
+    padding: 10px 25px;
+    transition: 0.2s ease;
+}
+
+.carrito-continuar:hover {
+    background-color: #d92365;
+    border-color: #d92365;
+    color: white;
+}
+
+.carrito-seguir {
+    border: 2px solid #ed2b72;
+    color: #ed2b72;
+    font-weight: 600;
+    border-radius: 25px;
+    padding: 10px 25px;
+    transition: 0.2s ease;
+}
+
+.carrito-seguir:hover {
+    background-color: #ed2b72;
+    color: white;
 }

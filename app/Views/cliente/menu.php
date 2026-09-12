@@ -99,13 +99,13 @@
 
             <div class="cantidad">
 
-                <span>Cantidad:</span>
+                <span class="cantidad-label">Cantidad:</span>
 
-                <button type="button" onclick="disminuirCantidad()">−</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="disminuirCantidad()">−</button>
 
-                <span id="cantidad">1</span>
+                <span id="cantidad" class="cantidad-numero">1</span>
 
-                <button type="button" onclick="aumentarCantidad()">+</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="aumentarCantidad()">+</button>
 
             </div>
 
@@ -200,57 +200,4 @@ botonesCategoria.forEach(boton => {
 });
 
 </script>
-<script>
-function agregarAlCarrito() {
-
-    const comentario =
-        document.getElementById("comentario").value.trim();
-
-    fetch("<?= base_url('carrito/agregar') ?>", {
-
-        method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-            idItem: idItemActual,
-            cantidad: cantidadActual,
-            comentario: comentario
-        })
-
-    })
-    .then(response => response.json())
-
-    .then(data => {
-
-       if (data.ok) {
-
-            cerrarModal();
-
-            document.getElementById("comentario").value = "";
-
-            const modal = new bootstrap.Modal(
-                document.getElementById("productoAgregadoModal")
-            );
-
-            modal.show();
-
-        } else {
-            alert(data.mensaje);
-        }
-
-    })
-
-    .catch(error => {
-
-        console.error(error);
-
-        alert("Ocurrió un error al agregar el producto.");
-
-    });
-}
-</script>
-
 <?= $this->endSection() ?>

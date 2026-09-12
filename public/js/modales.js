@@ -42,6 +42,7 @@ function abrirModal(idItem, nombre, descripcion, precio, imagen) {
     document.getElementById("modalProducto").style.display = "flex";
 }
 
+// Actualizacion de botones + y - en el Detalle del pedido
 function actualizarPrecio() {
 
     const precioTotal = precioUnitario * cantidadActual;

@@ -22,7 +22,26 @@ body{
     width: 30px;
     height: 30px;
 }
+.carrito-icono {
+    position: relative;
+    display: inline-block;
+}
 
+#contadorCarrito {
+    position: absolute;
+    top: -10px;
+    right: -0px;
+    background-color: #ff2f7d;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /*Seccion*/
 .portada{

@@ -34,6 +34,7 @@
                     <button
                         class="btn-ver"
                         onclick="abrirModal(
+                            <?= $producto['idItem'] ?>,
                             '<?= esc($producto['nombre'], 'js') ?>',
                             '<?= esc($producto['descripcion'], 'js') ?>',
                             <?= $producto['precio'] ?>,
@@ -70,18 +71,29 @@
 
             <div class="cantidad">
 
-                <span>Cantidad:</span>
+                <span class="cantidad-label">Cantidad:</span>
 
                 <button type="button" onclick="disminuirCantidad()">−</button>
 
-                <span id="cantidad">1</span>
+                <span id="cantidad" class="cantidad-numero">1</span>
 
                 <button type="button" onclick="aumentarCantidad()">+</button>
 
             </div>
 
+             <div class="comentario-producto">
+                <label for="comentario">Comentario:</label>
 
-            <button class="btn-agregar">
+                <textarea
+                    id="comentario"
+                    name="comentario"
+                    placeholder="Ej.: Sin mayonesa, sin cebolla..."
+                    maxlength="200">
+                </textarea>
+            </div>
+
+
+            <button type="button" class="btn-agregar mt-3" onclick="agregarAlCarrito()">
                 Agregar al pedido
             </button>
 
@@ -90,5 +102,38 @@
     </div>
 
 </div>
+<!-- Modal producto agregado -->
+<div class="modal fade" id="productoAgregadoModal" tabindex="-1">
 
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content modal-cala">
+
+            <div class="modal-body text-center p-4">
+
+                <i class="bi bi-check-circle-fill text-success"
+                   style="font-size: 4rem;">
+                </i>
+
+                <h3 class="mt-3">¡Producto agregado!</h3>
+
+                <p>
+                    El producto fue agregado correctamente a tu pedido.
+                </p>
+
+                <button type="button"
+                        class="btn boton-login mt-3"
+                        data-bs-dismiss="modal">
+
+                    Aceptar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 <?= $this->endSection() ?>

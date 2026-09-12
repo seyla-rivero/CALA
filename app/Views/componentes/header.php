@@ -44,9 +44,12 @@
 
                 <div class="d-flex align-items-center gap-3">
 
-                    <a class="text-white me-4" href="<?= base_url('carrito') ?>">
-                        <img src="<?= base_url('img/carritoo.jpeg') ?>" class="icono-nav" alt="Carrito">
-                    </a>
+                    <div class="carrito-icono">
+                        <a class="text-white me-4" href="<?= base_url('carrito') ?>">
+                            <img src="<?= base_url('img/carritoo.jpeg') ?>" class="icono-nav" alt="Carrito">
+                            <span id="contadorCarrito"></span>
+                        </a>
+                    </div>    
 
                     <span class="text-white fw-bold">
                         Hola, <?= session('nombre') ?>

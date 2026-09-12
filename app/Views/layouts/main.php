@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="<?= base_url('css/paginaPrincipal.css') ?>">
     <link rel="stylesheet" href="<?= base_url('css/modalLoginRegistro.css') ?>">
     <link rel="stylesheet" href="<?= base_url('css/menu.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('css/menu.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/carrito.css') ?>">
 </head>
 <body>
 
@@ -26,9 +26,17 @@
     const modalAbrir = "<?= session('modal') ?? '' ?>";
 </script>
 
+<script>
+    const urlAgregarCarrito = "<?= base_url('carrito/agregar') ?>";
+    const urlAumentarCantidad = "<?= base_url('carrito/aumentar-cantidad') ?>";
+    const urlDisminuirCantidad = "<?= base_url('carrito/disminuir-cantidad') ?>";
+    const urlCantidadCarrito = "<?= base_url('carrito/cantidad') ?>";
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="<?= base_url('js/modales.js') ?>"></script>
+<script src="<?= base_url('js/carrito.js') ?>"></script>
 
 </body>
 </html>
