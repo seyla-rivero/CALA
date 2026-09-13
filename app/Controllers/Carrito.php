@@ -333,14 +333,7 @@ class Carrito extends BaseController
             ]);
         }
 
-        // Si ya es 1, no bajar más
-        if ($detalle['cantidad'] <= 1) {
-            return $this->response->setJSON([
-                'ok' => true
-            ]);
-        }
-
-        // Obtener precio
+         // Buscar el producto para obtener su precio
         $item = $itemPedidoModel->find($idItem);
 
         if (!$item) {
@@ -350,16 +343,29 @@ class Carrito extends BaseController
             ]);
         }
 
-        // Disminuir cantidad
-        $nuevaCantidad = $detalle['cantidad'] - 1;
-        $nuevoSubtotal = $nuevaCantidad * $item['precio'];
+        // Si la cantidad es 1, eliminar el producto del carrito
+        if ($detalle['cantidad'] <= 1) {
 
-        // Actualizar detalle
-        $detallePedidoModel->update($detalle['idDetallePedido'], [
-            'cantidad' => $nuevaCantidad,
-            'precioUnitario' => $item['precio'],
-            'subTotal' => $nuevoSubtotal
-        ]);
+            $detallePedidoModel->delete($detalle['idDetallePedido']);
+
+        } else {
+
+            // Disminuir cantidad
+            $nuevaCantidad = $detalle['cantidad'] - 1;
+
+            // Calcular nuevo subtotal
+            $nuevoSubtotal = $nuevaCantidad * $item['precio'];
+
+            // Actualizar detalle
+            $detallePedidoModel->update(
+                $detalle['idDetallePedido'],
+                [
+                    'cantidad' => $nuevaCantidad,
+                    'precioUnitario' => $item['precio'],
+                    'subTotal' => $nuevoSubtotal
+                ]
+            );
+        }
 
         // Recalcular subtotal
         $detalles = $detallePedidoModel

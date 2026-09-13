@@ -5,13 +5,13 @@
 
 <div class="container py-5">
 
-    <h2 class="mb-4">Mi pedido</h2>
+    <h2 class="carrito-titulo mb-4">Mi carrito</h2>
 
     <?php if (empty($carrito)): ?>
  
         <div class="text-center py-5">
 
-            <h4>Tu pedido está vacío</h4>
+            <h4>Tu carrito está vacío</h4>
 
             <p class="text-muted">
                 Agregá productos desde nuestro menú.

@@ -1,6 +1,18 @@
-body{
+html,
+body {
     margin: 0;
-    background:#ffffff !important;
+    min-height: 100%;
+}
+
+body {
+    background: #ffffff !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.contenido-principal {
+    flex: 1;
 }
 
 /*Nav*/

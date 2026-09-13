@@ -3,6 +3,12 @@
     margin-bottom: 30px;
     color: #111;
 }
+.carrito-titulo h1 {
+    font-size: 38px;
+    margin-bottom: 8px;
+    color: #000000;
+    font-weight: 700;
+}
 
 .carrito-item {
     border: 1px solid #e2e2e2;

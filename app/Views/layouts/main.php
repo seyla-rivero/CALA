@@ -15,9 +15,14 @@
     <link rel="stylesheet" href="<?= base_url('css/carrito.css') ?>">
 </head>
 <body>
+ 
 
 <?= $this->include('componentes/header') ?>
-<?= $this->renderSection('contenido') ?>
+
+<main class="contenido-principal">
+    <?= $this->renderSection('contenido') ?>
+</main>
+
 <?= $this->include('componentes/modalLogin') ?>
 <?= $this->include('componentes/modalRegistro') ?>
 <?= $this->include('componentes/footer') ?>

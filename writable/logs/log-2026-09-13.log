@@ -1,0 +1,60 @@
+CRITICAL - 2026-09-13 19:57:33 --> ErrorException: Trying to access array offset on value of type int
+[Method: POST, Route: carrito/disminuir-cantidad]
+in APPPATH\Controllers\Carrito.php on line 344.
+ 1 APPPATH\Controllers\Carrito.php(344): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Trying to access array offset on value of type int', 'C:\\xampp\\htdocs\\CALA\\app\\Controllers\\Carrito.php', 344)
+ 2 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Carrito->disminuirCantidad()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Carrito))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-09-13 19:57:39 --> ErrorException: Trying to access array offset on value of type int
+[Method: POST, Route: carrito/disminuir-cantidad]
+in APPPATH\Controllers\Carrito.php on line 344.
+ 1 APPPATH\Controllers\Carrito.php(344): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Trying to access array offset on value of type int', 'C:\\xampp\\htdocs\\CALA\\app\\Controllers\\Carrito.php', 344)
+ 2 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Carrito->disminuirCantidad()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Carrito))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-09-13 19:57:47 --> ErrorException: Trying to access array offset on value of type int
+[Method: POST, Route: carrito/disminuir-cantidad]
+in APPPATH\Controllers\Carrito.php on line 344.
+ 1 APPPATH\Controllers\Carrito.php(344): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Trying to access array offset on value of type int', 'C:\\xampp\\htdocs\\CALA\\app\\Controllers\\Carrito.php', 344)
+ 2 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Carrito->disminuirCantidad()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Carrito))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-09-13 19:58:13 --> ErrorException: Trying to access array offset on value of type int
+[Method: POST, Route: carrito/disminuir-cantidad]
+in APPPATH\Controllers\Carrito.php on line 344.
+ 1 APPPATH\Controllers\Carrito.php(344): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Trying to access array offset on value of type int', 'C:\\xampp\\htdocs\\CALA\\app\\Controllers\\Carrito.php', 344)
+ 2 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Carrito->disminuirCantidad()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Carrito))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-09-13 20:03:21 --> ErrorException: Trying to access array offset on value of type int
+[Method: POST, Route: carrito/disminuir-cantidad]
+in APPPATH\Controllers\Carrito.php on line 344.
+ 1 APPPATH\Controllers\Carrito.php(344): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Trying to access array offset on value of type int', 'C:\\xampp\\htdocs\\CALA\\app\\Controllers\\Carrito.php', 344)
+ 2 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Carrito->disminuirCantidad()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Carrito))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-09-13 20:03:29 --> ErrorException: Trying to access array offset on value of type int
+[Method: POST, Route: carrito/disminuir-cantidad]
+in APPPATH\Controllers\Carrito.php on line 344.
+ 1 APPPATH\Controllers\Carrito.php(344): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Trying to access array offset on value of type int', 'C:\\xampp\\htdocs\\CALA\\app\\Controllers\\Carrito.php', 344)
+ 2 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Carrito->disminuirCantidad()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Carrito))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
