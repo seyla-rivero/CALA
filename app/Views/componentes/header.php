@@ -4,12 +4,12 @@
         <img src="<?= base_url('img/logoCala.jpeg') ?>" alt="Logo CALA" height="60">
     </a>
 
-    <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+    <button class="navbar-toggler btn-menu" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="menu">
-        <ul class="navbar-nav mx-auto gap-5">
+        <ul class="navbar-nav mx-auto gap-2">
             <li class="nav-item">
                 <a class="nav-link <?= uri_string() == '' ? 'active' : '' ?>" href="<?= base_url('/') ?>">
                 INICIO
@@ -62,11 +62,17 @@
                 </div>
 
             <?php else: ?>
+                <div class="text-center mt-3">
+                    <a href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#loginModal"
+                    class="text-white text-decoration-none fw-bold">
 
-                <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
-                    <img src="<?= base_url('img/login.png') ?>" class="icono-nav" alt="Login">
-                </a>
+                        <i class="bi bi-person fs-3"></i><br>
+                        Iniciar sesión
 
+                    </a>
+                </div>
             <?php endif; ?>
         </div>
     </div>

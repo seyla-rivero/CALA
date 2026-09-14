@@ -112,12 +112,7 @@
             <div class="comentario-producto">
                 <label for="comentario">Comentario:</label>
 
-                <textarea
-                    id="comentario"
-                    name="comentario"
-                    placeholder="Ej.: Sin mayonesa, sin cebolla..."
-                    maxlength="200">
-                </textarea>
+                <textarea id="comentario" name="comentario" placeholder="Ej.: Sin mayonesa, sin cebolla..." maxlength="200"></textarea>
             </div>
 
             <button type="button" class="btn-agregar mt-3" onclick="agregarAlCarrito()">

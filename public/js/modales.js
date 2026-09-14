@@ -37,6 +37,8 @@ function abrirModal(idItem, nombre, descripcion, precio, imagen) {
 
     document.getElementById("cantidad").textContent = cantidadActual;
 
+    document.getElementById("comentario").value = "";
+
     actualizarPrecio();
 
     document.getElementById("modalProducto").style.display = "flex";
