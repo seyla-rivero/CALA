@@ -5,13 +5,23 @@ namespace App\Controllers;
 use App\Models\ProductoModel;
 use App\Models\CategoriaModel;
 use App\Models\PromocionModel;
+use App\Models\ItemPedidoModel;
 
 
 class Home extends BaseController
 {
     public function index(): string{
-        return view('cliente/paginaPrincipal');
+
+        $promocionModel = new PromocionModel();
+        $itemPedidoModel = new ItemPedidoModel();
+
+        $data['promociones'] = $promocionModel->obtenerPromociones();
+
+        $data['masVendida'] = $itemPedidoModel->find(31);
+
+        return view('cliente/paginaPrincipal', $data);
     }
+
     public function menu(): string{
 
         $productoModel = new ProductoModel();

@@ -39,10 +39,6 @@ body {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23ff2f7d' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-.btn-menu:hover{
-    background: rgba(255, 47, 125, 0.1);
-}
-
 .icono-nav{
     width: 30px;
     height: 30px;
@@ -69,41 +65,140 @@ body {
 }
 
 /*Seccion*/
-.portada{
-    height:300px;
-    background:#d9d9d9;
-    border:1px solid #555;
-    border-radius:15px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:2rem;
-    font-weight:bold;
-}
-
-.card-promo{
-    border:1px solid #555;
-    border-radius:15px;
-    padding:15px;
-    height:100%;
+.portada {
     width: 100%;
+    height: 350px;
+    overflow: hidden;
+    border-radius: 15px;
 }
 
-.precio{
-    color:#ec407a;
-    font-size:2rem;
-    font-weight:bold;
+.portada img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.banner-promo{
+    position: relative;
+    height: 280px;
+    border-radius: 20px;
+    overflow: hidden;
 }
 
-.btn-cala{
-    background:#ec407a;
-    color:white;
-    border:none;
-    font-weight:bold;
+.banner-promo:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,.25);
 }
 
-.btn-cala:hover{
-    background:#d81b60;
+.banner-promo img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner-overlay{
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        90deg,
+        rgba(0,0,0,.80) 0%,
+        rgba(0,0,0,.55) 45%,
+        rgba(0,0,0,.15) 100%
+    );
+
+    padding: 30px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.promo-titulo{
+    color: white;
+    font-size: 28px;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.promo-titulo span{
+    color: #ff2f7d;
+}
+
+.banner-overlay h3{
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    line-height: 1.3;
+    max-width: 220px;
+}
+
+.promo-precio{
+    color: #ff2f7d;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.promo-precio{
+    color: #ff2f7d;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.flecha{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 35px;
+    height: 35px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #ff2f7d;
+    font-size: 24px;
+
+    z-index: 10;
+    cursor: pointer;
+}
+.flecha-anterior{
+    left: 0px;
+}
+
+.flecha-siguiente{
+    right: 0px;
+}
+.btn-promo{
+    width: 140px;
+    height: 46px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #ff2f7d;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-promo:hover{
+    background: #e61e68;
+    transform: translateY(-2px);
 }
 
 .sucursales{

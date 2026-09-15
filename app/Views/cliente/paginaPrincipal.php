@@ -1,12 +1,14 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('contenido') ?>
+<?php /** @var array $promociones */ ?>
+<?php /** @var array $masVendida */ ?>
 
 <div class="container-fluid bg-white p-0">
     <!-- Portada -->
     <div class="p-4">
         <div class="portada">
-            Imagen Portada
+            <img src="<?= base_url('img/CALAPortada.jpeg') ?>" alt="CALA Delivery Sandwich">
         </div>
     </div>
 
@@ -14,53 +16,102 @@
     <div class="container-fluid px-4">
         <div class="row g-3">
 
+            <!-- Promos del día -->
             <div class="col-md-4">
-                <div class="card-promo">
-                    <h2 class="fw-bold">PROMO DEL DÍA</h2>
 
-                    <p class="fw-bold">
-                        Hamburguesa super + papas
-                    </p>
+                <div class="banner-promo">
 
-                    <div class="precio">
-                        $15.000
+                    <img
+                        id="promoImagen"
+                        src=""
+                        alt="Promoción">
+
+                    <div class="banner-overlay">
+
+                        <span class="promo-titulo">
+                            PROMO <span>DEL DÍA</span>
+                        </span>
+
+                        <h3 id="promoNombre"></h3>
+
+                        <span id="promoPrecio" class="promo-precio"></span>
+
+                        <button
+                            type="button"
+                            class="btn-promo"
+                            onclick="verPromo()">
+                            Ver promo
+                        </button>
+
                     </div>
 
-                    <button class="btn btn-cala">
-                        VER PROMO
+                    <button
+                        type="button"
+                        class="flecha flecha-anterior"
+                        onclick="promoAnterior()">
+                        &#10094;
                     </button>
+
+                    <button
+                        type="button"
+                        class="flecha flecha-siguiente"
+                        onclick="promoSiguiente()">
+                        &#10095;
+                    </button>
+
                 </div>
+
+                <div class="indicadores" id="indicadoresPromos">
+                    <span class="indicador activo"></span>
+                    <span class="indicador"></span>
+                    <span class="indicador"></span>
+                </div>
+
             </div>
 
+            <!-- La más vendida -->
             <div class="col-md-4">
-                <div class="card-promo">
-                    <h2 class="fw-bold">LA MÁS VENDIDA</h2>
 
-                    <p class="fw-bold">
-                        Burgerpizza + papas
-                    </p>
+                <div class="banner-promo">
 
-                    <div class="precio">
-                        $33.000
+                    <img
+                        src="<?= base_url('img/' . $masVendida['urlImagen']) ?>"
+                        alt="<?= esc($masVendida['nombre']) ?>">
+
+                    <div class="banner-overlay">
+
+                        <span class="promo-titulo">
+                            LA MÁS VENDIDA
+                        </span>
+
+                        <h3>
+                            <?= esc($masVendida['nombre']) ?>
+                        </h3>
+
+                        <span class="promo-precio">
+                            $<?= number_format($masVendida['precio'], 0, ',', '.') ?>
+                        </span>
+
+                        <button
+                            type="button"
+                            class="btn-promo"
+                            onclick="verMasVendida(<?= $masVendida['idItem'] ?>)">
+                            Ver promo
+                        </button>
+
                     </div>
 
-                    <button class="btn btn-cala">
-                        VER PROMO
-                    </button>
                 </div>
+
             </div>
 
+            <!-- Retiro o delivery -->
             <div class="col-md-4">
-                <div class="card-promo">
-                    <h2 class="fw-bold">
-                        RETIRO O DELIVERY
-                    </h2>
-
-                    <p class="fw-bold">
-                        Elegí cómo recibir tu pedido.
-                        Retiro en sucursal o envío a domicilio.
-                    </p>
-                </div>
+                <div class="banner-promo">
+                   <img
+                        src="<?= base_url('img/calaRetiroDelivery.png') ?>"
+                        alt="Retiro o Delivery" class="img-retiro-delivery">
+                </div>        
             </div>
 
         </div>
@@ -167,6 +218,87 @@
         </div>
     </div>
 </div>
+<?php endif; ?>
+<!--Modal del detalle de promo-->
+<div id="modalProducto" class="modal-producto">
+
+    <div class="modal-contenido">
+
+        <button class="cerrar-modal" onclick="cerrarModal()">
+            &times;
+        </button>
+
+        <img id="modalImagen" src="" alt="Producto">
+    
+        <div class="modal-info">
+
+            <h2 id="modalNombre"></h2>
+
+            <p id="modalDescripcion"></p>
+
+            <span id="modalPrecio" class="modal-precio"></span>
+
+            <div class="cantidad">
+
+                <span class="cantidad-label">Cantidad:</span>
+
+                <button type="button" class="btn btn-outline-secondary" onclick="disminuirCantidad()">−</button>
+
+                <span id="cantidad" class="cantidad-numero">1</span>
+
+                <button type="button" class="btn btn-outline-secondary" onclick="aumentarCantidad()">+</button>
+
+            </div>
+
+            <div class="comentario-producto">
+                <label for="comentario">Comentario:</label>
+
+                <textarea id="comentario" name="comentario" placeholder="Ej.: Sin mayonesa, sin cebolla..." maxlength="200"></textarea>
+            </div>
+
+            <button type="button" class="btn-agregar mt-3" onclick="agregarAlCarrito()">
+                Agregar al pedido
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- Modal producto agregado -->
+<div class="modal fade" id="productoAgregadoModal" tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content modal-cala">
+
+            <div class="modal-body text-center p-4">
+
+                <i class="bi bi-check-circle-fill text-success"
+                   style="font-size: 4rem;">
+                </i>
+
+                <h3 class="mt-3">¡Producto agregado!</h3>
+
+                <p>
+                    El producto fue agregado correctamente a tu pedido.
+                </p>
+
+                <button type="button"
+                        class="btn boton-login mt-3"
+                        data-bs-dismiss="modal">
+
+                    Aceptar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -176,6 +308,100 @@ document.addEventListener("DOMContentLoaded", function() {
     modal.show();
 });
 </script>
+<script>
+const promociones = <?= json_encode(
+    array_map(function($promocion) {
+        return [
+            'idItem' => $promocion['idItem'],
+            'nombre' => $promocion['nombre'],
+            'descripcion' => $promocion['descripcion'],
+            'precio' => $promocion['precio'],
+            'imagen' => base_url('img/' . $promocion['urlImagen'])
+        ];
+    }, $promociones)
+) ?>;
 
-<?php endif; ?>
+let promoActual = 0;
+
+function mostrarPromo() {
+
+    const promo = promociones[promoActual];
+
+    document.getElementById("promoImagen").src = promo.imagen;
+
+    document.getElementById("promoNombre").textContent =
+        promo.nombre;
+
+    document.getElementById("promoPrecio").textContent =
+    "$" + Number(promo.precio).toLocaleString('es-AR');
+
+    const indicadores =
+        document.querySelectorAll(".indicador");
+
+    indicadores.forEach((indicador, index) => {
+
+        indicador.classList.toggle(
+            "activo",
+            index === promoActual
+        );
+
+    });
+}
+
+function promoSiguiente() {
+
+    promoActual++;
+
+    if (promoActual >= promociones.length) {
+        promoActual = 0;
+    }
+
+    mostrarPromo();
+}
+
+
+function promoAnterior() {
+
+    promoActual--;
+
+    if (promoActual < 0) {
+        promoActual = promociones.length - 1;
+    }
+
+    mostrarPromo();
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    mostrarPromo();
+});
+
+function verPromo() {
+    const promo = promociones[promoActual];
+
+    abrirModal(
+        promo.idItem,
+        promo.nombre,
+        promo.descripcion,
+        promo.precio,
+        promo.imagen
+    );
+}
+function verMasVendida(idItem) {
+
+    const promo = promociones.find(
+        p => p.idItem == idItem
+    );
+
+    if (!promo) return;
+
+    abrirModal(
+        promo.idItem,
+        promo.nombre,
+        promo.descripcion,
+        promo.precio,
+        promo.imagen
+    );
+}
+</script>
+
 <?= $this->endSection() ?>
