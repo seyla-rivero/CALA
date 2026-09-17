@@ -134,15 +134,15 @@
                 <div class="sucursal-contenido">
                     <div class="sucursal-datos">
                         <p>
-                            <img src="<?= base_url('img/ubicacion.png') ?>" alt="Ubicación" height="30">
+                            <img src="<?= base_url('img/ubicacionCala.png') ?>" alt="Ubicación">
                             Montes de Oca 394, Godoy Cruz
                         </p>
                         <p>
-                            <img src="<?= base_url('img/horario.png') ?>" alt="Horario" height="30">
+                            <img src="<?= base_url('img/horario.png') ?>" alt="Horario">
                             Miercoles a Domingos 20:00pm - 23:59pm
                         </p>
                         <p>
-                            <img src="<?= base_url('img/what.png') ?>" alt="WhatsApp" height="25">
+                            <img src="<?= base_url('img/what.png') ?>" alt="WhatsApp">
                             2615726223
                         </p>
                     </div>
@@ -163,16 +163,16 @@
                 <div class="sucursal-contenido">
                     <div class="sucursal-datos">
                         <p>
-                            <img src="<?= base_url('img/ubicacion.png') ?>" alt="Ubicación" height="30">
+                            <img src="<?= base_url('img/ubicacionCala.png') ?>" alt="Ubicación">
                             Pres.R.Ortiz 1665, Godoy Cruz
                         </p>
                         <p>
-                            <img src="<?= base_url('img/horario.png') ?>" alt="Horario" height="30">
+                            <img src="<?= base_url('img/horario.png') ?>" alt="Horario">
                             Miercoles a Domingos 21:00pm - 23:59pm<br>
                             Viernes a Domingos 12:30pm - 14:00pm
                         </p>
                         <p>
-                            <img src="<?= base_url('img/what.png') ?>" alt="WhatsApp" height="25">
+                            <img src="<?= base_url('img/what.png') ?>" alt="WhatsApp">
                             2615687706
                         </p>
                     </div>

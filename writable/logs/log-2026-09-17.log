@@ -1,0 +1,14 @@
+CRITICAL - 2026-09-17 10:53:43 --> ErrorException: Undefined array key "direccion"
+[Method: GET, Route: checkout]
+in APPPATH\Views\cliente\checkout.php on line 127.
+ 1 APPPATH\Views\cliente\checkout.php(127): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "direccion"', 'C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\checkout.php', 127)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\CALA\\app\\Views\\cliente\\checkout.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('cliente/checkout', [], true)
+ 5 APPPATH\Controllers\Carrito.php(487): view('cliente/checkout', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Carrito->checkout()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Carrito))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

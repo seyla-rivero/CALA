@@ -16,3 +16,5 @@ $routes->post('carrito/agregar', 'Carrito::agregar');
 $routes->post('carrito/aumentar-cantidad', 'Carrito::aumentarCantidad');
 $routes->post('carrito/disminuir-cantidad', 'Carrito::disminuirCantidad');
 $routes->get('carrito/cantidad', 'Carrito::cantidadCarrito');
+$routes->get('checkout', 'Carrito::checkout');
+$routes->post('carrito/confirmar-pedido', 'Carrito::confirmarPedido');

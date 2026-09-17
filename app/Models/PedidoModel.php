@@ -11,10 +11,14 @@ class PedidoModel extends Model
 
     protected $allowedFields = [
         'idCliente',
+        'idSucursal',
+        'idZona',
         'fecha',
         'estado',
         'tipoEntrega',
         'direccionEntrega',
+        'metodoPago',
+        'estadoPago',
         'subTotal',
         'costoEnvio',
         'total'

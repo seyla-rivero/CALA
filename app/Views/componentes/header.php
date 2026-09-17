@@ -1,7 +1,7 @@
 <!--Nav-->
 <nav class="navbar navbar-expand-lg nav-logo px-3">
     <a class="navbar-brand text-white fw-bold" href="#">
-        <img src="<?= base_url('img/logoCala.jpeg') ?>" alt="Logo CALA" height="60">
+        <img src="<?= base_url('img/logoCala.jpeg') ?>" alt="Logo CALA" height="70">
     </a>
 
     <button class="navbar-toggler btn-menu" type="button" data-bs-toggle="collapse" data-bs-target="#menu">

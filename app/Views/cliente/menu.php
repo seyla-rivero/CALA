@@ -143,12 +143,8 @@
                     El producto fue agregado correctamente a tu pedido.
                 </p>
 
-                <button type="button"
-                        class="btn boton-login mt-3"
-                        data-bs-dismiss="modal">
-
+                <button type="button" class="btn boton-login mt-3" data-bs-dismiss="modal">
                     Aceptar
-
                 </button>
 
             </div>

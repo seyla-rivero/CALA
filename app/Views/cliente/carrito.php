@@ -125,11 +125,11 @@
                 Seguir comprando
             </a>
 
-            <button
-                type="button"
+            <a
+                href="<?= base_url('checkout') ?>"
                 class="btn carrito-continuar">
                 Continuar pedido
-            </button>
+            </a>
 
         </div>
 

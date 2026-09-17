@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\ItemPedidoModel;
 use App\Models\PedidoModel;
 use App\Models\DetallePedidoModel;
+use App\Models\ZonaModel;
+use App\Models\SucursalModel;
 
 class Carrito extends BaseController
 {
@@ -422,6 +424,244 @@ class Carrito extends BaseController
 
         return $this->response->setJSON([
             'cantidad' => (int) ($resultado['cantidad'] ?? 0)
+        ]);
+    }
+    
+    public function checkout()
+    {
+        $session = session();
+
+        if (!$session->get('logueado')) {
+            return redirect()->to('/');
+        }
+
+        $idCliente = $session->get('idCliente');
+
+        $pedidoModel = new PedidoModel();
+        $detallePedidoModel = new DetallePedidoModel();
+
+        // Buscar el carrito actual del cliente
+        $pedido = $pedidoModel
+            ->where('idCliente', $idCliente)
+            ->where('estado', 'carrito')
+            ->first();
+
+        // Si no existe un carrito, volver al carrito
+        if (!$pedido) {
+            return redirect()->to('/carrito');
+        }
+
+        // Obtener los productos del carrito
+        $carrito = $detallePedidoModel
+            ->select('detalle_pedido.*, item_pedido.nombre, item_pedido.urlImagen')
+            ->join(
+                'item_pedido',
+                'item_pedido.idItem = detalle_pedido.idItem'
+            )
+            ->where('idPedido', $pedido['idPedido'])
+            ->findAll();
+
+        // Si el carrito está vacío
+        if (empty($carrito)) {
+            return redirect()->to('/carrito');
+        }
+
+        $total = 0;
+
+        foreach ($carrito as &$item) {
+            $item['precio'] = $item['precioUnitario'];
+            $total += $item['subTotal'];
+        }
+
+        $zonaModel = new ZonaModel();
+        $sucursalModel = new SucursalModel();
+
+        $zonas = $zonaModel
+            ->where('activo', 1)
+            ->findAll();
+
+        $sucursales = $sucursalModel
+            ->where('activo', 1)
+            ->findAll();
+
+        return view('cliente/checkout', [
+            'pedido' => $pedido,
+            'carrito' => $carrito,
+            'total' => $total,
+            'zonas' => $zonas,
+            'sucursales' => $sucursales
+        ]);
+    }
+
+    public function confirmarPedido()
+    {
+        $session = session();
+
+        // Verificar que el cliente esté logueado
+        if (!$session->get('logueado')) {
+            return $this->response->setJSON([
+                'ok' => false,
+                'mensaje' => 'Debes iniciar sesión.'
+            ]);
+        }
+
+        $idCliente = $session->get('idCliente');
+
+        // Obtener los datos enviados desde JavaScript
+        $datos = $this->request->getJSON(true);
+
+        $tipoEntrega = $datos['tipoEntrega'] ?? null;
+        $idSucursal = $datos['idSucursal'] ?? null;
+        $idZona = $datos['idZona'] ?? null;
+        $direccionEntrega = trim($datos['direccionEntrega'] ?? '');
+        $metodoPago = $datos['metodoPago'] ?? null;
+
+        // Validar tipo de entrega
+        if (!in_array($tipoEntrega, ['retiro', 'delivery'])) {
+            return $this->response->setJSON([
+                'ok' => false,
+                'mensaje' => 'Seleccioná una modalidad de entrega.'
+            ]);
+        }
+
+        // Validar sucursal
+        if (!$idSucursal) {
+            return $this->response->setJSON([
+                'ok' => false,
+                'mensaje' => 'Seleccioná una sucursal.'
+            ]);
+        }
+
+        // Si es delivery, validar zona y dirección
+        if ($tipoEntrega === 'delivery') {
+
+            if (!$idZona) {
+                return $this->response->setJSON([
+                    'ok' => false,
+                    'mensaje' => 'Seleccioná una zona de cobertura.'
+                ]);
+            }
+
+            if ($direccionEntrega === '') {
+                return $this->response->setJSON([
+                    'ok' => false,
+                    'mensaje' => 'Ingresá tu dirección de entrega.'
+                ]);
+            }
+        } else {
+            // Si es retiro, no hay dirección ni zona
+            $idZona = null;
+            $direccionEntrega = null;
+        }
+
+        // Validar método de pago
+        if (!in_array($metodoPago, ['efectivo', 'transferencia'])) {
+            return $this->response->setJSON([
+                'ok' => false,
+                'mensaje' => 'Seleccioná un método de pago.'
+            ]);
+        }
+
+        $pedidoModel = new PedidoModel();
+        $detallePedidoModel = new DetallePedidoModel();
+        $zonaModel = new ZonaModel();
+        $sucursalModel = new SucursalModel();
+
+        // Buscar el carrito actual del cliente
+        $pedido = $pedidoModel
+            ->where('idCliente', $idCliente)
+            ->where('estado', 'carrito')
+            ->first();
+
+        if (!$pedido) {
+            return $this->response->setJSON([
+                'ok' => false,
+                'mensaje' => 'No se encontró el carrito.'
+            ]);
+        }
+
+        // Verificar que tenga productos
+        $detalles = $detallePedidoModel
+            ->where('idPedido', $pedido['idPedido'])
+            ->findAll();
+
+        if (empty($detalles)) {
+            return $this->response->setJSON([
+                'ok' => false,
+                'mensaje' => 'El carrito está vacío.'
+            ]);
+        }
+
+        // Verificar que exista la sucursal
+        $sucursal = $sucursalModel
+            ->where('idSucursal', $idSucursal)
+            ->where('activo', 1)
+            ->first();
+
+        if (!$sucursal) {
+            return $this->response->setJSON([
+                'ok' => false,
+                'mensaje' => 'La sucursal seleccionada no está disponible.'
+            ]);
+        }
+
+        // Calcular subtotal nuevamente desde la base de datos
+        $subtotal = 0;
+
+        foreach ($detalles as $detalle) {
+            $subtotal += $detalle['subTotal'];
+        }
+
+        // Calcular costo de envío
+        $costoEnvio = 0;
+
+        if ($tipoEntrega === 'delivery') {
+
+            $zona = $zonaModel
+                ->where('idZona', $idZona)
+                ->where('idSucursal', $idSucursal)
+                ->where('activo', 1)
+                ->first();
+
+            if (!$zona) {
+                return $this->response->setJSON([
+                    'ok' => false,
+                    'mensaje' => 'La zona seleccionada no pertenece a la sucursal indicada.'
+                ]);
+            }
+
+            $costoEnvio = $zona['costoEnvio'];
+        }
+
+        // Calcular total
+        $total = $subtotal + $costoEnvio;
+
+        // Determinar estado del pago
+        if ($metodoPago === 'transferencia') {
+            $estadoPago = 'pendiente';
+        } else {
+            $estadoPago = 'no_aplica';
+        }
+
+        // Actualizar el pedido
+        $pedidoModel->update($pedido['idPedido'], [
+            'idSucursal' => $idSucursal,
+            'idZona' => $idZona,
+            'fecha' => date('Y-m-d H:i:s'),
+            'estado' => 'pendiente',
+            'tipoEntrega' => $tipoEntrega,
+            'direccionEntrega' => $direccionEntrega,
+            'metodoPago' => $metodoPago,
+            'estadoPago' => $estadoPago,
+            'subTotal' => $subtotal,
+            'costoEnvio' => $costoEnvio,
+            'total' => $total
+        ]);
+
+        return $this->response->setJSON([
+            'ok' => true,
+            'mensaje' => 'Pedido confirmado correctamente.',
+            'idPedido' => $pedido['idPedido']
         ]);
     }
 }
