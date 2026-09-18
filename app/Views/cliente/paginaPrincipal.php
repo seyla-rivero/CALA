@@ -18,14 +18,16 @@
 
             <!-- Promos del día -->
             <div class="col-md-4">
-
                 <div class="banner-promo">
 
+                    <!-- Imagen decorativa -->
                     <img
                         id="promoImagen"
-                        src=""
-                        alt="Promoción">
+                        src="<?= base_url('img/Promodeldia.png') ?>"
+                        alt="Comidas de CALA"
+                        class="promo-comida">
 
+                    <!-- Información de la promo -->
                     <div class="banner-overlay">
 
                         <span class="promo-titulo">
@@ -45,6 +47,7 @@
 
                     </div>
 
+                    <!-- Flechas -->
                     <button
                         type="button"
                         class="flecha flecha-anterior"
@@ -61,32 +64,31 @@
 
                 </div>
 
+                <!-- Indicadores -->
                 <div class="indicadores" id="indicadoresPromos">
                     <span class="indicador activo"></span>
                     <span class="indicador"></span>
                     <span class="indicador"></span>
                 </div>
-
             </div>
 
             <!-- La más vendida -->
             <div class="col-md-4">
 
-                <div class="banner-promo">
+                <div class="banner-promo mas-vendida">
 
                     <img
-                        src="<?= base_url('img/' . $masVendida['urlImagen']) ?>"
-                        alt="<?= esc($masVendida['nombre']) ?>">
+                        src="<?= base_url('img/lamasvendida.png') ?>"
+                        alt="Hamburguesa más vendida"
+                        class="img-mas-vendida">
 
-                    <div class="banner-overlay">
+                    <div class="banner-vendida">
 
-                        <span class="promo-titulo">
-                            LA MÁS VENDIDA
+                        <span class="vendida-titulo">
+                            LA MÁS <span>VENDIDA</span>
                         </span>
 
-                        <h3>
-                            <?= esc($masVendida['nombre']) ?>
-                        </h3>
+                        <h3><?= esc($masVendida['nombre']) ?></h3>
 
                         <span class="promo-precio">
                             $<?= number_format($masVendida['precio'], 0, ',', '.') ?>
@@ -106,12 +108,40 @@
             </div>
 
             <!-- Retiro o delivery -->
-            <div class="col-md-4">
-                <div class="banner-promo">
-                   <img
-                        src="<?= base_url('img/calaRetiroDelivery.png') ?>"
-                        alt="Retiro o Delivery" class="img-retiro-delivery">
-                </div>        
+           <div class="col-md-4">
+                <div class="banner-promo retiro-delivery">
+
+                    <img src="<?= base_url('img/bolsaDelivery.png') ?>"
+                        alt="CALA Delivery"
+                        class="img-bolsa-cala">
+
+                    <div class="retiro-overlay">
+
+                        <h3>
+                            RETIRO O <span>DELIVERY</span>
+                        </h3>
+
+                        <p>Tu pedido, como prefieras</p>
+
+                        <div class="opciones-entrega">
+
+                            <div class="opcion">
+                                <i class="bi bi-shop"></i>
+                                <span>Retirá en<br>sucursal</span>
+                            </div>
+
+                            <div class="separador"></div>
+
+                            <div class="opcion">
+                                <i class="bi bi-scooter"></i>
+                                <span>Recibilo en<br>tu domicilio</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
 
         </div>
@@ -327,13 +357,14 @@ function mostrarPromo() {
 
     const promo = promociones[promoActual];
 
-    document.getElementById("promoImagen").src = promo.imagen;
+    // La imagen de la card ahora es fija.
+    // No modificamos promoImagen.src.
 
     document.getElementById("promoNombre").textContent =
         promo.nombre;
 
     document.getElementById("promoPrecio").textContent =
-    "$" + Number(promo.precio).toLocaleString('es-AR');
+        "$" + Number(promo.precio).toLocaleString('es-AR');
 
     const indicadores =
         document.querySelectorAll(".indicador");
@@ -347,6 +378,7 @@ function mostrarPromo() {
 
     });
 }
+
 
 function promoSiguiente() {
 
@@ -371,11 +403,14 @@ function promoAnterior() {
     mostrarPromo();
 }
 
+
 document.addEventListener("DOMContentLoaded", function() {
     mostrarPromo();
 });
 
+
 function verPromo() {
+
     const promo = promociones[promoActual];
 
     abrirModal(
@@ -386,6 +421,8 @@ function verPromo() {
         promo.imagen
     );
 }
+
+
 function verMasVendida(idItem) {
 
     const promo = promociones.find(
