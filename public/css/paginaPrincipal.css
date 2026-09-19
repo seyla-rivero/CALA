@@ -238,21 +238,19 @@ body {
 .mas-vendida{
     background: #fff;
 }
-
 .mas-vendida .banner-overlay{
     width: 55%;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
     padding-left: 30px;
-    padding-top: 35px;
+    transform: translateY(10px);
+}
+.mas-vendida .banner-overlay h3{
+    color: black;
+    max-width: 250px;
 }
 
 .img-mas-vendida{
     position: absolute;
-    right: -100px;
+    right: -120px;
     bottom: -10px;
 
     height: 105%;
@@ -268,31 +266,13 @@ body {
     font-weight: 900;
     font-style: italic;
     text-transform: uppercase;
-
-    margin-bottom: 8px;
-
     line-height: 1;
 }
-.vendida-titulo span {
+
+.vendida-titulo span{
     color: #ff2f7d;
 }
 
-.banner-vendida h3 {
-    color: black;
-
-    font-size: 16px;
-    font-weight: 700;
-
-    text-transform: uppercase;
-
-    margin-top: 8px;
-    margin-bottom: 10px;
-
-    line-height: 1.3;
-
-    max-width: 250px;
-    transform: translateY(15px);
-}
 .retiro-delivery {
     position: relative;
     overflow: hidden;
@@ -386,7 +366,7 @@ body {
 
 .sucursal-contenido {
     display: flex;
-    gap: 20px;
+    gap: 35px;
     align-items: stretch;
 }
 
@@ -398,7 +378,7 @@ body {
 
 .sucursal-datos p {
     display: flex;
-    align-items: flex-start;
+    align-items:  center;
     gap: 15px;
     margin: 0 0 22px 0;
     line-height: 1.5;
@@ -414,6 +394,11 @@ body {
 .sucursal-datos p:nth-child(2) img {
     width: 35px;
     height: 35px;
+}
+
+.sucursal-datos p span{
+    display: block;
+    line-height: 1.5;
 }
 
 /* Mapa */

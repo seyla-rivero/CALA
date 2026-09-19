@@ -82,7 +82,7 @@
                         alt="Hamburguesa más vendida"
                         class="img-mas-vendida">
 
-                    <div class="banner-vendida">
+                    <div class="banner-overlay">
 
                         <span class="vendida-titulo">
                             LA MÁS <span>VENDIDA</span>
@@ -165,11 +165,11 @@
                     <div class="sucursal-datos">
                         <p>
                             <img src="<?= base_url('img/ubicacionCala.png') ?>" alt="Ubicación">
-                            Montes de Oca 394, Godoy Cruz
+                            <span>Montes de Oca 394, Godoy Cruz</span>
                         </p>
                         <p>
                             <img src="<?= base_url('img/horario.png') ?>" alt="Horario">
-                            Miercoles a Domingos 20:00pm - 23:59pm
+                            <span>Miercoles a Domingos 20:00pm - 23:59pm</span>
                         </p>
                         <p>
                             <img src="<?= base_url('img/what.png') ?>" alt="WhatsApp">
@@ -194,12 +194,12 @@
                     <div class="sucursal-datos">
                         <p>
                             <img src="<?= base_url('img/ubicacionCala.png') ?>" alt="Ubicación">
-                            Pres.R.Ortiz 1665, Godoy Cruz
+                            <span>Pres.R.Ortiz 1665, Godoy Cruz</span>
                         </p>
                         <p>
                             <img src="<?= base_url('img/horario.png') ?>" alt="Horario">
-                            Miercoles a Domingos 21:00pm - 23:59pm<br>
-                            Viernes a Domingos 12:30pm - 14:00pm
+                            <span>Miercoles a Domingos 21:00pm - 23:59pm<br>
+                            Viernes a Domingos 12:30pm - 14:00pm</span>
                         </p>
                         <p>
                             <img src="<?= base_url('img/what.png') ?>" alt="WhatsApp">
