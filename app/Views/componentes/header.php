@@ -1,7 +1,7 @@
 <!--Nav-->
 <nav class="navbar navbar-expand-lg nav-logo px-3">
-    <a class="navbar-brand text-white fw-bold" href="#">
-        <img src="<?= base_url('img/logoCala.jpeg') ?>" alt="Logo CALA" height="70">
+    <a href="<?= base_url('/') ?>" class="logo-link">
+        <img src="<?= base_url('img/logoCala.jpeg') ?>" alt="CALA Delivery" class="logo-cala">
     </a>
 
     <button class="navbar-toggler btn-menu" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
@@ -55,8 +55,9 @@
                         Hola, <?= session('nombre') ?>
                     </span>
 
-                    <a href="<?= site_url('logout') ?>" class="text-white">
-                        <i class="bi bi-box-arrow-right"></i>
+                    <a href="<?= site_url('logout') ?>" class="text-white ms-2"
+                    title="Cerrar sesión">
+                        <i class="bi bi-box-arrow-right fs-4"></i>
                     </a>
 
                 </div>
@@ -68,7 +69,7 @@
                     data-bs-target="#loginModal"
                     class="text-white text-decoration-none fw-bold">
 
-                        <i class="bi bi-person fs-3"></i><br>
+                        <i class="bi bi-person-fill fs-3"></i><br>
                         Iniciar sesión
 
                     </a>

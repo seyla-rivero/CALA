@@ -383,22 +383,28 @@ body {
     margin: 0 0 22px 0;
     line-height: 1.5;
 }
-
-.sucursal-datos p img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
+.icono-sucursal{
+    color: #ff2f7d;
+    font-size: 1.8rem;
     flex-shrink: 0;
+    line-height: 1;
 }
 
-.sucursal-datos p:nth-child(2) img {
-    width: 35px;
-    height: 35px;
-}
 
 .sucursal-datos p span{
     display: block;
     line-height: 1.5;
+}
+
+.icono-whatsapp{
+    color: #ff2f7d;
+    text-decoration: none;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.icono-whatsapp i{
+    color: #ff2f7d !important;
 }
 
 /* Mapa */
@@ -468,6 +474,21 @@ footer{
     font-size:22px;
     text-decoration:none;
 }
+.redes-sociales a {
+    color: #ff2f7d;
+    text-decoration: none;
+    font-size: 2.5rem;
+}
+.logo-link{
+    display: inline-block;
+}
+
+.logo-cala{
+    height: 70px; 
+    width: auto;
+    display: block;
+}
+
 
 @media (max-width: 991px) {
 

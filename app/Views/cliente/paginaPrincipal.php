@@ -164,16 +164,21 @@
                 <div class="sucursal-contenido">
                     <div class="sucursal-datos">
                         <p>
-                            <img src="<?= base_url('img/ubicacionCala.png') ?>" alt="Ubicación">
+                            <i class="bi bi-geo-alt icono-sucursal"></i>
                             <span>Montes de Oca 394, Godoy Cruz</span>
                         </p>
                         <p>
-                            <img src="<?= base_url('img/horario.png') ?>" alt="Horario">
+                            <i class="bi bi-clock icono-sucursal"></i>
                             <span>Miercoles a Domingos 20:00pm - 23:59pm</span>
                         </p>
                         <p>
-                            <img src="<?= base_url('img/what.png') ?>" alt="WhatsApp">
-                            2615726223
+                            <a href="https://wa.me/542615726223"
+                            target="_blank"
+                            class="icono-whatsapp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+
+                            <span>2615726223</span>
                         </p>
                     </div>
 
@@ -193,17 +198,22 @@
                 <div class="sucursal-contenido">
                     <div class="sucursal-datos">
                         <p>
-                            <img src="<?= base_url('img/ubicacionCala.png') ?>" alt="Ubicación">
+                            <i class="bi bi-geo-alt icono-sucursal"></i>
                             <span>Pres.R.Ortiz 1665, Godoy Cruz</span>
                         </p>
                         <p>
-                            <img src="<?= base_url('img/horario.png') ?>" alt="Horario">
+                            <i class="bi bi-clock icono-sucursal"></i>
                             <span>Miercoles a Domingos 21:00pm - 23:59pm<br>
                             Viernes a Domingos 12:30pm - 14:00pm</span>
                         </p>
                         <p>
-                            <img src="<?= base_url('img/what.png') ?>" alt="WhatsApp">
-                            2615687706
+                            <a href="https://wa.me/542615687706"
+                            target="_blank"
+                            class="icono-whatsapp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+
+                            <span>2615687706</span>
                         </p>
                     </div>
 

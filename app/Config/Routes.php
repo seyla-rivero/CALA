@@ -18,3 +18,4 @@ $routes->post('carrito/disminuir-cantidad', 'Carrito::disminuirCantidad');
 $routes->get('carrito/cantidad', 'Carrito::cantidadCarrito');
 $routes->get('checkout', 'Carrito::checkout');
 $routes->post('carrito/confirmar-pedido', 'Carrito::confirmarPedido');
+$routes->post('enviar-codigo-recuperacion', 'Autenticacion::enviarCodigoRecuperacion');

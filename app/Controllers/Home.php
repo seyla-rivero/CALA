@@ -10,17 +10,18 @@ use App\Models\ItemPedidoModel;
 
 class Home extends BaseController
 {
-    public function index(): string{
+    public function index(): string
+    {
 
-        $promocionModel = new PromocionModel();
-        $itemPedidoModel = new ItemPedidoModel();
+    $promocionModel = new PromocionModel();
+    $itemPedidoModel = new ItemPedidoModel();
 
-        $data['promociones'] = $promocionModel->obtenerPromociones();
+    $data['promociones'] = $promocionModel->obtenerPromociones();
 
-        $data['masVendida'] = $itemPedidoModel->find(31);
+    $data['masVendida'] = $itemPedidoModel->find(31);
 
-        return view('cliente/paginaPrincipal', $data);
-    }
+    return view('cliente/paginaPrincipal', $data);
+}
 
     public function menu(): string{
 

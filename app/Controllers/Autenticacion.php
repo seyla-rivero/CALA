@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\ClienteModel;
+use App\Models\RecuperacionPasswordModel;
 
 class Autenticacion extends BaseController
 {
@@ -113,7 +114,7 @@ class Autenticacion extends BaseController
         }
 
         $clienteModel = new ClienteModel();
-        
+
         $clienteModel->save([
             'nombre'     => $this->request->getPost('nombre'),
             'apellido'   => $this->request->getPost('apellido'),
@@ -136,12 +137,13 @@ class Autenticacion extends BaseController
         return redirect()->to('/')
             ->with('success', 'Cuenta creada correctamente');
 
-        }
+    }
         
-        public function logout()
-        {
-            session()->destroy();
+    public function logout()
+    {
+        session()->destroy();
 
-            return redirect()->to('/');
-        }
+        return redirect()->to('/');
+    }
+
 }

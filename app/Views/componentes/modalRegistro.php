@@ -7,15 +7,16 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
                     </button>
             </div>
-            
-            <img src="<?= base_url('img/logo Cala.png') ?>" class="logo-login logo-login d-block mx-auto mb-4 " alt="Logo CALA">
-            
-            <h4 class="titulo-login text-center mt-3">
-                Crea tu cuenta
-            </h4>
-            <p class="text-center">
-                ¡Registrate y disfrutá de CALA!
-            </p>
+            <div class="encabezado-modal">
+                <img src="<?= base_url('img/logo Cala.png') ?>" class="logo-login d-block mx-auto mb-4 " alt="Logo CALA">
+                
+                <h4 class="titulo-login text-center mt-3">
+                    Crea tu cuenta
+                </h4>
+                <p class="text-center subtitulo-login">
+                    ¡Registrate y disfrutá de CALA!
+                </p>
+            </div>    
            
             <div class="modal-body">
                 <form method="post" action="<?= site_url('validar-registro') ?>" novalidate>

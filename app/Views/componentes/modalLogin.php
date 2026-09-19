@@ -43,7 +43,7 @@
                         <?php endif; ?>
                     </div>
                     <div class="text-end mt-1">
-                        <a href="#" class="link-cala">
+                        <a href="#" class="link-cala" data-bs-toggle="modal" data-bs-target="#recuperarModal">
                             ¿Olvidaste tu contraseña?
                         </a>
                     </div>
@@ -59,6 +59,52 @@
                         Registrate
                     </a>
                 </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--Modal de recuperacion de contraseña-->
+<div class="modal fade" id="recuperarModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content modal-cala">
+
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="encabezado-modal">
+                <h4 class="titulo-login text-center">
+                    Recuperar contraseña
+                </h4>
+
+                <p class="text-center subtitulo-login">
+                    Ingresá tu correo electrónico
+                </p>
+            </div>
+
+            <div class="modal-body">
+                <form method="post"
+                    action="<?= site_url('enviar-codigo-recuperacion') ?>">
+
+                    <?= csrf_field() ?>
+
+                    <div class="mb-3">
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-control input-cala"
+                            placeholder="Correo electrónico"
+                            required>
+                    </div>
+
+                    <button type="submit"
+                        class="btn boton-login w-100">
+                        Enviar código
+                    </button>
+
+                </form>
             </div>
 
         </div>

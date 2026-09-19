@@ -2,13 +2,9 @@
     <!-- Footer -->
     <footer class="text-center py-3">
 
-        <div class="d-flex justify-content-center gap-3 mb-2">
-            <a href="#" class="icono-red">
+        <div class="redes-sociales">
+            <a href="https://www.instagram.com/cala_delivery?stkn=MXM2NjBlaGdjZ2phMQ==" target="_blank">
                 <i class="bi bi-instagram"></i>
-            </a>
-
-            <a href="#" class="icono-red">
-                <i class="bi bi-whatsapp"></i>
             </a>
         </div>
 
