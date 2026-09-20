@@ -3,6 +3,7 @@
 <?= $this->section('contenido') ?>
 <?php /** @var array $promociones */ ?>
 <?php /** @var array $masVendida */ ?>
+<?php /** @var array $promoDelDia */ ?>
 
 <div class="container-fluid bg-white p-0">
     <!-- Portada -->
@@ -17,68 +18,68 @@
         <div class="row g-3">
 
             <!-- Promos del día -->
-            <div class="col-md-4">
-                <div class="banner-promo">
+            <?php if (!empty($promoDelDia)): ?>
+                <div class="col-md-4">
+                    <div class="banner-promo">
 
-                    <!-- Imagen decorativa -->
-                    <img
-                        id="promoImagen"
-                        src="<?= base_url('img/Promodeldia.png') ?>"
-                        alt="Comidas de CALA"
-                        class="promo-comida">
+                        <!-- Imagen decorativa -->
+                        <img
+                            id="promoImagen"
+                            src="<?= base_url('img/Promodeldia.png') ?>"
+                            alt="Comidas de CALA"
+                            class="promo-comida">
 
-                    <!-- Información de la promo -->
-                    <div class="banner-overlay">
+                        <!-- Información de la promo -->
+                        <div class="banner-overlay">
 
-                        <span class="promo-titulo">
-                            PROMO <span>DEL DÍA</span>
-                        </span>
+                            <span class="promo-titulo">
+                                PROMO <span>DEL DÍA</span>
+                            </span>
 
-                        <h3 id="promoNombre"></h3>
+                            <h3 id="promoNombre"></h3>
 
-                        <span id="promoPrecio" class="promo-precio"></span>
+                            <span class="promo-precio" id="promoPrecio"></span>
+
+                            <button
+                                type="button"
+                                class="btn-promo"
+                                onclick="verPromo()">
+                                Ver promo
+                            </button>
+
+                        </div>
+
+                        <!-- Flechas -->
+                        <button
+                            type="button"
+                            class="flecha flecha-anterior"
+                            id="flechaAnterior"
+                            onclick="promoAnterior()">
+                            &#10094;
+                        </button>
 
                         <button
                             type="button"
-                            class="btn-promo"
-                            onclick="verPromo()">
-                            Ver promo
+                            class="flecha flecha-siguiente"
+                            id="flechaSiguiente"
+                            onclick="promoSiguiente()">
+                            &#10095;
                         </button>
 
                     </div>
 
-                    <!-- Flechas -->
-                    <button
-                        type="button"
-                        class="flecha flecha-anterior"
-                        onclick="promoAnterior()">
-                        &#10094;
-                    </button>
-
-                    <button
-                        type="button"
-                        class="flecha flecha-siguiente"
-                        onclick="promoSiguiente()">
-                        &#10095;
-                    </button>
-
+                    <!-- Indicadores -->
+                    <div class="indicadores" id="indicadoresPromos"></div>
                 </div>
-
-                <!-- Indicadores -->
-                <div class="indicadores" id="indicadoresPromos">
-                    <span class="indicador activo"></span>
-                    <span class="indicador"></span>
-                    <span class="indicador"></span>
-                </div>
-            </div>
+            <?php endif; ?>    
 
             <!-- La más vendida -->
-            <div class="col-md-4">
+            <div class="<?= $promoDelDia ? 'col-md-4' : 'col-md-6' ?>">
 
                 <div class="banner-promo mas-vendida">
 
                     <img
-                        src="<?= base_url('img/lamasvendida.png') ?>"
+                        src="<?= base_url('img/lamasvendidaa.png') ?>"
                         alt="Hamburguesa más vendida"
                         class="img-mas-vendida">
 
@@ -97,7 +98,7 @@
                         <button
                             type="button"
                             class="btn-promo"
-                            onclick="verMasVendida(<?= $masVendida['idItem'] ?>)">
+                            onclick="verMasVendida()">
                             Ver promo
                         </button>
 
@@ -108,7 +109,8 @@
             </div>
 
             <!-- Retiro o delivery -->
-           <div class="col-md-4">
+           <div class="<?= $promoDelDia ? 'col-md-4' : 'col-md-6' ?>">
+
                 <div class="banner-promo retiro-delivery">
 
                     <img src="<?= base_url('img/bolsaDelivery.png') ?>"
@@ -349,26 +351,15 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 <script>
-const promociones = <?= json_encode(
-    array_map(function($promocion) {
-        return [
-            'idItem' => $promocion['idItem'],
-            'nombre' => $promocion['nombre'],
-            'descripcion' => $promocion['descripcion'],
-            'precio' => $promocion['precio'],
-            'imagen' => base_url('img/' . $promocion['urlImagen'])
-        ];
-    }, $promociones)
-) ?>;
+const promocionesDia = <?= json_encode($promoDelDia) ?>;
 
 let promoActual = 0;
 
 function mostrarPromo() {
 
-    const promo = promociones[promoActual];
+    if (promocionesDia.length === 0) return;
 
-    // La imagen de la card ahora es fija.
-    // No modificamos promoImagen.src.
+    const promo = promocionesDia[promoActual];
 
     document.getElementById("promoNombre").textContent =
         promo.nombre;
@@ -387,6 +378,18 @@ function mostrarPromo() {
         );
 
     });
+
+    // Mostrar flechas e indicadores solo si hay más de una promo
+    const mostrarControles = promocionesDia.length > 1;
+
+    document.getElementById("flechaAnterior").style.display =
+        mostrarControles ? "block" : "none";
+
+    document.getElementById("flechaSiguiente").style.display =
+        mostrarControles ? "block" : "none";
+
+    document.getElementById("indicadoresPromos").style.display =
+        mostrarControles ? "flex" : "none";
 }
 
 
@@ -394,7 +397,7 @@ function promoSiguiente() {
 
     promoActual++;
 
-    if (promoActual >= promociones.length) {
+    if (promoActual >= promocionesDia.length) {
         promoActual = 0;
     }
 
@@ -407,7 +410,7 @@ function promoAnterior() {
     promoActual--;
 
     if (promoActual < 0) {
-        promoActual = promociones.length - 1;
+        promoActual = promocionesDia.length - 1;
     }
 
     mostrarPromo();
@@ -421,32 +424,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function verPromo() {
 
-    const promo = promociones[promoActual];
+    if (promocionesDia.length === 0) return;
+
+    const promo = promocionesDia[promoActual];
 
     abrirModal(
         promo.idItem,
         promo.nombre,
         promo.descripcion,
         promo.precio,
-        promo.imagen
+        "<?= base_url('img/') ?>" + promo.urlImagen
     );
 }
 
 
-function verMasVendida(idItem) {
+const masVendida = <?= json_encode($masVendida) ?>;
 
-    const promo = promociones.find(
-        p => p.idItem == idItem
-    );
-
-    if (!promo) return;
+function verMasVendida() {
 
     abrirModal(
-        promo.idItem,
-        promo.nombre,
-        promo.descripcion,
-        promo.precio,
-        promo.imagen
+        masVendida.idItem,
+        masVendida.nombre,
+        masVendida.descripcion,
+        masVendida.precio,
+        "<?= base_url('img/') ?>" + masVendida.urlImagen
     );
 }
 </script>
