@@ -71,7 +71,6 @@
 
             <span id="modalPrecio" class="modal-precio"></span>
 
-            <!-- Selección de bebida -->
             <div id="contenedorBebida" class="bebida-producto" style="display: none;">
 
                 <select id="bebida" class="form-select">
@@ -84,7 +83,6 @@
 
             </div>
 
-            <!-- Selección empanadas -->
             <div id="contenedorEmpanadas" class="empanadas-producto" style="display: none;">
 
                 <select id="empanadas" class="form-select">
@@ -97,13 +95,13 @@
 
             <div class="cantidad">
 
-                <span class="cantidad-label mt-4">Cantidad:</span>
+                <span class="cantidad-label">Cantidad:</span>
 
-                <button type="button" class="mt-4" onclick="disminuirCantidad()">−</button>
+                <button type="button" onclick="disminuirCantidad()">−</button>
 
-                <span id="cantidad" class="cantidad-numero mt-4">1</span>
+                <span id="cantidad" class="cantidad-numero">1</span>
 
-                <button type="button" class="mt-4" onclick="aumentarCantidad()">+</button>
+                <button type="button" onclick="aumentarCantidad()">+</button>
 
             </div>
 

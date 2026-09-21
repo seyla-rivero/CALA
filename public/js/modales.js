@@ -26,7 +26,7 @@ let idItemActual = null;
 let incluyeBebidaActual = 0;
 let incluyeEmpanadasActual = 0;
 
-function abrirModal(idItem, nombre, descripcion, precio, imagen, incluyeBebida = 0, incluyeEmpanadas = 0) {
+function abrirModal(idItem, nombre, descripcion, precio, imagen, incluyeBebida = 0, incluyeEmpanadas = 0, idCategoria = 0) {
 
     idItemActual = idItem;
     incluyeBebidaActual = incluyeBebida;
@@ -43,6 +43,16 @@ function abrirModal(idItem, nombre, descripcion, precio, imagen, incluyeBebida =
 
     document.getElementById("comentario").value = "";
 
+    const comentario = document.querySelector(".comentario-producto");
+
+    if (comentario) {
+        if (idCategoria == 9) {
+            comentario.style.display = "none";
+        } else {
+            comentario.style.display = "block";
+        }
+    }
+
     // Mostrar u ocultar selección de bebida
     const contenedorBebida = document.getElementById("contenedorBebida");
     const bebida = document.getElementById("bebida");
@@ -51,7 +61,6 @@ function abrirModal(idItem, nombre, descripcion, precio, imagen, incluyeBebida =
     const empanadas = document.getElementById("empanadas");
     const btnAgregarPedido = document.getElementById("btnAgregarPedido");
     
-    // BEBIDA
     if (contenedorBebida && bebida) {
 
         if (incluyeBebida == 1) {
@@ -76,7 +85,6 @@ function abrirModal(idItem, nombre, descripcion, precio, imagen, incluyeBebida =
         }
     }
 
-    // EMPANADAS
     if (contenedorEmpanadas && empanadas) {
 
         if (incluyeEmpanadas == 1) {

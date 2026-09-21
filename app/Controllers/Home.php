@@ -6,6 +6,7 @@ use App\Models\ProductoModel;
 use App\Models\CategoriaModel;
 use App\Models\PromocionModel;
 use App\Models\ItemPedidoModel;
+use App\Models\SucursalModel;
 
 
 class Home extends BaseController
@@ -15,10 +16,13 @@ class Home extends BaseController
 
         $promocionModel = new PromocionModel();
         $itemPedidoModel = new ItemPedidoModel();
+        $sucursalModel = new SucursalModel();
 
         $data['promociones'] = $promocionModel->obtenerPromociones();
 
         $data['promoDelDia'] = $promocionModel->obtenerPromoDelDia();
+
+        $data['sucursales'] = $sucursalModel->where('activo', 1)->findAll();
 
         $data['masVendida'] = $itemPedidoModel->find(31);
 

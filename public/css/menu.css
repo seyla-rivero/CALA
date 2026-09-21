@@ -184,10 +184,15 @@
     color: #E63270;
     margin-bottom: 20px;
 }
+.bebida-producto,
+.empanadas-producto{
+    margin-bottom: 20px;
+}
 .cantidad {
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-top: 15px;
 }
 
 .cantidad-label {

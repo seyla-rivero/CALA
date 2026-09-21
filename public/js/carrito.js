@@ -7,8 +7,6 @@ function agregarAlCarrito() {
     const empanadas = document.getElementById("empanadas");
     const empanadasSeleccionadas = empanadas ? empanadas.value : "";
 
-
-    // Si la promoción incluye bebida, es obligatorio seleccionar una
     if (incluyeBebidaActual == 1 && bebidaSeleccionada === "") {
 
         return;

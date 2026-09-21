@@ -65,7 +65,10 @@
                                     '<?= esc($producto['nombre'], 'js') ?>',
                                     '<?= esc($producto['descripcion'], 'js') ?>',
                                     <?= $producto['precio'] ?>,
-                                    '<?= base_url('img/' . $producto['urlImagen']) ?>'
+                                    '<?= base_url('img/' . $producto['urlImagen']) ?>',
+                                    0,
+                                    0,
+                                    <?= $producto['idCategoria'] ?>
                                 )">
                                 Ver más
                                 </button>
@@ -87,7 +90,7 @@
             &times;
         </button>
 
-        <img id="modalImagen" src="" alt="Producto">
+        <img id="modalImagen" class="modal-imagen" src="" alt="Producto">
     
         <div class="modal-info">
 

@@ -95,8 +95,6 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,.15);
 }
 
-
-/* Imagen de comidas */
 .promo-comida {
     position: absolute;
 
@@ -111,8 +109,6 @@ body {
     pointer-events: none;
 }
 
-
-/* Contenido de la promo */
 .banner-overlay {
     position: absolute;
     inset: 0;
@@ -129,8 +125,6 @@ body {
     z-index: 2;
 }
 
-
-/* Título */
 .promo-titulo {
     color: white;
     font-size: 26px;
@@ -147,8 +141,6 @@ body {
     color: #ff2f7d;
 }
 
-
-/* Nombre de la promoción */
 .banner-overlay h3 {
     color: white;
 
@@ -165,8 +157,6 @@ body {
     max-width: 210px;
 }
 
-
-/* Precio */
 .promo-precio {
     color: #ff2f7d;
 
@@ -176,8 +166,6 @@ body {
     margin-bottom: 15px;
 }
 
-
-/* Botón */
 .btn-promo {
     width: 140px;
     height: 40px;
@@ -203,8 +191,6 @@ body {
     transform: translateY(-2px);
 }
 
-
-/* Flechas */
 .flecha {
     position: absolute;
 
@@ -250,7 +236,7 @@ body {
 
 .img-mas-vendida{
     position: absolute;
-    right: 15px;
+    right: 5px;
     bottom: -10px;
 
     height: 105%;
@@ -349,7 +335,6 @@ body {
     background: #ff2f7d;
 }
 
-/* Contenedor de datos + mapa */
 .sucursales {
     background: black;
     color: white;
@@ -407,7 +392,6 @@ body {
     color: #ff2f7d !important;
 }
 
-/* Mapa */
 .mapa {
     flex: 1;
     height: 300px;
@@ -422,13 +406,11 @@ body {
     display: block;
 }
 
-/* Separación entre sucursales */
 .col-md-6 {
     padding-left: 25px;
     padding-right: 25px;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
 
     .sucursal-contenido {

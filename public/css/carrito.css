@@ -141,10 +141,6 @@
     color: white;
 }
 
-/* =========================
-   CHECKOUT
-========================= */
-
 .checkout-titulo {
     font-weight: 700;
     margin-bottom: 30px;
@@ -164,23 +160,21 @@
     margin-bottom: 20px;
 }
 
-
-/* Opciones de entrega */
-
 .opciones-entrega {
     display: flex;
-    gap: 15px;
+    gap: 20px;
 }
 
 .opcion-entrega {
     flex: 1;
-    border: 2px solid #e2e2e2;
-    border-radius: 12px;
-    padding: 18px;
-    cursor: pointer;
+    min-height: 155px;
+    border: 2px solid #ddd;
+    border-radius: 15px;
+    padding: 20px;
     display: flex;
-    gap: 12px;
-    transition: 0.2s ease;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
 }
 
 .opcion-entrega:hover {
@@ -191,23 +185,26 @@
     accent-color: #ed2b72;
 }
 
+.opcion-entrega > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
 .opcion-entrega i {
-    color: #ed2b72;
-    font-size: 22px;
+    font-size: 25px;
+    color: #ed2875;
 }
 
 .opcion-entrega strong {
-    display: block;
-    margin-bottom: 5px;
+    font-size: 18px;
 }
 
 .opcion-entrega small {
-    display: block;
+    font-size: 16px;
     color: #666;
+    line-height: 1.5;
 }
-
-
-/* Campos */
 
 .checkout-label {
     font-weight: 600;
@@ -219,9 +216,6 @@
     border-radius: 10px;
     padding: 11px;
 }
-
-
-/* Métodos de pago */
 
 .opciones-pago {
     display: flex;
@@ -251,9 +245,6 @@
     color: #ed2b72;
 }
 
-
-/* Transferencia */
-
 .mensaje-transferencia {
     background-color: #fff1f6;
     border-radius: 10px;
@@ -263,8 +254,6 @@
     font-size: 14px;
 }
 
-
-/* Resumen */
 
 .resumen-pedido {
     position: sticky;
@@ -326,9 +315,6 @@
     font-size: 22px;
     color: #ed2b72;
 }
-
-
-/* Botones */
 
 .checkout-confirmar {
     width: 100%;

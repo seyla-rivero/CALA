@@ -87,6 +87,9 @@
                             <option
                                 value="<?= $sucursal['idSucursal'] ?>"
                                 data-direccion="<?= esc($sucursal['direccion'], 'attr') ?>"
+                                data-alias="<?= esc($sucursal['alias'], 'attr') ?>"
+                                data-cbu="<?= esc($sucursal['cbu'], 'attr') ?>"
+                                data-titular="<?= esc($sucursal['titular'], 'attr') ?>"
                             >
                                 <?= esc($sucursal['nombre']) ?>
                             </option>
@@ -147,6 +150,9 @@
                                 data-sucursal="<?= $zona['idSucursal'] ?>"
                                 data-nombre-sucursal="<?= esc($sucursalZona['nombre'], 'attr') ?>"
                                 data-direccion="<?= esc($sucursalZona['direccion'], 'attr') ?>"
+                                data-alias="<?= esc($sucursalZona['alias'], 'attr') ?>"
+                                data-cbu="<?= esc($sucursalZona['cbu'], 'attr') ?>"
+                                data-titular="<?= esc($sucursalZona['titular'], 'attr') ?>"
                                 data-tarifa="<?= $zona['costoEnvio'] ?>"
                             >
                                 <?= esc($zona['nombre']) ?>
@@ -177,6 +183,33 @@
                         <p id="costoEnvio">
                             -
                         </p>
+
+                    </div>
+
+                    <div class="mt-3" id="datosTransferenciaDelivery" style="display: none;">
+
+                        <label class="checkout-label">
+                            Datos para realizar la transferencia
+                        </label>
+
+                        <div class="transferencia-info">
+
+                            <p>
+                                <strong>Titular:</strong>
+                                <span id="titularTransferenciaDelivery">-</span>
+                            </p>
+
+                            <p>
+                                <strong>Alias:</strong>
+                                <span id="aliasTransferenciaDelivery">-</span>
+                            </p>
+
+                            <p>
+                                <strong>CBU:</strong>
+                                <span id="cbuTransferenciaDelivery">-</span>
+                            </p>
+
+                        </div>
 
                     </div>
 
@@ -221,12 +254,36 @@
 
                 </div>
 
-                <div
-                    id="mensajeTransferencia"
-                    class="mensaje-transferencia"
-                    style="display: none;"
-                >
-                    Realizá la transferencia antes de confirmar el pedido. Una vez confirmado, el pago quedará pendiente de verificación. Te notificaremos cuando haya sido aprobado y tu pedido pase a preparación.
+                <div id="mensajeTransferencia" style="display: none;" class="mt-3">
+
+                    <p>
+                        Realizá la transferencia antes de confirmar el pedido.
+                    </p>
+
+                    <div class="transferencia-info">
+
+                        <p>
+                            <strong>Titular:</strong>
+                            <span id="titularTransferencia">-</span>
+                        </p>
+
+                        <p>
+                            <strong>Alias:</strong>
+                            <span id="aliasTransferencia">-</span>
+                        </p>
+
+                        <p>
+                            <strong>CBU:</strong>
+                            <span id="cbuTransferencia">-</span>
+                        </p>
+
+                        <p class="mb-0">
+                            Una vez realizada la transferencia, confirmá tu pedido.
+                            El pago quedará pendiente de verificación.
+                        </p>
+
+                    </div>
+
                 </div>
 
             </div>
@@ -358,14 +415,39 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-    const opcionesEntrega =
-        document.querySelectorAll('input[name="tipoEntrega"]');
+    const opcionesEntrega = document.querySelectorAll('input[name="tipoEntrega"]');
 
-    const datosRetiro =
-        document.getElementById('datosRetiro');
+    const datosRetiro = document.getElementById('datosRetiro');
 
-    const datosDelivery =
-        document.getElementById('datosDelivery');
+    const datosDelivery = document.getElementById('datosDelivery');
+
+    const sucursalRetiro = document.getElementById('sucursalRetiro');
+
+    const zonaDelivery = document.getElementById('zonaDelivery');
+
+    const direccionRetiro = document.getElementById('direccionRetiro');
+
+    const direccionSucursal = document.getElementById('direccionSucursal');
+
+    const sucursalAsignada = document.getElementById('sucursalAsignada');
+
+    const costoEnvio = document.getElementById('costoEnvio');
+
+    const costoEnvioResumen = document.getElementById('costoEnvioResumen');
+
+    const totalPedido = document.getElementById('totalPedido');
+
+    const mensajeTransferencia = document.getElementById('mensajeTransferencia');
+
+    const titularTransferencia = document.getElementById('titularTransferencia');
+
+    const aliasTransferencia = document.getElementById('aliasTransferencia');
+
+    const cbuTransferencia = document.getElementById('cbuTransferencia');
+
+    const metodosPago = document.querySelectorAll('input[name="metodoPago"]');
+
+    const subtotal = <?= $total ?>;  
 
 
     opcionesEntrega.forEach(function (opcion) {
@@ -383,284 +465,338 @@ document.addEventListener('DOMContentLoaded', function () {
                 datosRetiro.style.display = 'block';
 
             }
+            actualizarDatosTransferencia();
 
         });
 
     });
 
+    function actualizarDatosTransferencia() {
 
-    const metodosPago =
-        document.querySelectorAll('input[name="metodoPago"]');
+        const metodoSeleccionado =
+            document.querySelector(
+                'input[name="metodoPago"]:checked'
+            );
 
-    const mensajeTransferencia =
-        document.getElementById('mensajeTransferencia');
+        if (
+            !metodoSeleccionado ||
+            metodoSeleccionado.value !== 'transferencia'
+        ) {
 
+            mensajeTransferencia.style.display = 'none';
+            return;
+        }
+
+        const tipoEntrega =
+            document.querySelector(
+                'input[name="tipoEntrega"]:checked'
+            ).value;
+
+        let opcionSeleccionada = null;
+
+
+        if (tipoEntrega === 'retiro') {
+
+            if (!sucursalRetiro.value) {
+
+                mensajeTransferencia.style.display = 'none';
+                return;
+            }
+
+            opcionSeleccionada =
+                sucursalRetiro.options[
+                    sucursalRetiro.selectedIndex
+                ];
+        }
+
+        if (tipoEntrega === 'delivery') {
+
+            if (!zonaDelivery.value) {
+
+                mensajeTransferencia.style.display = 'none';
+                return;
+            }
+
+            opcionSeleccionada =
+                zonaDelivery.options[
+                    zonaDelivery.selectedIndex
+                ];
+        }
+
+
+        if (!opcionSeleccionada) {
+
+            mensajeTransferencia.style.display = 'none';
+            return;
+        }
+
+        titularTransferencia.textContent =
+            opcionSeleccionada.dataset.titular || '-';
+
+        aliasTransferencia.textContent =
+            opcionSeleccionada.dataset.alias || '-';
+
+        cbuTransferencia.textContent =
+            opcionSeleccionada.dataset.cbu || '-';
+
+        mensajeTransferencia.style.display = 'block';
+    }
 
     metodosPago.forEach(function (metodo) {
 
         metodo.addEventListener('change', function () {
 
-            if (this.value === 'transferencia') {
-
-                mensajeTransferencia.style.display = 'block';
-
-            } else {
-
-                mensajeTransferencia.style.display = 'none';
-
-            }
+            actualizarDatosTransferencia();
 
         });
 
     });
 
-});
-const sucursalRetiro = document.getElementById('sucursalRetiro');
-const direccionRetiro = document.getElementById('direccionRetiro');
-const direccionSucursal = document.getElementById('direccionSucursal');
+    sucursalRetiro.addEventListener('change', function () {
 
-sucursalRetiro.addEventListener('change', function () {
+        const opcionSeleccionada =
+            this.options[this.selectedIndex];
 
-    const opcionSeleccionada =
-        this.options[this.selectedIndex];
+        const direccion =
+            opcionSeleccionada.dataset.direccion;
 
-    const direccion =
-        opcionSeleccionada.dataset.direccion;
 
-    if (!this.value) {
-        direccionRetiro.style.display = 'none';
-        direccionSucursal.textContent = '-';
-        return;
-    }
+        if (!this.value) {
 
-    direccionSucursal.textContent = direccion;
-    direccionRetiro.style.display = 'block';
-});
+            direccionRetiro.style.display = 'none';
+            direccionSucursal.textContent = '-';
 
-const zonaDelivery = document.getElementById('zonaDelivery');
-const sucursalAsignada = document.getElementById('sucursalAsignada');
-const costoEnvio = document.getElementById('costoEnvio');
+            actualizarDatosTransferencia();
 
-const costoEnvioResumen =
-    document.getElementById('costoEnvioResumen');
+            return;
+        }
 
-const totalPedido =
-    document.getElementById('totalPedido');
 
-const subtotal = <?= $total ?>;
+        direccionSucursal.textContent = direccion;
+        direccionRetiro.style.display = 'block';
 
-zonaDelivery.addEventListener('change', function () {
+        actualizarDatosTransferencia();
+    });
 
-    const opcionSeleccionada =
-        this.options[this.selectedIndex];
 
-    const nombreSucursal =
-        opcionSeleccionada.dataset.nombreSucursal;
+    zonaDelivery.addEventListener('change', function () {
 
-    const direccion =
-        opcionSeleccionada.dataset.direccion;
+        const opcionSeleccionada =
+            this.options[this.selectedIndex];
 
-    const tarifa =
-        opcionSeleccionada.dataset.tarifa;
+        const nombreSucursal =
+            opcionSeleccionada.dataset.nombreSucursal;
 
-    if (!this.value) {
+        const direccion =
+            opcionSeleccionada.dataset.direccion;
 
-        sucursalAsignada.textContent = '-';
-        costoEnvio.textContent = '-';
+        const tarifa =
+            opcionSeleccionada.dataset.tarifa;
 
-        costoEnvioResumen.textContent = '$0,00';
 
-        totalPedido.textContent =
-            '$' + subtotal.toLocaleString('es-AR', {
+        if (!this.value) {
+
+            sucursalAsignada.textContent = '-';
+
+            costoEnvio.textContent = '-';
+
+            costoEnvioResumen.textContent = '$0,00';
+
+            totalPedido.textContent =
+                '$' + subtotal.toLocaleString('es-AR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+            actualizarDatosTransferencia();
+
+            return;
+        }
+
+        sucursalAsignada.innerHTML =
+            `<strong>${nombreSucursal}</strong><br>${direccion}`;
+ 
+        costoEnvio.textContent =
+            '$' + parseFloat(tarifa).toLocaleString('es-AR', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
 
-        return;
-    }
 
-    sucursalAsignada.innerHTML =
-        `<strong>${nombreSucursal}</strong><br>${direccion}`;
+        const envio = parseFloat(tarifa);
 
-    costoEnvio.textContent =
-        '$' + parseFloat(tarifa).toLocaleString('es-AR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
 
-    const envio = parseFloat(tarifa);
+        costoEnvioResumen.textContent =
+            '$' + envio.toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
 
-    costoEnvioResumen.textContent =
-        '$' + envio.toLocaleString('es-AR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
+        const total = subtotal + envio;
 
-    const total = subtotal + envio;
+        totalPedido.textContent =
+            '$' + total.toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
 
-    totalPedido.textContent =
-        '$' + total.toLocaleString('es-AR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-});
+        actualizarDatosTransferencia();
+    });
 
-const botonConfirmar =
-    document.getElementById('btnConfirmarPedido');
+    const botonConfirmar =
+        document.getElementById('btnConfirmarPedido');
 
-botonConfirmar.addEventListener('click', function () {
+    botonConfirmar.addEventListener('click', function () {
 
-    const tipoEntrega =
-        document.querySelector(
-            'input[name="tipoEntrega"]:checked'
-        ).value;
+        const tipoEntrega =
+            document.querySelector(
+                'input[name="tipoEntrega"]:checked'
+            ).value;
 
-    const metodoPago =
-        document.querySelector(
-            'input[name="metodoPago"]:checked'
-        ).value;
+        const metodoPago =
+            document.querySelector(
+                'input[name="metodoPago"]:checked'
+            ).value;
 
-    const sucursalRetiro =
-        document.getElementById('sucursalRetiro');
+        const direccionInput =
+            document.querySelector(
+                '#datosDelivery input[type="text"]'
+            );
 
-    const zonaDelivery =
-        document.getElementById('zonaDelivery');
 
-    const direccionInput =
-        document.querySelector(
-            '#datosDelivery input[type="text"]'
-        );
+        let idSucursal = null;
+        let idZona = null;
+        let direccionEntrega = '';
 
-    let idSucursal = null;
-    let idZona = null;
-    let direccionEntrega = '';
+        if (tipoEntrega === 'retiro') {
 
-    // -----------------------------
-    // RETIRO
-    // -----------------------------
+            idSucursal = sucursalRetiro.value;
 
-    if (tipoEntrega === 'retiro') {
+            if (!idSucursal) {
 
-        idSucursal = sucursalRetiro.value;
-
-        if (!idSucursal) {
-            alert('Seleccioná una sucursal.');
-            return;
-        }
-    }
-
-    // -----------------------------
-    // DELIVERY
-    // -----------------------------
-
-    if (tipoEntrega === 'delivery') {
-
-        idZona = zonaDelivery.value;
-        direccionEntrega = direccionInput.value.trim();
-
-        if (!idZona) {
-            alert('Seleccioná una zona de cobertura.');
-            return;
+                alert('Seleccioná una sucursal.');
+                return;
+            }
         }
 
-        if (!direccionEntrega) {
-            alert('Ingresá tu dirección de entrega.');
-            direccionInput.focus();
-            return;
+        if (tipoEntrega === 'delivery') {
+
+            idZona = zonaDelivery.value;
+
+            direccionEntrega =
+                direccionInput.value.trim();
+
+
+            if (!idZona) {
+
+                alert('Seleccioná una zona de cobertura.');
+                return;
+            }
+
+
+            if (!direccionEntrega) {
+
+                alert('Ingresá tu dirección de entrega.');
+
+                direccionInput.focus();
+
+                return;
+            }
+
+            const opcionZona =
+                zonaDelivery.options[
+                    zonaDelivery.selectedIndex
+                ];
+
+            idSucursal =
+                opcionZona.dataset.sucursal;
         }
 
-        // Obtener la sucursal correspondiente a la zona
-        const opcionZona =
-            zonaDelivery.options[
-                zonaDelivery.selectedIndex
-            ];
+        fetch(
+            '<?= base_url('carrito/confirmar-pedido') ?>',
+            {
+                method: 'POST',
 
-        idSucursal =
-            opcionZona.dataset.sucursal;
-    }
+                headers: {
+                    'Content-Type': 'application/json'
+                },
 
-    // -----------------------------
-    // ENVIAR PEDIDO
-    // -----------------------------
+                body: JSON.stringify({
 
-    fetch('<?= base_url('carrito/confirmar-pedido') ?>', {
+                    tipoEntrega: tipoEntrega,
 
-        method: 'POST',
+                    idSucursal: idSucursal,
 
-        headers: {
-            'Content-Type': 'application/json'
-        },
+                    idZona: idZona,
 
-        body: JSON.stringify({
+                    direccionEntrega: direccionEntrega,
 
-            tipoEntrega: tipoEntrega,
+                    metodoPago: metodoPago
+                })
+            }
+        )
 
-            idSucursal: idSucursal,
+        .then(response => response.json())
 
-            idZona: idZona,
+        .then(data => {
 
-            direccionEntrega: direccionEntrega,
+            if (!data.ok) {
 
-            metodoPago: metodoPago
+                alert(data.mensaje);
+                return;
+            }
+
+            const mensaje =
+                document.getElementById(
+                    'mensajePedidoConfirmado'
+                );
+
+
+            if (metodoPago === 'transferencia') {
+
+                mensaje.textContent =
+                    'Tu pedido fue registrado correctamente. El pago quedó pendiente de verificación. Te notificaremos cuando sea aprobado y tu pedido pase a preparación.';
+
+            } else {
+
+                mensaje.textContent =
+                    'Tu pedido fue registrado correctamente. Te notificaremos cuando pase a preparación.';
+            }
+
+
+            const modal =
+                new bootstrap.Modal(
+                    document.getElementById(
+                        'pedidoConfirmadoModal'
+                    )
+                );
+
+            modal.show();
+
+            document
+                .getElementById('btnAceptarPedido')
+                .addEventListener('click', function () {
+
+                    window.location.href =
+                        '<?= base_url('/') ?>';
+
+                });
 
         })
 
-    })
+        .catch(error => {
 
-    .then(response => response.json())
+            console.error(error);
 
-    .then(data => {
-
-        if (!data.ok) {
-            alert(data.mensaje);
-            return;
-        }
-
-        // Cambiar mensaje según el método de pago
-        const mensaje =
-            document.getElementById(
-                'mensajePedidoConfirmado'
+            alert(
+                'Ocurrió un error al confirmar el pedido.'
             );
 
-        if (metodoPago === 'transferencia') {
-
-            mensaje.textContent =
-                'Tu pedido fue registrado correctamente. El pago quedó pendiente de verificación. Te notificaremos cuando sea aprobado y tu pedido pase a preparación.';
-
-        } else {
-
-            mensaje.textContent =
-                'Tu pedido fue registrado correctamente. Te notificaremos cuando pase a preparación.';
-        }
-
-        // Mostrar modal
-        const modal =
-            new bootstrap.Modal(
-                document.getElementById(
-                    'pedidoConfirmadoModal'
-                )
-            );
-
-        modal.show();
-
-        document.getElementById('btnAceptarPedido').addEventListener('click', function () {
-            window.location.href = '<?= base_url('/') ?>';
         });
-
-    })
-
-    .catch(error => {
-
-        console.error(error);
-
-        alert(
-            'Ocurrió un error al confirmar el pedido.'
-        );
 
     });
 
 });
-
 </script>
 
 <?= $this->endSection() ?>

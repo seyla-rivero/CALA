@@ -13,6 +13,12 @@ class SucursalModel extends Model
         'nombre',
         'direccion',
         'telefono',
-        'activo'
+        'alias',
+        'cbu',
+        'titular',
+        'activo',
+        'horario',
+        'ubicacionMapa'
+
     ];
 }
