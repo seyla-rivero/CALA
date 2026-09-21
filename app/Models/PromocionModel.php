@@ -11,23 +11,26 @@ class PromocionModel extends Model
 
     protected $allowedFields = [
         'idItem',
-        'esPromoDia'
+        'esPromoDia',
+        'incluyeBebida',
+        'incluyeEmpanadas'
     ];
 
     public function obtenerPromociones()
     {
-        return $this->select('item_pedido.*')
+        return $this->select('item_pedido.*, promocion.incluyeBebida, promocion.incluyeEmpanadas')
             ->join(
                 'item_pedido',
-                'item_pedido.idItem = promocion.idItem'
+                'item_pedido.idItem = promocion.idItem',
             )
             ->where('item_pedido.activo', 1)
+            ->orderBy('item_pedido.nombre', 'ASC')
             ->findAll();
     }
 
     public function obtenerPromoDelDia()
     {
-        return $this->select('item_pedido.*')
+        return $this->select('item_pedido.*, promocion.incluyeBebida, promocion.incluyeEmpanadas')
             ->join(
                 'item_pedido',
                 'item_pedido.idItem = promocion.idItem'

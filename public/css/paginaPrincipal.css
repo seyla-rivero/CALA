@@ -399,7 +399,7 @@ body {
 .icono-whatsapp{
     color: #ff2f7d;
     text-decoration: none;
-    font-size: 2rem;
+    font-size: 1.8rem;
     flex-shrink: 0;
 }
 
@@ -487,6 +487,9 @@ footer{
     height: 70px; 
     width: auto;
     display: block;
+}
+.bi-instagram {
+    font-size: 2rem;
 }
 
 

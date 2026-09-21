@@ -1,8 +1,22 @@
 // Boton de agregar al carrito
 function agregarAlCarrito() {
 
-    const comentario =
-        document.getElementById("comentario").value.trim();
+    const comentario = document.getElementById("comentario").value.trim();
+    const bebida = document.getElementById("bebida");
+    const bebidaSeleccionada = bebida ? bebida.value : "";
+    const empanadas = document.getElementById("empanadas");
+    const empanadasSeleccionadas = empanadas ? empanadas.value : "";
+
+
+    // Si la promoción incluye bebida, es obligatorio seleccionar una
+    if (incluyeBebidaActual == 1 && bebidaSeleccionada === "") {
+
+        return;
+    }
+
+    if (incluyeEmpanadasActual == 1 && empanadasSeleccionadas === "") {
+        return;
+    }
 
     fetch(urlAgregarCarrito, {
 
@@ -15,7 +29,9 @@ function agregarAlCarrito() {
         body: JSON.stringify({
             idItem: idItemActual,
             cantidad: cantidadActual,
-            comentario: comentario
+            comentario: comentario,
+            bebida: bebidaSeleccionada,
+            empanadas: empanadasSeleccionadas
         })
 
     })

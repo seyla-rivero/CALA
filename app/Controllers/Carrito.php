@@ -78,6 +78,8 @@ class Carrito extends BaseController
         $idItem = $datos['idItem'] ?? null;
         $cantidad = $datos['cantidad'] ?? 1;
         $comentario = trim($datos['comentario'] ?? '');
+        $bebida = trim($datos['bebida'] ?? '');
+        $empanadas = trim($datos['empanadas'] ?? '');
 
         // Verificar que exista el producto
         if (!$idItem) {
@@ -146,7 +148,13 @@ class Carrito extends BaseController
                 'subTotal' => $nuevoSubtotal,
                 'comentario' => $comentario !== ''
                     ? $comentario
-                    : $detalle['comentario']
+                    : $detalle['comentario'],
+                'bebida' => $bebida !== ''
+                    ? $bebida
+                    : $detalle['bebida'],
+                'empanadas' => $empanadas !== ''
+                    ? $empanadas
+                    : $detalle['empanadas']        
             ]);
 
         } else {
@@ -160,7 +168,9 @@ class Carrito extends BaseController
                 'cantidad' => $cantidad,
                 'precioUnitario' => $item['precio'],
                 'subTotal' => $subtotal,
-                'comentario' => $comentario
+                'comentario' => $comentario,
+                'bebida' => $bebida !== '' ? $bebida : null,
+                'empanadas' => $empanadas !== '' ? $empanadas : null
             ]);
         }
 
@@ -403,8 +413,8 @@ class Carrito extends BaseController
 
         $idCliente = $session->get('idCliente');
 
-        $pedidoModel = new \App\Models\PedidoModel();
-        $detalleModel = new \App\Models\DetallePedidoModel();
+        $pedidoModel = new PedidoModel();
+        $detalleModel = new DetallePedidoModel();
 
         $pedido = $pedidoModel
             ->where('idCliente', $idCliente)

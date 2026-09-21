@@ -279,6 +279,13 @@
 .btn-agregar:hover {
     background: #cF245C;
 }
+.btn-agregar:disabled {
+    background: #f582aa;
+    border-color: #f582aa;
+    color: #fff;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
 
 .cerrar-modal {
     position: absolute;

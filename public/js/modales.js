@@ -23,10 +23,14 @@ document.addEventListener("DOMContentLoaded", function () {
 let cantidadActual = 1;
 let precioUnitario = 0;
 let idItemActual = null;
+let incluyeBebidaActual = 0;
+let incluyeEmpanadasActual = 0;
 
-function abrirModal(idItem, nombre, descripcion, precio, imagen) {
+function abrirModal(idItem, nombre, descripcion, precio, imagen, incluyeBebida = 0, incluyeEmpanadas = 0) {
 
     idItemActual = idItem;
+    incluyeBebidaActual = incluyeBebida;
+    incluyeEmpanadasActual = incluyeEmpanadas;
 
     document.getElementById("modalNombre").textContent = nombre;
     document.getElementById("modalDescripcion").textContent = descripcion;
@@ -39,9 +43,112 @@ function abrirModal(idItem, nombre, descripcion, precio, imagen) {
 
     document.getElementById("comentario").value = "";
 
+    // Mostrar u ocultar selección de bebida
+    const contenedorBebida = document.getElementById("contenedorBebida");
+    const bebida = document.getElementById("bebida");
+
+    const contenedorEmpanadas = document.getElementById("contenedorEmpanadas");
+    const empanadas = document.getElementById("empanadas");
+    const btnAgregarPedido = document.getElementById("btnAgregarPedido");
+    
+    // BEBIDA
+    if (contenedorBebida && bebida) {
+
+        if (incluyeBebida == 1) {
+
+            contenedorBebida.style.display = "block";
+            bebida.value = "";
+
+            if (btnAgregarPedido) {
+                btnAgregarPedido.disabled = true;
+                btnAgregarPedido.textContent = "Falta seleccionar bebida";
+            }
+
+        } else {
+
+            contenedorBebida.style.display = "none";
+            bebida.value = "";
+
+            if (btnAgregarPedido) {
+                btnAgregarPedido.disabled = false;
+                btnAgregarPedido.textContent = "Agregar al pedido";
+            }
+        }
+    }
+
+    // EMPANADAS
+    if (contenedorEmpanadas && empanadas) {
+
+        if (incluyeEmpanadas == 1) {
+
+            contenedorEmpanadas.style.display = "block";
+            empanadas.value = "";
+
+        } else {
+
+            contenedorEmpanadas.style.display = "none";
+            empanadas.value = "";
+        }
+    }
+
+    validarOpciones();
+
     actualizarPrecio();
 
     document.getElementById("modalProducto").style.display = "flex";
+}
+
+function validarOpciones() {
+
+    const btnAgregarPedido = document.getElementById("btnAgregarPedido");
+    if (!btnAgregarPedido) return;
+
+    let bebidaOk = true;
+    let empanadasOk = true;
+
+    const bebida = document.getElementById("bebida");
+    const empanadas = document.getElementById("empanadas");
+
+    if (incluyeBebidaActual == 1 && bebida) {
+        bebidaOk = bebida.value !== "";
+    }
+
+    if (incluyeEmpanadasActual == 1 && empanadas) {
+        empanadasOk = empanadas.value !== "";
+    }
+
+    if (bebidaOk && empanadasOk) {
+
+        btnAgregarPedido.disabled = false;
+        btnAgregarPedido.textContent = "Agregar al pedido";
+
+    } else if (!bebidaOk && !empanadasOk) {
+
+        btnAgregarPedido.disabled = true;
+        btnAgregarPedido.textContent = "Falta seleccionar bebida y empanadas";
+
+    } else if (!bebidaOk) {
+
+        btnAgregarPedido.disabled = true;
+        btnAgregarPedido.textContent = "Falta seleccionar bebida";
+
+    } else if (!empanadasOk) {
+
+        btnAgregarPedido.disabled = true;
+        btnAgregarPedido.textContent = "Falta seleccionar empanadas";
+    }
+}
+
+const bebida = document.getElementById("bebida");
+
+if (bebida) {
+    bebida.addEventListener("change", validarOpciones);
+}
+
+const empanadas = document.getElementById("empanadas");
+
+if (empanadas) {
+    empanadas.addEventListener("change", validarOpciones);
 }
 
 // Actualizacion de botones + y - en el Detalle del pedido

@@ -61,6 +61,18 @@
 
                             <?php endif; ?>
 
+                            <?php if (!empty($item['bebida'])): ?>
+                                <p class="detalle-extra">
+                                    <strong>Bebida:</strong> <?= esc($item['bebida']) ?>
+                                </p>
+                            <?php endif; ?>
+
+                            <?php if (!empty($item['empanadas'])): ?>
+                                <p class="detalle-extra">
+                                    <strong>Empanadas:</strong> <?= esc($item['empanadas']) ?>
+                                </p>
+                            <?php endif; ?>
+
                         </div>
 
                         <div class="col-md-3 text-center">

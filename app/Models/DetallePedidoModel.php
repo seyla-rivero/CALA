@@ -15,6 +15,8 @@ class DetallePedidoModel extends Model
         'cantidad',
         'precioUnitario',
         'subTotal',
-        'comentario'
+        'comentario',
+        'bebida',
+        'empanadas'
     ];
 }

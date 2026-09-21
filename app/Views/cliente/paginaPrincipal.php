@@ -135,7 +135,7 @@
                             <div class="separador"></div>
 
                             <div class="opcion">
-                                <i class="bi bi-scooter"></i>
+                                <i class="bi bi-truck-front"></i>
                                 <span>Recibilo en<br>tu domicilio</span>
                             </div>
 
@@ -280,15 +280,37 @@
 
             <span id="modalPrecio" class="modal-precio"></span>
 
+             <!-- Selección de bebida -->
+            <div id="contenedorBebida" class="bebida-producto" style="display: none;">
+
+                <select id="bebida" class="form-select">
+                    <option value="">Elegí tu bebida</option>
+                    <option value="Talca cola 3 litros">Talca cola 3 litros</option>
+                    <option value="Talca lima 3 litros">Talca lima 3 litros</option>
+                    <option value="Talca naranja 3 litros">Talca naranja 3 litros</option>
+                    <option value="Talca pomelo 3 litros">Talca pomelo 3 litros</option>
+                </select>
+            </div>
+            <!-- Selección empanadas -->
+            <div id="contenedorEmpanadas" class="empanadas-producto" style="display: none;">
+
+                <select id="empanadas" class="form-select">
+                    <option value="">Elegí empanadas</option>
+                    <option value="Criollas">Criollas</option>
+                    <option value="Jamon y queso">Jamón y queso</option>
+                </select>
+
+            </div>
+
             <div class="cantidad">
 
-                <span class="cantidad-label">Cantidad:</span>
+                <span class="cantidad-label mt-4">Cantidad:</span>
 
-                <button type="button" class="btn btn-outline-secondary" onclick="disminuirCantidad()">−</button>
+                <button type="button" class="btn btn-outline-secondary mt-4" onclick="disminuirCantidad()">−</button>
 
-                <span id="cantidad" class="cantidad-numero">1</span>
+                <span id="cantidad" class="cantidad-numero mt-4">1</span>
 
-                <button type="button" class="btn btn-outline-secondary" onclick="aumentarCantidad()">+</button>
+                <button type="button" class="btn btn-outline-secondary mt-4" onclick="aumentarCantidad()">+</button>
 
             </div>
 
@@ -298,7 +320,7 @@
                 <textarea id="comentario" name="comentario" placeholder="Ej.: Sin mayonesa, sin cebolla..." maxlength="200"></textarea>
             </div>
 
-            <button type="button" class="btn-agregar mt-3" onclick="agregarAlCarrito()">
+            <button type="button" id="btnAgregarPedido" class="btn-agregar mt-3" onclick="agregarAlCarrito()">
                 Agregar al pedido
             </button>
 
@@ -433,7 +455,9 @@ function verPromo() {
         promo.nombre,
         promo.descripcion,
         promo.precio,
-        "<?= base_url('img/') ?>" + promo.urlImagen
+        "<?= base_url('img/') ?>" + promo.urlImagen,
+        promo.incluyeBebida,
+        promo.incluyeEmpanadas
     );
 }
 
