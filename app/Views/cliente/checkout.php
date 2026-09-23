@@ -22,12 +22,7 @@
 
                     <label class="opcion-entrega">
 
-                        <input
-                            type="radio"
-                            name="tipoEntrega"
-                            value="retiro"
-                            checked
-                        >
+                        <input type="radio" name="tipoEntrega" value="retiro" checked>
 
                         <div>
                             <i class="fa-solid fa-store"></i>
@@ -43,11 +38,7 @@
 
                     <label class="opcion-entrega">
 
-                        <input
-                            type="radio"
-                            name="tipoEntrega"
-                            value="delivery"
-                        >
+                        <input type="radio" name="tipoEntrega" value="delivery">
 
                         <div>
                             <i class="fa-solid fa-motorcycle"></i>
@@ -75,10 +66,7 @@
                         Seleccioná la sucursal
                     </label>
 
-                    <select
-                        id="sucursalRetiro"
-                        class="form-select checkout-select"
-                    >
+                    <select id="sucursalRetiro" class="form-select checkout-select">
                         <option value="" selected>
                             Seleccionar sucursal
                         </option>
@@ -95,6 +83,10 @@
                             </option>
                         <?php endforeach; ?>
                     </select>
+
+                    <div id="errorSucursal" class="invalid-feedback">
+                        Seleccioná una sucursal.
+                    </div>
 
                     <div class="mt-3" id="direccionRetiro" style="display: none;">
                         <label class="checkout-label">
@@ -114,20 +106,17 @@
                         Dirección de entrega
                     </label>
 
-                    <input
-                        type="text"
-                        class="form-control checkout-input"
-                        placeholder="Ingresá tu dirección"
-                    >
+                    <input type="text" id="direccionDelivery" class="form-control checkout-input" placeholder="Ingresá tu dirección">
+
+                    <div id="errorDireccion" class="invalid-feedback">
+                        Ingresá tu dirección de entrega.
+                    </div>
 
                     <label class="checkout-label mt-3">
                         Zona de cobertura
                     </label>
 
-                    <select
-                        id="zonaDelivery"
-                        class="form-select checkout-select"
-                    >
+                    <select id="zonaDelivery" class="form-select checkout-select">
                         <option value="" selected>
                             Seleccionar zona
                         </option>
@@ -161,6 +150,10 @@
                         <?php endforeach; ?>
 
                     </select>
+
+                    <div id="errorZona" class="invalid-feedback">
+                        Seleccioná una zona de cobertura.
+                    </div>
 
                     <div class="mt-3">
 
@@ -225,12 +218,7 @@
 
                     <label class="opcion-pago">
 
-                        <input
-                            type="radio"
-                            name="metodoPago"
-                            value="efectivo"
-                            checked
-                        >
+                        <input type="radio" name="metodoPago" value="efectivo" checked>
 
                         <i class="fa-solid fa-money-bill"></i>
 
@@ -240,11 +228,7 @@
 
                     <label class="opcion-pago">
 
-                        <input
-                            type="radio"
-                            name="metodoPago"
-                            value="transferencia"
-                        >
+                        <input type="radio" name="metodoPago" value="transferencia">
 
                         <i class="fa-solid fa-building-columns"></i>
 
@@ -361,11 +345,7 @@
 
                 </div>
 
-                <button
-                    type="button"
-                    class="btn checkout-confirmar"
-                    id="btnConfirmarPedido"
-                >
+                <button type="button" class="btn checkout-confirmar" id="btnConfirmarPedido">
                     Confirmar pedido
                 </button>
 
@@ -425,6 +405,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const zonaDelivery = document.getElementById('zonaDelivery');
 
+    const direccionInput = document.getElementById('direccionDelivery');
+
     const direccionRetiro = document.getElementById('direccionRetiro');
 
     const direccionSucursal = document.getElementById('direccionSucursal');
@@ -445,11 +427,116 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const cbuTransferencia = document.getElementById('cbuTransferencia');
 
+    const errorSucursal = document.getElementById('errorSucursal');
+    const errorZona = document.getElementById('errorZona');
+    const errorDireccion = document.getElementById('errorDireccion');
+
     const metodosPago = document.querySelectorAll('input[name="metodoPago"]');
 
     const subtotal = <?= $total ?>;  
 
+    function limpiarError(campo, mensaje) {
+        campo.classList.remove('is-invalid');
+        mensaje.style.display = 'none';
+    }
 
+    function mostrarError(campo, mensaje) {
+        campo.classList.add('is-invalid');
+        mensaje.style.display = 'block';
+    }
+    
+    sucursalRetiro.addEventListener('change', function () {
+
+        limpiarError(sucursalRetiro, errorSucursal);
+
+        const opcionSeleccionada =
+            this.options[this.selectedIndex];
+
+        const direccion =
+            opcionSeleccionada.dataset.direccion;
+
+        if (!this.value) {
+            direccionRetiro.style.display = 'none';
+            direccionSucursal.textContent = '-';
+            actualizarDatosTransferencia();
+            return;
+        }
+
+        direccionSucursal.textContent = direccion;
+        direccionRetiro.style.display = 'block';
+        actualizarDatosTransferencia();
+    });
+
+    zonaDelivery.addEventListener('change', function () {
+
+        limpiarError(zonaDelivery, errorZona);
+
+        const opcionSeleccionada =
+            this.options[this.selectedIndex];
+
+        const nombreSucursal =
+            opcionSeleccionada.dataset.nombreSucursal;
+
+        const direccion =
+            opcionSeleccionada.dataset.direccion;
+
+        const tarifa =
+            opcionSeleccionada.dataset.tarifa;
+
+        if (!this.value) {
+
+            sucursalAsignada.textContent = '-';
+            costoEnvio.textContent = '-';
+
+            costoEnvioResumen.textContent = '$0,00';
+
+            totalPedido.textContent =
+                '$' + subtotal.toLocaleString('es-AR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+            actualizarDatosTransferencia();
+
+            return;
+        }
+
+        sucursalAsignada.innerHTML =
+            `<strong>${nombreSucursal}</strong><br>${direccion}`;
+
+        costoEnvio.textContent =
+            '$' + parseFloat(tarifa).toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+        const envio = parseFloat(tarifa);
+
+        costoEnvioResumen.textContent =
+            '$' + envio.toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+        const total = subtotal + envio;
+
+        totalPedido.textContent =
+            '$' + total.toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+        actualizarDatosTransferencia();
+    });   
+
+    direccionInput.addEventListener('input', function () {
+
+        if (this.value.trim() !== '') {
+            limpiarError(direccionInput, errorDireccion);
+        }
+
+    });
+        
     opcionesEntrega.forEach(function (opcion) {
 
         opcion.addEventListener('change', function () {
@@ -673,8 +760,8 @@ document.addEventListener('DOMContentLoaded', function () {
             idSucursal = sucursalRetiro.value;
 
             if (!idSucursal) {
-
-                alert('Seleccioná una sucursal.');
+                mostrarError(sucursalRetiro, errorSucursal);
+                sucursalRetiro.focus();
                 return;
             }
         }
@@ -686,22 +773,17 @@ document.addEventListener('DOMContentLoaded', function () {
             direccionEntrega =
                 direccionInput.value.trim();
 
-
             if (!idZona) {
-
-                alert('Seleccioná una zona de cobertura.');
+                mostrarError(zonaDelivery, errorZona);
+                zonaDelivery.focus();
                 return;
             }
-
 
             if (!direccionEntrega) {
-
-                alert('Ingresá tu dirección de entrega.');
-
+                mostrarError(direccionInput, errorDireccion);
                 direccionInput.focus();
-
                 return;
-            }
+            }    
 
             const opcionZona =
                 zonaDelivery.options[
