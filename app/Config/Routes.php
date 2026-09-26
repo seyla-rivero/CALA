@@ -19,3 +19,7 @@ $routes->get('carrito/cantidad', 'Carrito::cantidadCarrito');
 $routes->get('checkout', 'Carrito::checkout');
 $routes->post('carrito/confirmar-pedido', 'Carrito::confirmarPedido');
 $routes->post('enviar-codigo-recuperacion', 'Autenticacion::enviarCodigoRecuperacion');
+
+$routes->get('admin', 'Administrador::login');
+$routes->post('admin/validarLogin', 'Administrador::validarLogin');
+$routes->get('admin/panel', 'Administrador::panel');

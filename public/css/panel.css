@@ -1,0 +1,79 @@
+.dashboard{
+    display: flex;
+    min-height: 100vh;
+    background: #f5f6fa;
+}
+
+.sidebar{
+    width: 260px;
+    background: black;
+    color: white;
+    padding: 30px 20px;
+}
+
+.logo-panel{
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-panel img{
+    width: 140px;
+}
+
+.menu-panel{
+    list-style: none;
+    padding: 0;
+}
+
+.menu-panel li{
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.menu-panel li:hover,
+.menu-panel .activo{
+    background: #ff2f7d;
+}
+
+.contenido-panel{
+    flex: 1;
+    padding: 40px;
+}
+
+.titulo-panel{
+    margin-bottom: 30px;
+}
+
+.titulo-panel h1{
+    font-weight: 700;
+}
+
+.card-dashboard{
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+}
+
+.card-dashboard i{
+    font-size: 2rem;
+    color: #ff2f7d;
+}
+
+.card-dashboard h3{
+    margin-top: 15px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.tabla-pedidos{
+    margin-top: 40px;
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+}

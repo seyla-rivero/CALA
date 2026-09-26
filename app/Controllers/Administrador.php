@@ -8,7 +8,7 @@ class Administrador extends BaseController
 {
     public function login()
     {
-        return view('admin/login');
+        return view('administrador/login');
     }
 
     public function validarLogin()
@@ -62,5 +62,10 @@ class Administrador extends BaseController
         ]);
 
         return redirect()->to('/admin/panel');
+    }
+
+    public function panel()
+    {
+        return view('administrador/panel');
     }
 }
