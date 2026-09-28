@@ -20,4 +20,11 @@ class ProductoModel extends Model
             ->where('item_pedido.activo', 1)
             ->findAll();
     }
+
+    public function obtenerTodosLosProductos()
+    {
+        return $this->select('item_pedido.*')
+            ->join('item_pedido', 'item_pedido.idItem = producto.idItem')
+            ->findAll();
+    }
 }
