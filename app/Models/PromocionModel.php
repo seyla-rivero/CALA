@@ -18,7 +18,7 @@ class PromocionModel extends Model
 
     public function obtenerPromociones()
     {
-        return $this->select('item_pedido.*, promocion.incluyeBebida, promocion.incluyeEmpanadas')
+        return $this->select('item_pedido.*, promocion.esPromoDia, promocion.incluyeBebida, promocion.incluyeEmpanadas')
             ->join(
                 'item_pedido',
                 'item_pedido.idItem = promocion.idItem',
@@ -30,7 +30,7 @@ class PromocionModel extends Model
 
     public function obtenerPromoDelDia()
     {
-        return $this->select('item_pedido.*, promocion.incluyeBebida, promocion.incluyeEmpanadas')
+        return $this->select('item_pedido.*,promocion.esPromoDia, promocion.incluyeBebida, promocion.incluyeEmpanadas')
             ->join(
                 'item_pedido',
                 'item_pedido.idItem = promocion.idItem'

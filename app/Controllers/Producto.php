@@ -305,4 +305,5 @@ class Producto extends BaseController
 
         return redirect()->to(base_url('admin/productos'));
     }
+
 }
