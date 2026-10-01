@@ -25,3 +25,4 @@ $routes->post('admin/validarLogin', 'Administrador::validarLogin');
 $routes->get('admin/panel', 'Administrador::panel');
 $routes->get('admin/productos', 'Producto::index');
 $routes->get('admin/agregar_producto', 'Producto::agregarProducto');
+$routes->post('admin/guardar', 'Producto::guardar');

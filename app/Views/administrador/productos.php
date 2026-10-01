@@ -117,5 +117,53 @@
         </table>
     </div>
 </div>
+<?php if (session('mensaje')): ?>
+
+<div class="modal fade modal-exito" id="modalExito" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Producto agregado</h5>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <i class="bi bi-check-circle-fill icono-exito"></i>
+
+                <p class="mensaje-exito">
+                    <?= session('mensaje') ?>
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn-modal-exito"
+                        data-bs-dismiss="modal">
+                    Aceptar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = new bootstrap.Modal(
+            document.getElementById('modalExito')
+        );
+
+        modal.show();
+    });
+</script>
+
+<?php endif; ?>
 
 <?= $this->endSection() ?>

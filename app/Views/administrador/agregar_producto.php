@@ -17,7 +17,7 @@
 </div>
 <div class="formulario-producto">
 
-    <form action="<?= base_url('admin/productos/guardar') ?>" method="post" enctype="multipart/form-data">
+    <form action="<?= site_url('admin/guardar') ?>" method="post" enctype="multipart/form-data">
 
         <div class="mb-3">
             <label for="nombre" class="form-label">
@@ -69,14 +69,15 @@
             <select class="form-select" id="idCategoria" name="idCategoria">
                 <option value="">Seleccioná una categoría</option>
 
-                <option value="1">Hamburguesas</option>
-                <option value="2">Lomos</option>
-                <option value="3">Milanesas</option>
-                <option value="4">Pizzas</option>
-                <option value="5">Empanadas</option>
-                <option value="6">Panchos</option>
-                <option value="7">Bebidas</option>
-                <option value="8">Papas</option>
+                <option value="1" <?= old('idCategoria') == '1' ? 'selected' : '' ?>>Hamburguesas</option>
+                <option value="2" <?= old('idCategoria') == '2' ? 'selected' : '' ?>>Lomos</option>
+                <option value="3" <?= old('idCategoria') == '3' ? 'selected' : '' ?>>Milanesas</option>
+                <option value="4" <?= old('idCategoria') == '4' ? 'selected' : '' ?>>Pizzas</option>
+                <option value="5" <?= old('idCategoria') == '5' ? 'selected' : '' ?>>Empanadas</option>
+                <option value="6" <?= old('idCategoria') == '6' ? 'selected' : '' ?>>Panchos</option>
+                <option value="7" <?= old('idCategoria') == '7' ? 'selected' : '' ?>>Especiales</option>
+                <option value="8" <?= old('idCategoria') == '8' ? 'selected' : '' ?>>Papas</option>
+                <option value="9" <?= old('idCategoria') == '9' ? 'selected' : '' ?>>Bebidas</option>
             </select>
 
             <?php if (session('errors.idCategoria')): ?>
@@ -94,7 +95,7 @@
             <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
 
             <small class="text-muted">
-                Formatos permitidos: JPG, JPEG, PNG o WEBP.
+                Formatos permitidos: JPG, JPEG, PNG o WEBP. Tamaño máximo: 3 MB.
             </small>
 
             <?php if (session('errors.imagen')): ?>
