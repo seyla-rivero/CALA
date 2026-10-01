@@ -88,13 +88,13 @@
                         <td>
                             <div class="acciones-producto">
 
-                                <button type="button" class="btn-accion editar" title="Modificar producto">
+                                <a href="<?= base_url('admin/editar_producto/' . $producto['idItem']) ?>" class="btn-accion editar" title="Modificar producto">
                                     <i class="bi bi-pencil"></i>
-                                </button>
+                                </a>
 
-                                <button type="button" class="btn-accion imagen" title="Modificar imagen">
+                                <a href="<?= base_url('admin/editar_imagen/' . $producto['idItem']) ?>" class="btn-accion imagen"  title="Modificar imagen">
                                     <i class="bi bi-image"></i>
-                                </button>
+                                </a>
 
                                 <?php if ($producto['activo'] == 1): ?>
 

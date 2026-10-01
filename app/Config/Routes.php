@@ -26,3 +26,7 @@ $routes->get('admin/panel', 'Administrador::panel');
 $routes->get('admin/productos', 'Producto::index');
 $routes->get('admin/agregar_producto', 'Producto::agregarProducto');
 $routes->post('admin/guardar', 'Producto::guardar');
+$routes->get('admin/editar_producto/(:num)', 'Producto::editarProducto/$1');
+$routes->post('admin/actualizar_producto/(:num)', 'Producto::actualizarProducto/$1');
+$routes->get('admin/editar_imagen/(:num)', 'Producto::editarImagen/$1');
+$routes->post('admin/actualizar_imagen/(:num)', 'Producto::actualizarImagen/$1');
