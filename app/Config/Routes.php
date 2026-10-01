@@ -30,3 +30,5 @@ $routes->get('admin/editar_producto/(:num)', 'Producto::editarProducto/$1');
 $routes->post('admin/actualizar_producto/(:num)', 'Producto::actualizarProducto/$1');
 $routes->get('admin/editar_imagen/(:num)', 'Producto::editarImagen/$1');
 $routes->post('admin/actualizar_imagen/(:num)', 'Producto::actualizarImagen/$1');
+$routes->post('admin/desactivar_producto/(:num)', 'Producto::desactivarProducto/$1');
+$routes->post('admin/activar_producto/(:num)', 'Producto::activarProducto/$1');

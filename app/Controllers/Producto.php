@@ -270,4 +270,39 @@ class Producto extends BaseController
         return redirect()->to(base_url('admin/productos'))
             ->with('mensaje', 'Imagen actualizada correctamente.');
     }
+
+    public function desactivarProducto(int $idItem)
+    {
+        $itemPedidoModel = new ItemPedidoModel();
+
+        $producto = $itemPedidoModel->find($idItem);
+
+        if (!$producto) {
+            return redirect()->to(base_url('admin/productos'))
+                ->with('error', 'El producto no existe.');
+        }
+
+        $itemPedidoModel->update($idItem, [
+            'activo' => 0
+        ]);
+
+        return redirect()->to(base_url('admin/productos'));
+    }
+    public function activarProducto(int $idItem)
+    {
+        $itemPedidoModel = new ItemPedidoModel();
+
+        $producto = $itemPedidoModel->find($idItem);
+
+        if (!$producto) {
+            return redirect()->to(base_url('admin/productos'))
+                ->with('error', 'El producto no existe.');
+        }
+
+        $itemPedidoModel->update($idItem, [
+            'activo' => 1
+        ]);
+
+        return redirect()->to(base_url('admin/productos'));
+    }
 }

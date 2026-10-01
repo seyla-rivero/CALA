@@ -98,15 +98,19 @@
 
                                 <?php if ($producto['activo'] == 1): ?>
 
-                                    <button type="button" class="btn-accion desactivar" title="Desactivar producto">
-                                        <i class="bi bi-toggle-on"></i>
-                                    </button>
+                                    <form action="<?= site_url('admin/desactivar_producto/' . $producto['idItem']) ?>" method="post" style="display: inline;">
+                                        <button type="submit" class="btn-accion desactivar" title="Desactivar producto">
+                                            <i class="bi bi-toggle-on"></i>
+                                        </button>
+                                    </form>
 
                                 <?php else: ?>
 
-                                    <button type="button" class="btn-accion activar" title="Activar producto">
-                                        <i class="bi bi-toggle-off"></i>
-                                    </button>
+                                    <form action="<?= site_url('admin/activar_producto/' . $producto['idItem']) ?>" method="post" style="display: inline;">
+                                        <button type="submit" class="btn-accion activar" title="Activar producto">
+                                            <i class="bi bi-toggle-off"></i>
+                                        </button>
+                                    </form>
 
                                 <?php endif; ?>
                             </div>
