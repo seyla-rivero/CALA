@@ -24,7 +24,7 @@ class Home extends BaseController
 
         $data['sucursales'] = $sucursalModel->where('activo', 1)->findAll();
 
-        $data['masVendida'] = $itemPedidoModel->find(31);
+        $data['masVendida'] = $promocionModel->obtenerMasVendida();
 
         return view('cliente/paginaPrincipal', $data);
     }

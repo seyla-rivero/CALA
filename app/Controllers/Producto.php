@@ -21,7 +21,7 @@ class Producto extends BaseController
         return view('administrador/agregar_producto');
     }
 
-    public function guardar()
+    public function guardarProducto()
     {
         $reglas = [
             'nombre' => [

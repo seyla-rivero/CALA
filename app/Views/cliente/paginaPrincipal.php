@@ -218,8 +218,8 @@
 </section>
 
 </div>
+<!--Modal de Registro exitoso-->
 <?php if(session()->getFlashdata('success')): ?>
-
 <div class="modal fade" id="successModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-cala">

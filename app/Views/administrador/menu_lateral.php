@@ -10,7 +10,7 @@
         <li class="<?= uri_string() == 'admin/panel' ? 'activo' : '' ?>">
             <a href="<?= base_url('admin/panel') ?>">
                 <i class="bi bi-speedometer2"></i>
-                <span>Dashboard</span>
+                <span>Panel principal</span>
             </a>
         </li>
 

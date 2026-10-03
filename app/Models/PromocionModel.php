@@ -12,13 +12,14 @@ class PromocionModel extends Model
     protected $allowedFields = [
         'idItem',
         'esPromoDia',
+        'esMasVendida',
         'incluyeBebida',
         'incluyeEmpanadas'
     ];
 
     public function obtenerPromociones()
     {
-        return $this->select('item_pedido.*, promocion.esPromoDia, promocion.incluyeBebida, promocion.incluyeEmpanadas')
+        return $this->select('item_pedido.*, promocion.esPromoDia, promocion.esMasVendida, promocion.incluyeBebida, promocion.incluyeEmpanadas')
             ->join(
                 'item_pedido',
                 'item_pedido.idItem = promocion.idItem',
@@ -30,7 +31,7 @@ class PromocionModel extends Model
 
     public function obtenerPromoDelDia()
     {
-        return $this->select('item_pedido.*,promocion.esPromoDia, promocion.incluyeBebida, promocion.incluyeEmpanadas')
+        return $this->select('item_pedido.*,promocion.esPromoDia, promocion.esMasVendida, promocion.incluyeBebida, promocion.incluyeEmpanadas')
             ->join(
                 'item_pedido',
                 'item_pedido.idItem = promocion.idItem'
@@ -38,5 +39,16 @@ class PromocionModel extends Model
             ->where('item_pedido.activo', 1)
             ->where('promocion.esPromoDia', 1)
             ->findAll();
+    }
+    public function obtenerMasVendida()
+    {
+        return $this->select('item_pedido.*, promocion.esPromoDia, promocion.esMasVendida, promocion.incluyeBebida, promocion.incluyeEmpanadas')
+            ->join(
+                'item_pedido',
+                'item_pedido.idItem = promocion.idItem'
+            )
+            ->where('item_pedido.activo', 1)
+            ->where('promocion.esMasVendida', 1)
+            ->first();
     }
 }
