@@ -205,6 +205,7 @@ class Producto extends BaseController
 
         // Obtener los datos del producto
         $datos['producto'] = $itemPedidoModel->find($idItem);
+        $datos['tipo'] = 'producto';
 
         return view('administrador/editar_imagen', $datos);
     }

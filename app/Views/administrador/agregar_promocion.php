@@ -21,7 +21,13 @@
                 Nombre de la promoción
             </label>
 
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Hamburguesa super + papas" value="<?= old('nombre') ?>"required>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Hamburguesa super + papas" value="<?= old('nombre') ?>">
+
+            <?php if (session('errors.nombre')): ?>
+                <div class="text-danger mt-1">
+                    <?= session('errors.nombre') ?>
+                </div>
+            <?php endif; ?>
         </div>
 
         <div class="mb-4">
@@ -32,6 +38,12 @@
 
             <textarea class="form-control" id="descripcion" name="descripcion" rows="4" placeholder="Ingresá los ingredientes o detalles de la promoción"><?= old('descripcion') ?></textarea>
 
+            <?php if (session('errors.descripcion')): ?>
+                <div class="text-danger mt-1">
+                    <?= session('errors.descripcion') ?>
+                </div>
+            <?php endif; ?>
+
         </div>
 
         <div class="mb-4">
@@ -40,21 +52,33 @@
                 Precio
             </label>
 
-            <input type="number" class="form-control" id="precio" name="precio" placeholder="Ej: 8500" min="0"step="0.01"value="<?= old('precio') ?>"required>
+            <input type="number" class="form-control" id="precio" name="precio" placeholder="Ej: 8500" min="0" step="0.01"value="<?= old('precio') ?>">
+
+            <?php if (session('errors.precio')): ?>
+                <div class="text-danger mt-1">
+                    <?= session('errors.precio') ?>
+                </div>
+            <?php endif; ?>
 
         </div>
 
         <div class="mb-4">
 
-            <label for="urlImagen" class="form-label">
+            <label for="imagen" class="form-label">
                 Imagen
             </label>
 
-            <input type="file" class="form-control" id="urlImagen" name="urlImagen" accept="image/*" required>
+            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
 
             <small class="text-muted">
                 Formatos permitidos: JPG, JPEG, PNG y WEBP.
             </small>
+
+            <?php if (session('errors.imagen')): ?>
+                <div class="text-danger mt-1">
+                    <?= session('errors.imagen') ?>
+                </div>
+            <?php endif; ?>
 
         </div>
 

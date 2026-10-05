@@ -2,6 +2,7 @@
 
 <?= $this->section('contenido') ?>
 <?php /** @var array $promociones */ ?>
+<?php /** @var array $promocionesActivas */ ?>
 
 <div class="titulo-productos">
 
@@ -141,7 +142,7 @@
                         <td>
 
                             <div class="acciones-producto">
-
+                            
                                 <!-- Modificar -->
                                 <a href="<?= base_url('admin/editar_promocion/' . $promocion['idItem']) ?>" class="btn-accion editar" title="Modificar promoción">
                                     <i class="bi bi-pencil"></i>
@@ -153,38 +154,18 @@
                                 <!-- Activar / desactivar -->
                                 <?php if ($promocion['activo'] == 1): ?>
 
-                                    <form
-                                        action="<?= site_url('admin/desactivar_promocion/' . $promocion['idItem']) ?>"
-                                        method="post"
-                                        style="display: inline;"
-                                    >
-
-                                        <button
-                                            type="submit"
-                                            class="btn-accion desactivar"
-                                            title="Desactivar promoción"
-                                        >
+                                    <form action="<?= site_url('admin/desactivar_promocion/' . $promocion['idItem']) ?>" method="post" style="display: inline;">
+                                        <button type="submit" class="btn-accion desactivar" title="Desactivar promocion">
                                             <i class="bi bi-toggle-on"></i>
                                         </button>
-
                                     </form>
 
                                 <?php else: ?>
 
-                                    <form
-                                        action="<?= site_url('admin/activar_promocion/' . $promocion['idItem']) ?>"
-                                        method="post"
-                                        style="display: inline;"
-                                    >
-
-                                        <button
-                                            type="submit"
-                                            class="btn-accion activar"
-                                            title="Activar promoción"
-                                        >
+                                    <form action="<?= site_url('admin/activar_promocion/' . $promocion['idItem']) ?>" method="post" style="display: inline;">
+                                        <button type="submit" class="btn-accion activar" title="Activar promocion">
                                             <i class="bi bi-toggle-off"></i>
                                         </button>
-
                                     </form>
 
                                 <?php endif; ?>
@@ -234,7 +215,7 @@
 
                 <div class="destacado-lista">
 
-                    <?php foreach ($promociones as $promocion): ?>
+                    <?php foreach ($promocionesActivas as $promocion): ?>
 
                         <label class="destacado-opcion">
 
@@ -289,7 +270,7 @@
 
                 <div class="destacado-lista">
 
-                    <?php foreach ($promociones as $promocion): ?>
+                    <?php foreach ($promocionesActivas as $promocion): ?>
 
                         <label class="destacado-opcion">
 

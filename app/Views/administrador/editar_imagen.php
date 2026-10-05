@@ -3,50 +3,65 @@
 <?= $this->section('contenido') ?>
 
 <?php /** @var array $producto */ ?>
+<?php /** @var array $tipo */ ?>
 
 <div class="titulo-productos">
 
     <div>
         <h1>Modificar imagen</h1>
-        <p>Actualizá la imagen del producto</p>
+        <p>
+            Actualizá la imagen del <?= $tipo === 'promocion' ? 'promoción' : 'producto' ?>
+        </p>
     </div>
 
 </div>
 
 <div class="formulario-producto">
 
-    <form action="<?= site_url('admin/actualizar_imagen/' . $producto['idItem']) ?>" 
-          method="post" 
-          enctype="multipart/form-data">
+    <form action="<?= $tipo === 'promocion'
+        ? site_url('admin/actualizar_imagen_promocion/' . $producto['idItem'])
+        : site_url('admin/actualizar_imagen/' . $producto['idItem'])
+    ?>"
+    method="post"
+    enctype="multipart/form-data">
 
         <div class="mb-4">
 
             <label class="form-label">
-                Producto
+                <?= $tipo === 'promocion' ? 'Promoción' : 'Producto' ?>
             </label>
 
-            <input type="text"class="form-control" value="<?= esc($producto['nombre']) ?>" disabled>
+            <input type="text" class="form-control" value="<?= esc($producto['nombre']) ?>" disabled>
 
         </div>
 
         <div class="mb-4">
 
             <label class="form-label">
-                Imagen 
+                Imagen
             </label>
 
             <div class="text-center">
 
                 <?php if (!empty($producto['urlImagen'])): ?>
 
-                    <img id="vistaPrevia" src="<?= base_url('img/' . $producto['urlImagen']) ?>" alt="<?= esc($producto['nombre']) ?>" class="img-fluid" style="max-width: 300px; max-height: 250px; object-fit: contain;">
+                    <img id="vistaPrevia"
+                         src="<?= base_url('img/' . $producto['urlImagen']) ?>"
+                         alt="<?= esc($producto['nombre']) ?>"
+                         class="img-fluid"
+                         style="max-width: 300px; max-height: 250px; object-fit: contain;">
 
                 <?php else: ?>
 
-                    <img id="vistaPrevia" src="" alt="Vista previa" class="img-fluid d-none" style="max-width: 300px; max-height: 250px; object-fit: contain;">
+                    <img id="vistaPrevia"
+                         src=""
+                         alt="Vista previa"
+                         class="img-fluid d-none"
+                         style="max-width: 300px; max-height: 250px; object-fit: contain;">
 
-                    <p class="text-muted">
-                        Este producto no tiene una imagen cargada.
+                    <p id="sinImagen" class="text-muted">
+                        Este <?= $tipo === 'promocion' ? 'promoción' : 'producto' ?>
+                        no tiene una imagen cargada.
                     </p>
 
                 <?php endif; ?>
@@ -61,7 +76,11 @@
                 Nueva imagen
             </label>
 
-            <input type="file" class="form-control <?= session('errors.imagen') ? 'is-invalid' : '' ?>" id="imagen" name="imagen" accept=".jpg,.jpeg,.png,.webp">
+            <input type="file"
+                   class="form-control <?= session('errors.imagen') ? 'is-invalid' : '' ?>"
+                   id="imagen"
+                   name="imagen"
+                   accept=".jpg,.jpeg,.png,.webp">
 
             <?php if (session('errors.imagen')): ?>
 
@@ -79,8 +98,11 @@
 
         <div class="d-flex justify-content-end gap-2 mt-4">
 
-            <a href="<?= base_url('admin/productos') ?>" 
-               class="btn-cancelar">
+            <a href="<?= $tipo === 'promocion'
+                ? base_url('admin/promociones')
+                : base_url('admin/productos')
+            ?>"
+            class="btn-cancelar">
                 Cancelar
             </a>
 
@@ -94,6 +116,7 @@
     </form>
 
 </div>
+
 <script>
 
 document.getElementById('imagen').addEventListener('change', function(event) {
@@ -112,7 +135,8 @@ document.getElementById('imagen').addEventListener('change', function(event) {
         if (sinImagen) {
             sinImagen.classList.add('d-none');
         }
-    }    
+
+    }
 
 });
 
