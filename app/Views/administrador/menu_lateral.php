@@ -25,6 +25,14 @@
             </a>
         </li>
 
+        <!-- Pedidos -->
+        <li class="<?= uri_string() == 'admin/pedidos' ? 'activo' : '' ?>">
+            <a href="<?= base_url('admin/pedidos') ?>">
+                <i class="bi bi-receipt"></i>
+                <span>Pedidos</span>
+            </a>
+        </li>
+
         <!-- Productos -->
         <li class="<?= uri_string() == 'admin/productos' ? 'activo' : '' ?>">
             <a href="<?= base_url('admin/productos') ?>">

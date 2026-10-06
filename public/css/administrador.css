@@ -10,7 +10,6 @@ body {
     background: #ffffff;
 }
 
-/* CONTENEDOR PRINCIPAL */
 .login-admin {
     min-height: 100vh;
 
@@ -77,8 +76,6 @@ body {
     max-width: 100%;
 }
 
-/* ENCABEZADO */
-
 .login-admin-header {
     text-align: center;
     margin-bottom: 30px;
@@ -101,9 +98,6 @@ body {
     margin: 0;
 }
 
-
-/* CAMPOS */
-
 .admin-input-group {
     margin-bottom: 22px;
 }
@@ -124,9 +118,6 @@ body {
 
     color: #E63270;
 }
-
-
-/* INPUT */
 
 .admin-input {
     position: relative;
@@ -176,9 +167,6 @@ body {
     box-shadow: 0 0 0 3px rgba(255, 43, 131, 0.12);
 }
 
-
-/* MOSTRAR / OCULTAR CONTRASEÑA */
-
 .toggle-password {
     position: absolute;
 
@@ -203,9 +191,6 @@ body {
     color: #ff2b83;
 }
 
-
-/* ERROR */
-
 .admin-error {
     display: block;
 
@@ -215,9 +200,6 @@ body {
 
     font-size: 13px;
 }
-
-
-/* BOTÓN */
 
 .btn-login-admin {
     width: 100%;
@@ -252,9 +234,6 @@ body {
 .btn-login-admin i {
     margin-left: 8px;
 }
-
-
-/* PIE */
 
 .login-admin-footer {
     display: flex;
