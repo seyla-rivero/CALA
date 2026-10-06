@@ -24,6 +24,7 @@ $routes->post('carrito/confirmar-pedido', 'Carrito::confirmarPedido');
 
 $routes->get('admin', 'Administrador::login');
 $routes->post('admin/validarLogin', 'Administrador::validarLogin');
+$routes->get('logoutAdmi', 'Administrador::logoutAdmi');
 
 $routes->get('admin/panel', 'Administrador::panel');
 
@@ -48,3 +49,11 @@ $routes->get('admin/editar_imagen_promocion/(:num)', 'Promocion::editarImagen/$1
 $routes->post('admin/actualizar_imagen_promocion/(:num)', 'Promocion::actualizarImagen/$1');
 $routes->post('admin/desactivar_promocion/(:num)', 'Promocion::desactivarPromocion/$1');
 $routes->post('admin/activar_promocion/(:num)', 'Promocion::activarPromocion/$1');
+
+$routes->get('admin/zonas', 'Zona::index');
+$routes->get('admin/agregar_zona', 'Zona::agregarZona');
+$routes->post('admin/guardar_zona', 'Zona::guardarZona');
+$routes->get('admin/editar_zona/(:num)', 'Zona::editarZona/$1');
+$routes->post('admin/actualizar_zona/(:num)', 'Zona::actualizarZona/$1');
+$routes->post('admin/desactivar_zona/(:num)', 'Zona::desactivarZona/$1');
+$routes->post('admin/activar_zona/(:num)', 'Zona::activarZona/$1');

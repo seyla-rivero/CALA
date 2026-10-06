@@ -65,7 +65,7 @@
                             <i class="bi bi-envelope-fill"></i>
                             Correo electrónico
                         </label>
-                        <input type="email" name="email" class="form-control input-cala" value="<?= old('email') ?>" placeholder="Correo electrónico">
+                        <input type="text" name="email" class="form-control input-cala" value="<?= old('email') ?>" placeholder="Correo electrónico">
                         <?php if(isset($errors['email'])): ?>
                             <small class="text-danger">
                                 <?= $errors['email'] ?>

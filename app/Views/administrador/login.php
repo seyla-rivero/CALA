@@ -33,7 +33,7 @@
 
                     <i class="bi bi-envelope"></i>
 
-                    <input type="email" id="email" name="email" placeholder="Ingresá tu correo" value="<?= old('email') ?>" autocomplete="email">
+                    <input type="text" id="email" name="email" placeholder="Ingresá tu correo" value="<?= old('email') ?>" autocomplete="email">
                 </div>
 
                 <?php if (isset($errors['email'])): ?>

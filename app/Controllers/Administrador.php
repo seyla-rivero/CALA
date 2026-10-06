@@ -15,10 +15,10 @@ class Administrador extends BaseController
     {
         $rules = [
             'email' => [
-                'rules' => 'required|valid_email|is_not_unique[administrador.email]',
+                'rules' => 'required|regex_match[/^[\p{L}\p{N}._%+\-]+@[\p{L}\p{N}.-]+\.[\p{L}]{2,}$/u]|is_not_unique[administrador.email]',
                 'errors' => [
                     'required' => 'El email es obligatorio',
-                    'valid_email' => 'Ingresá un email válido',
+                    'regex_match' => 'Ingresá un email válido',
                     'is_not_unique' => 'El email no está registrado'
                 ]
             ],
@@ -44,7 +44,7 @@ class Administrador extends BaseController
 
         $administrador = $administradorModel
             ->where('email', $email)
-            ->first();
+            ->first(); 
 
         if (!password_verify($password, $administrador['contraseña'])) {
             return redirect()->back()
@@ -67,5 +67,11 @@ class Administrador extends BaseController
     public function panel()
     {
         return view('administrador/panel');
+    }
+    public function logoutAdmi()
+    {
+        session()->destroy();
+
+        return redirect()->to('admin');
     }
 }

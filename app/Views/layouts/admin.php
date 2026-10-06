@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="<?= base_url('css/administrador.css') ?>">
     <link rel="stylesheet" href="<?= base_url('css/panel.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('css/productos_promociones.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/produc_promo_zonas.css') ?>">
 </head>
 <body>
 

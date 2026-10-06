@@ -4,6 +4,17 @@
         <img src="<?= base_url('img/logoCala.jpeg') ?>" alt="CALA">
     </div>
 
+    <!-- Administrador -->
+    <div class="usuario-panel">
+        <i class="bi bi-person-circle"></i>
+        <div>
+            <span class="nombre-admin">
+                <?= session()->get('nombreAdministrador') ?>
+            </span>
+            <span class="rol-admin">Administrador</span>
+        </div>
+    </div>
+
     <ul class="menu-panel">
 
         <!-- Dashboard -->
@@ -40,7 +51,7 @@
 
         <!-- Cerrar sesión -->
         <li>
-            <a href="#">
+           <a href="<?= site_url('logoutAdmi') ?>" title="Cerrar sesión">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Cerrar sesión</span>
             </a>

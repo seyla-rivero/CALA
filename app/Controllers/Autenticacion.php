@@ -11,10 +11,10 @@ class Autenticacion extends BaseController
     {
     $rules = [
         'email' => [
-            'rules' => 'required|valid_email|is_not_unique[cliente.email]',
+            'rules' => 'required|regex_match[/^[\p{L}\p{N}._%+\-]+@[\p{L}\p{N}.-]+\.[\p{L}]{2,}$/u]|is_not_unique[cliente.email]',
             'errors' => [
                 'required' => 'El email es obligatorio',
-                'valid_email' => 'Ingresá un email válido',
+                'regex_match' => 'Ingresá un email válido',
                 'is_not_unique' => 'El email no está registrado'
             ]
         ],
@@ -76,10 +76,10 @@ class Autenticacion extends BaseController
             ]
         ],
         'email' => [
-            'rules' => 'required|valid_email|is_unique[cliente.email]',
+            'rules' => 'required|regex_match[/^[\p{L}\p{N}._%+\-]+@[\p{L}\p{N}.-]+\.[\p{L}]{2,}$/u]|is_not_unique[cliente.email]',
             'errors' => [
                 'required' => 'El email es obligatorio',
-                'valid_email' => 'Ingresá un email válido',
+                'regex_match' => 'Ingresá un email válido',
                 'is_unique' => 'Este correo ya está registrado'
             ]
         ],

@@ -1,4 +1,38 @@
 /*Menu panel y vista del panel para compu*/
+/* Usuario administrador */
+.usuario-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 10px;
+    margin: 10px 0 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.usuario-panel > i {
+    font-size: 32px;
+    flex-shrink: 0;
+}
+
+.nombre-admin {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+
+.rol-admin {
+    display: block;
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 2px;
+    text-align: left;
+}
 .dashboard {
     display: flex;
     min-height: 100vh;
@@ -137,6 +171,22 @@
 }
 
 @media (max-width: 768px) {
+
+    /* Usuario administrador en celular */
+
+    .usuario-panel {
+        justify-content: center;
+        padding: 12px 0;
+        margin: 5px 0 20px;
+    }
+
+    .usuario-panel > i {
+        font-size: 26px;
+    }
+
+    .usuario-panel > div {
+        display: none;
+    }
 
     /* Sidebar reducido */
     .sidebar {
@@ -334,6 +384,10 @@
 }
 
 @media (max-width: 576px) {
+
+    .usuario-panel > i {
+        font-size: 24px;
+    }
 
     .sidebar {
         width: 65px;

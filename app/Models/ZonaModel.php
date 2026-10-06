@@ -15,4 +15,10 @@ class ZonaModel extends Model
         'activo',
         'idSucursal'
     ];
+
+    public function obtenerZonasAdmin($idSucursal)
+    {
+        return $this->where('idSucursal', $idSucursal)
+                    ->findAll();
+    }
 }
