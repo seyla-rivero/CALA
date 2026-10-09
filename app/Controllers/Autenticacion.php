@@ -76,7 +76,7 @@ class Autenticacion extends BaseController
             ]
         ],
         'email' => [
-            'rules' => 'required|regex_match[/^[\p{L}\p{N}._%+\-]+@[\p{L}\p{N}.-]+\.[\p{L}]{2,}$/u]|is_not_unique[cliente.email]',
+            'rules' => 'required|regex_match[/^[\p{L}\p{N}._%+\-]+@[\p{L}\p{N}.-]+\.[\p{L}]{2,}$/u]|is_unique[cliente.email]',
             'errors' => [
                 'required' => 'El email es obligatorio',
                 'regex_match' => 'Ingresá un email válido',

@@ -10,76 +10,86 @@
         <h1>Menú</h1>
         <p>Elegí tus productos favoritos</p>
     </div>
+    <?php if (!empty($productos)): ?>
+        <!-- Filtro categorias-->
+        <div class="menu-categorias">
 
-    <!-- Filtro categorias-->
-    <div class="menu-categorias">
+            <button class="categoria active" data-categoria="todos"> Todos </button>
 
-        <button class="categoria active" data-categoria="todos"> Todos </button>
-
-        <?php foreach ($categorias as $categoria): ?>
-            <button class="categoria" data-categoria="<?= esc($categoria['idCategoria']) ?>">
-                <?= esc($categoria['nombre']) ?>
-            </button>
-        <?php endforeach; ?>    
-
-    </div>
-    <?php foreach ($categorias as $categoria): ?> 
-
-        <?php
-            $productosCategoria = array_filter(
-                $productos,
-                function ($producto) use ($categoria) {
-                    return $producto['idCategoria'] == $categoria['idCategoria'];
-                }
-            );
-            ?>
-
-        <!--Seccion categorias-->
-                
-        <?php if (!empty($productosCategoria)): ?>
-
-            <div class="categoria-seccion" data-seccion="<?= esc($categoria['idCategoria']) ?>">
-
-                <h2>
+            <?php foreach ($categorias as $categoria): ?>
+                <button class="categoria" data-categoria="<?= esc($categoria['idCategoria']) ?>">
                     <?= esc($categoria['nombre']) ?>
-                </h2>
+                </button>
+            <?php endforeach; ?>    
 
-                <div class="productos-grid">
+        </div>
+        <?php foreach ($categorias as $categoria): ?> 
 
-                    <?php foreach ($productosCategoria as $producto): ?>
-                        <div class="producto-card">
+            <?php
+                $productosCategoria = array_filter(
+                    $productos,
+                    function ($producto) use ($categoria) {
+                        return $producto['idCategoria'] == $categoria['idCategoria'];
+                    }
+                );
+                ?>
 
-                            <img src="<?= base_url('img/' . $producto['urlImagen']) ?>" alt="<?= esc($producto['nombre']) ?>">
+            <!--Seccion categorias-->
+                    
+            <?php if (!empty($productosCategoria)): ?>
 
-                            <div class="producto-info">
+                <div class="categoria-seccion" data-seccion="<?= esc($categoria['idCategoria']) ?>">
 
-                                <h3>
-                                    <?= esc($producto['nombre']) ?>
-                                </h3>
+                    <h2>
+                        <?= esc($categoria['nombre']) ?>
+                    </h2>
 
-                                <span class="precio"> $<?= number_format($producto['precio'], 0, ',', '.') ?> </span>
+                    <div class="productos-grid">
 
-                                <button class="btn-ver" 
-                                    onclick="abrirModal(
-                                    '<?= $producto['idItem'] ?>',
-                                    '<?= esc($producto['nombre'], 'js') ?>',
-                                    '<?= esc($producto['descripcion'], 'js') ?>',
-                                    <?= $producto['precio'] ?>,
-                                    '<?= base_url('img/' . $producto['urlImagen']) ?>',
-                                    0,
-                                    0,
-                                    <?= $producto['idCategoria'] ?>
-                                )">
-                                Ver más
-                                </button>
+                        <?php foreach ($productosCategoria as $producto): ?>
+                            <div class="producto-card">
+
+                                <img src="<?= base_url('img/' . $producto['urlImagen']) ?>" alt="<?= esc($producto['nombre']) ?>">
+
+                                <div class="producto-info">
+
+                                    <h3>
+                                        <?= esc($producto['nombre']) ?>
+                                    </h3>
+
+                                    <span class="precio"> $<?= number_format($producto['precio'], 0, ',', '.') ?> </span>
+
+                                    <button class="btn-ver" 
+                                        onclick="abrirModal(
+                                        '<?= $producto['idItem'] ?>',
+                                        '<?= esc($producto['nombre'], 'js') ?>',
+                                        '<?= esc($producto['descripcion'], 'js') ?>',
+                                        <?= $producto['precio'] ?>,
+                                        '<?= base_url('img/' . $producto['urlImagen']) ?>',
+                                        0,
+                                        0,
+                                        <?= $producto['idCategoria'] ?>
+                                    )">
+                                    Ver más
+                                    </button>
+                                </div>
+
                             </div>
-
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
-            </div>
-        <?php endif; ?>      
-    <?php endforeach; ?>         
+            <?php endif; ?>      
+        <?php endforeach; ?>   
+    <?php else: ?>
+
+    <!-- Mensaje cuando no hay productos activos -->
+        <div class="mensaje-menu-vacio">
+            <h3>¡Estamos preparando algo rico!</h3>
+            <p>En este momento no hay productos disponibles en el menú.</p>
+            <p>Volvé a consultar pronto.</p>
+        </div>
+
+    <?php endif; ?>          
 </section>
 <!--Modal detalle-->
 <div id="modalProducto" class="modal-producto">

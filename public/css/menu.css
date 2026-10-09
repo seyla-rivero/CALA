@@ -128,6 +128,22 @@
     background: #cF245C;
 }
 
+.mensaje-menu-vacio {
+    text-align: center;
+    padding: 60px 20px;
+    margin: 30px auto;
+    max-width: 700px;
+}
+
+.mensaje-menu-vacio h3 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+}
+
+.mensaje-menu-vacio p {
+    margin-bottom: 8px;
+}
+
 /*Modal detalle*/
 .modal-producto {
     display: none;

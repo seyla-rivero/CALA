@@ -10,47 +10,57 @@
         <h1>Promociones</h1>
         <p>¡Aprovechá nuestras promos!</p>
     </div>
+
+    <?php if (!empty($productos)): ?>
     
-    <div class="productos-grid">
+        <div class="productos-grid">
 
-        <?php foreach ($productos as $producto): ?>
+            <?php foreach ($productos as $producto): ?>
 
-            <div class="producto-card">
+                <div class="producto-card">
 
-                <img
-                    src="<?= base_url('img/' . $producto['urlImagen']) ?>"
-                    alt="<?= esc($producto['nombre']) ?>">
+                    <img
+                        src="<?= base_url('img/' . $producto['urlImagen']) ?>"
+                        alt="<?= esc($producto['nombre']) ?>">
 
-                <div class="producto-info">
+                    <div class="producto-info">
 
-                    <h3>
-                        <?= esc($producto['nombre']) ?>
-                    </h3>
+                        <h3>
+                            <?= esc($producto['nombre']) ?>
+                        </h3>
 
-                    <span class="precio">
-                        $<?= number_format($producto['precio'], 0, ',', '.') ?>
-                    </span>
+                        <span class="precio">
+                            $<?= number_format($producto['precio'], 0, ',', '.') ?>
+                        </span>
 
-                    <button
-                        class="btn-ver"
-                        onclick="abrirModal(
-                            <?= $producto['idItem'] ?>,
-                            '<?= esc($producto['nombre'], 'js') ?>',
-                            '<?= esc($producto['descripcion'], 'js') ?>',
-                            <?= $producto['precio'] ?>,
-                            '<?= base_url('img/' . $producto['urlImagen']) ?>',
-                            <?= $producto['incluyeBebida'] ?>,
-                            <?= $producto['incluyeEmpanadas'] ?>
-                        )">
-                        Ver más
-                    </button>
+                        <button
+                            class="btn-ver"
+                            onclick="abrirModal(
+                                <?= $producto['idItem'] ?>,
+                                '<?= esc($producto['nombre'], 'js') ?>',
+                                '<?= esc($producto['descripcion'], 'js') ?>',
+                                <?= $producto['precio'] ?>,
+                                '<?= base_url('img/' . $producto['urlImagen']) ?>',
+                                <?= $producto['incluyeBebida'] ?>,
+                                <?= $producto['incluyeEmpanadas'] ?>
+                            )">
+                            Ver más
+                        </button>
 
+                    </div>
                 </div>
-            </div>
 
-        <?php endforeach; ?>
+            <?php endforeach; ?>            
+        </div>
+    <?php else: ?>
 
-    </div>
+        <div class="mensaje-menu-vacio">
+            <h3>¡Pronto tendremos nuevas promociones!</h3>
+            <p>En este momento no hay promociones disponibles.</p>
+            <p>Volvé a consultar pronto.</p>
+        </div>
+
+    <?php endif; ?>    
 </section>    
 <!--Modal detalle-->
 <div id="modalProducto" class="modal-producto">

@@ -82,22 +82,35 @@
 
                     <div class="banner-overlay">
 
-                        <span class="vendida-titulo">
-                            LA MÁS <span>VENDIDA</span>
-                        </span>
+                        <?php if (!empty($masVendida)): ?>
 
-                        <h3><?= esc($masVendida['nombre']) ?></h3>
+                            <span class="vendida-titulo">
+                                LA MÁS <span>VENDIDA</span>
+                            </span>
 
-                        <span class="promo-precio">
-                            $<?= number_format($masVendida['precio'], 0, ',', '.') ?>
-                        </span>
+                            <h3><?= esc($masVendida['nombre']) ?></h3>
 
-                        <button
-                            type="button"
-                            class="btn-promo"
-                            onclick="verMasVendida()">
-                            Ver promo
-                        </button>
+                            <span class="promo-precio">
+                                $<?= number_format($masVendida['precio'], 0, ',', '.') ?>
+                            </span>
+
+                            <button
+                                type="button"
+                                class="btn-promo"
+                                onclick="verMasVendida()">
+                                Ver promo
+                            </button>
+                        <?php else: ?>
+
+                            <span class="vendida-titulo">
+                                LA MÁS <span>VENDIDA</span>
+                            </span>
+
+                            <h3>¡Próximamente!</h3>
+
+                            <p>Por el momento no hay promociones destacadas.</p>
+
+                        <?php endif; ?>    
 
                     </div>
 
