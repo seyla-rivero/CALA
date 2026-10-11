@@ -34,9 +34,10 @@ class Carrito extends BaseController
 
         if ($pedido) {
 
-            // Obtener los detalles junto con los datos del producto
+            // Obtener los detalles del carrito junto con los datos actuales
+            // de cada producto
             $carrito = $detallePedidoModel
-                ->select('detalle_pedido.*, item_pedido.nombre, item_pedido.urlImagen')
+                ->select('detalle_pedido.*, item_pedido.nombre, item_pedido.urlImagen, item_pedido.precio AS precioActual')
                 ->join(
                     'item_pedido',
                     'item_pedido.idItem = detalle_pedido.idItem'
@@ -45,9 +46,42 @@ class Carrito extends BaseController
                 ->findAll();
 
             foreach ($carrito as &$item) {
-                $item['precio'] = $item['precioUnitario'];
-                $total += $item['subTotal'];
+
+                // Obtener el precio actual del producto
+                $precioActual = $item['precioActual'];
+                $cantidad = (int) $item['cantidad'];
+
+                // Recalcular el subtotal con el precio vigente
+                $subtotal = $precioActual * $cantidad;
+
+                // Actualizar el detalle del pedido en la base de datos
+                $detallePedidoModel->update(
+                    $item['idDetallePedido'],
+                    [
+                        'precioUnitario' => $precioActual,
+                        'subTotal' => $subtotal
+                    ]
+                );
+
+                // Actualizar los datos que se muestran en la vista
+                $item['precio'] = $precioActual;
+                $item['precioUnitario'] = $precioActual;
+                $item['subTotal'] = $subtotal;
+
+                // Acumular el total del pedido
+                $total += $subtotal;
             }
+
+            unset($item);
+
+            // Actualizar el subtotal y el total del pedido
+            $pedidoModel->update(
+                $pedido['idPedido'],
+                [
+                    'subTotal' => $total,
+                    'total' => $total
+                ]
+            );
         }
 
         return view('cliente/carrito', [
@@ -130,42 +164,64 @@ class Carrito extends BaseController
             $pedido = $pedidoModel->find($idPedido);
         }
         
-        // Verificar si el producto ya está en el carrito
-        $detalle = $detallePedidoModel
+        // Buscar detalles del mismo producto dentro del carrito
+        $detallesExistentes = $detallePedidoModel
             ->where('idPedido', $pedido['idPedido'])
             ->where('idItem', $idItem)
-            ->first();
+            ->findAll();
+
+        // Buscar un detalle que tenga las mismas opciones y comentario
+        $detalle = null;
+
+        foreach ($detallesExistentes as $detalleExistente) {
+
+            $mismoComentario = trim(
+                (string) ($detalleExistente['comentario'] ?? '')
+            ) === $comentario;
+
+            $mismaBebida = trim(
+                (string) ($detalleExistente['bebida'] ?? '')
+            ) === $bebida;
+
+            $mismasEmpanadas = trim(
+                (string) ($detalleExistente['empanadas'] ?? '')
+            ) === $empanadas;
+
+            if (
+                $mismoComentario &&
+                $mismaBebida &&
+                $mismasEmpanadas
+            ) {
+                $detalle = $detalleExistente;
+                break;
+            }
+        }
 
         if ($detalle) {
 
-            // Si ya existe, aumentar cantidad
-            $nuevaCantidad = $detalle['cantidad'] + $cantidad;
+            // Si coincide el producto y sus opciones, sumar cantidad
+            $nuevaCantidad = (int) $detalle['cantidad'] + (int) $cantidad;
             $nuevoSubtotal = $nuevaCantidad * $item['precio'];
 
-            $detallePedidoModel->update($detalle['idDetallePedido'], [
-                'cantidad' => $nuevaCantidad,
-                'precioUnitario' => $item['precio'],
-                'subTotal' => $nuevoSubtotal,
-                'comentario' => $comentario !== ''
-                    ? $comentario
-                    : $detalle['comentario'],
-                'bebida' => $bebida !== ''
-                    ? $bebida
-                    : $detalle['bebida'],
-                'empanadas' => $empanadas !== ''
-                    ? $empanadas
-                    : $detalle['empanadas']        
-            ]);
+            $detallePedidoModel->update(
+                $detalle['idDetallePedido'],
+                [
+                    'cantidad' => $nuevaCantidad,
+                    'precioUnitario' => $item['precio'],
+                    'subTotal' => $nuevoSubtotal
+                ]
+            );
 
         } else {
 
-            // Agregar nuevo detalle
-            $subtotal = $item['precio'] * $cantidad;
+            // Si las opciones o el comentario son diferentes,
+            // crear un nuevo detalle en el carrito
+            $subtotal = $item['precio'] * (int) $cantidad;
 
             $detallePedidoModel->insert([
                 'idPedido' => $pedido['idPedido'],
                 'idItem' => $item['idItem'],
-                'cantidad' => $cantidad,
+                'cantidad' => (int) $cantidad,
                 'precioUnitario' => $item['precio'],
                 'subTotal' => $subtotal,
                 'comentario' => $comentario,
@@ -198,15 +254,16 @@ class Carrito extends BaseController
         ]);
     }
 
+    
     public function aumentarCantidad()
     {
         $datos = $this->request->getJSON(true);
-        $idItem = $datos['idItem'] ?? null;
+        $idDetallePedido = $datos['idDetallePedido'] ?? null;
 
-        if (!$idItem) {
+        if (!$idDetallePedido) {
             return $this->response->setJSON([
                 'ok' => false,
-                'mensaje' => 'No se recibió el producto.'
+                'mensaje' => 'No se recibió el detalle del pedido.'
             ]);
         }
 
@@ -237,52 +294,57 @@ class Carrito extends BaseController
             ]);
         }
 
-        // Buscar el detalle del producto
+        // Buscar la línea específica dentro del carrito del cliente
         $detalle = $detallePedidoModel
+            ->where('idDetallePedido', $idDetallePedido)
             ->where('idPedido', $pedido['idPedido'])
-            ->where('idItem', $idItem)
             ->first();
 
         if (!$detalle) {
             return $this->response->setJSON([
                 'ok' => false,
-                'mensaje' => 'El producto no está en el carrito.'
+                'mensaje' => 'El artículo no está en el carrito.'
             ]);
         }
 
-        // Obtener el precio del producto
-        $item = $itemPedidoModel->find($idItem);
+        // Verificar que el producto siga disponible
+        $item = $itemPedidoModel
+            ->where('idItem', $detalle['idItem'])
+            ->where('activo', 1)
+            ->first();
 
         if (!$item) {
             return $this->response->setJSON([
                 'ok' => false,
-                'mensaje' => 'No se encontró el producto.'
+                'mensaje' => 'El producto ya no está disponible.'
             ]);
         }
 
-        // Aumentar cantidad
-        $nuevaCantidad = $detalle['cantidad'] + 1;
-        $nuevoSubtotal = $nuevaCantidad * $item['precio'];
+        // Aumentar únicamente la cantidad de esta línea
+        $nuevaCantidad = (int) $detalle['cantidad'] + 1;
+        $nuevoSubtotal = $nuevaCantidad * (float) $item['precio'];
 
-        // Actualizar detalle
-        $detallePedidoModel->update($detalle['idDetallePedido'], [
-            'cantidad' => $nuevaCantidad,
-            'precioUnitario' => $item['precio'],
-            'subTotal' => $nuevoSubtotal
-        ]);
+        $detallePedidoModel->update(
+            $detalle['idDetallePedido'],
+            [
+                'cantidad' => $nuevaCantidad,
+                'precioUnitario' => $item['precio'],
+                'subTotal' => $nuevoSubtotal
+            ]
+        );
 
-        // Recalcular subtotal del pedido
+        // Recalcular el subtotal del pedido
         $detalles = $detallePedidoModel
             ->where('idPedido', $pedido['idPedido'])
             ->findAll();
 
         $subtotalPedido = 0;
 
-        foreach ($detalles as $detalle) {
-            $subtotalPedido += $detalle['subTotal'];
+        foreach ($detalles as $detalleActual) {
+            $subtotalPedido += $detalleActual['subTotal'];
         }
 
-        // Actualizar pedido
+        // Actualizar los totales del carrito
         $pedidoModel->update($pedido['idPedido'], [
             'subTotal' => $subtotalPedido,
             'total' => $subtotalPedido
@@ -293,15 +355,16 @@ class Carrito extends BaseController
         ]);
     }
 
+    
     public function disminuirCantidad()
     {
         $datos = $this->request->getJSON(true);
-        $idItem = $datos['idItem'] ?? null;
+        $idDetallePedido = $datos['idDetallePedido'] ?? null;
 
-        if (!$idItem) {
+        if (!$idDetallePedido) {
             return $this->response->setJSON([
                 'ok' => false,
-                'mensaje' => 'No se recibió el producto.'
+                'mensaje' => 'No se recibió el detalle del pedido.'
             ]);
         }
 
@@ -319,7 +382,7 @@ class Carrito extends BaseController
         $detallePedidoModel = new DetallePedidoModel();
         $itemPedidoModel = new ItemPedidoModel();
 
-        // Buscar el carrito actual
+        // Buscar el carrito actual del cliente
         $pedido = $pedidoModel
             ->where('idCliente', $idCliente)
             ->where('estado', 'carrito')
@@ -332,43 +395,40 @@ class Carrito extends BaseController
             ]);
         }
 
-        // Buscar el detalle
+        // Buscar la línea específica dentro del carrito
         $detalle = $detallePedidoModel
+            ->where('idDetallePedido', $idDetallePedido)
             ->where('idPedido', $pedido['idPedido'])
-            ->where('idItem', $idItem)
             ->first();
 
         if (!$detalle) {
             return $this->response->setJSON([
                 'ok' => false,
-                'mensaje' => 'El producto no está en el carrito.'
+                'mensaje' => 'El artículo no está en el carrito.'
             ]);
         }
 
-         // Buscar el producto para obtener su precio
-        $item = $itemPedidoModel->find($idItem);
-
-        if (!$item) {
-            return $this->response->setJSON([
-                'ok' => false,
-                'mensaje' => 'No se encontró el producto.'
-            ]);
-        }
-
-        // Si la cantidad es 1, eliminar el producto del carrito
-        if ($detalle['cantidad'] <= 1) {
+        // Si la cantidad es 1, eliminar solamente esta línea
+        if ((int) $detalle['cantidad'] <= 1) {
 
             $detallePedidoModel->delete($detalle['idDetallePedido']);
 
         } else {
 
-            // Disminuir cantidad
-            $nuevaCantidad = $detalle['cantidad'] - 1;
+            // Obtener el precio actual del producto
+            $item = $itemPedidoModel->find($detalle['idItem']);
 
-            // Calcular nuevo subtotal
-            $nuevoSubtotal = $nuevaCantidad * $item['precio'];
+            if (!$item) {
+                return $this->response->setJSON([
+                    'ok' => false,
+                    'mensaje' => 'No se encontró el producto.'
+                ]);
+            }
 
-            // Actualizar detalle
+            // Disminuir la cantidad de esta línea
+            $nuevaCantidad = (int) $detalle['cantidad'] - 1;
+            $nuevoSubtotal = $nuevaCantidad * (float) $item['precio'];
+
             $detallePedidoModel->update(
                 $detalle['idDetallePedido'],
                 [
@@ -379,18 +439,18 @@ class Carrito extends BaseController
             );
         }
 
-        // Recalcular subtotal
+        // Recalcular el subtotal del pedido
         $detalles = $detallePedidoModel
             ->where('idPedido', $pedido['idPedido'])
             ->findAll();
 
         $subtotalPedido = 0;
 
-        foreach ($detalles as $detalle) {
-            $subtotalPedido += $detalle['subTotal'];
+        foreach ($detalles as $detalleActual) {
+            $subtotalPedido += $detalleActual['subTotal'];
         }
 
-        // Actualizar pedido
+        // Actualizar los totales del carrito
         $pedidoModel->update($pedido['idPedido'], [
             'subTotal' => $subtotalPedido,
             'total' => $subtotalPedido
@@ -400,7 +460,8 @@ class Carrito extends BaseController
             'ok' => true
         ]);
     }
-
+    
+    // Contador de cuantas cosas hay en el carrito
     public function cantidadCarrito()
     {
         $session = session();
@@ -461,9 +522,9 @@ class Carrito extends BaseController
             return redirect()->to('/carrito');
         }
 
-        // Obtener los productos del carrito
+        // Obtener los productos del carrito con sus precios actuales
         $carrito = $detallePedidoModel
-            ->select('detalle_pedido.*, item_pedido.nombre, item_pedido.urlImagen')
+            ->select('detalle_pedido.*, item_pedido.nombre, item_pedido.urlImagen, item_pedido.precio AS precioActual')
             ->join(
                 'item_pedido',
                 'item_pedido.idItem = detalle_pedido.idItem'
@@ -479,9 +540,42 @@ class Carrito extends BaseController
         $total = 0;
 
         foreach ($carrito as &$item) {
-            $item['precio'] = $item['precioUnitario'];
-            $total += $item['subTotal'];
+
+            // Tomar el precio vigente del producto
+            $precioActual = (float) $item['precioActual'];
+            $cantidad = (int) $item['cantidad'];
+
+            // Recalcular el subtotal
+            $subtotal = $precioActual * $cantidad;
+
+            // Guardar el precio y subtotal actualizados
+            $detallePedidoModel->update(
+                $item['idDetallePedido'],
+                [
+                    'precioUnitario' => $precioActual,
+                    'subTotal' => $subtotal
+                ]
+            );
+
+            // Actualizar los datos que recibe la vista
+            $item['precio'] = $precioActual;
+            $item['precioUnitario'] = $precioActual;
+            $item['subTotal'] = $subtotal;
+
+            $total += $subtotal;
         }
+
+        unset($item);
+
+        // Actualizar los importes del carrito
+        $pedidoModel->update($pedido['idPedido'], [
+            'subTotal' => $total,
+            'total' => $total
+        ]);
+
+        // Actualizar los datos del pedido utilizados en la vista
+        $pedido['subTotal'] = $total;
+        $pedido['total'] = $total;
 
         $zonaModel = new ZonaModel();
         $sucursalModel = new SucursalModel();
@@ -615,11 +709,40 @@ class Carrito extends BaseController
             ]);
         }
 
-        // Calcular subtotal nuevamente desde la base de datos
+        // Actualizar los precios antes de confirmar el pedido
+        $itemPedidoModel = new ItemPedidoModel();
         $subtotal = 0;
 
         foreach ($detalles as $detalle) {
-            $subtotal += $detalle['subTotal'];
+
+            // Consultar el precio vigente del producto
+            $item = $itemPedidoModel
+                ->where('idItem', $detalle['idItem'])
+                ->where('activo', 1)
+                ->first();
+
+            // No confirmar si el producto ya no está disponible
+            if (!$item) {
+                return $this->response->setJSON([
+                    'ok' => false,
+                    'mensaje' => 'Uno de los productos del carrito ya no está disponible. Volvé al carrito para revisar tu pedido.'
+                ]);
+            }
+
+            $precioActual = (float) $item['precio'];
+            $cantidad = (int) $detalle['cantidad'];
+            $nuevoSubtotal = $precioActual * $cantidad;
+
+            // Actualizar el detalle del pedido
+            $detallePedidoModel->update(
+                $detalle['idDetallePedido'],
+                [
+                    'precioUnitario' => $precioActual,
+                    'subTotal' => $nuevoSubtotal
+                ]
+            );
+
+            $subtotal += $nuevoSubtotal;
         }
 
         // Calcular costo de envío

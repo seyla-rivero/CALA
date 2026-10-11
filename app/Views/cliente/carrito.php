@@ -79,14 +79,14 @@
 
                             <div class="carrito-cantidad">
 
-                                <button type="button" class="btn btn-outline-secondary" onclick="disminuirCantidadCarrito(<?= $item['idItem'] ?>)">−
+                                <button type="button" class="btn btn-outline-secondary" onclick="disminuirCantidadCarrito(<?= $item['idDetallePedido'] ?>)">−
                                 </button>
 
                                 <span>
                                     <?= $item['cantidad'] ?>
                                 </span>
 
-                                <button type="button" class="btn btn-outline-secondary" onclick="aumentarCantidadCarrito(<?= $item['idItem'] ?>)">+
+                                <button type="button" class="btn btn-outline-secondary" onclick="aumentarCantidadCarrito(<?= $item['idDetallePedido'] ?>)">+
                                 </button>
 
                             </div>

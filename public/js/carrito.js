@@ -79,7 +79,7 @@ function agregarAlCarrito() {
 }
 
 // Actualizacion de botones de + y - en el carrito del pedido
-function aumentarCantidadCarrito(idItem) {
+function aumentarCantidadCarrito(idDetallePedido) {
 
     fetch(urlAumentarCantidad, {
         method: "POST",
@@ -87,7 +87,7 @@ function aumentarCantidadCarrito(idItem) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            idItem: idItem
+            idDetallePedido: idDetallePedido
         })
     })
     .then(response => response.json())
@@ -106,7 +106,7 @@ function aumentarCantidadCarrito(idItem) {
     });
 }
 
-function disminuirCantidadCarrito(idItem) {
+function disminuirCantidadCarrito(idDetallePedido) {
 
     fetch(urlDisminuirCantidad, {
         method: "POST",
@@ -114,7 +114,7 @@ function disminuirCantidadCarrito(idItem) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            idItem: idItem
+            idDetallePedido: idDetallePedido
         })
     })
     .then(response => response.json())
