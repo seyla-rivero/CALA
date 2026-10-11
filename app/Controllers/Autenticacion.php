@@ -55,6 +55,13 @@ class Autenticacion extends BaseController
             'nombre' => $cliente['nombre'],
             'logueado' => true
         ]);
+        // Cerrar la autenticación del administrador
+        session()->remove([
+            'idAdministrador',
+            'nombreAdministrador',
+            'idSucursal',
+            'administradorLogueado'
+        ]);
 
         return redirect()->to('/');
     }
@@ -133,6 +140,13 @@ class Autenticacion extends BaseController
             'nombre'    => $cliente['nombre'],
             'logueado'  => true
         ]);
+        // Cerrar la autenticación del administrador
+        session()->remove([
+            'idAdministrador',
+            'nombreAdministrador',
+            'idSucursal',
+            'administradorLogueado'
+        ]);
 
         return redirect()->to('/')
             ->with('success', 'Cuenta creada correctamente');
@@ -141,7 +155,11 @@ class Autenticacion extends BaseController
         
     public function logout()
     {
-        session()->destroy();
+        session()->remove([
+            'idCliente',
+            'nombre',
+            'logueado'
+        ]);
 
         return redirect()->to('/');
     }

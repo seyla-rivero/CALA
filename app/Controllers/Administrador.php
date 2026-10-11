@@ -60,18 +60,34 @@ class Administrador extends BaseController
             'idSucursal' => $administrador['idSucursal'],
             'administradorLogueado' => true
         ]);
+        // Cerrar la autenticación del cliente
+        session()->remove([
+            'idCliente',
+            'nombre',
+            'logueado'
+        ]);
 
         return redirect()->to('/admin/panel');
     }
 
     public function panel()
     {
+        // Verificar que haya un administrador autenticado
+        if (!session()->get('administradorLogueado')) {
+            return redirect()->to('/admin');
+        }
+
         return view('administrador/panel');
     }
     public function logoutAdmi()
     {
-        session()->destroy();
+        session()->remove([
+            'idAdministrador',
+            'nombreAdministrador',
+            'idSucursal',
+            'administradorLogueado'
+        ]);
 
-        return redirect()->to('admin');
+        return redirect()->to('/admin');
     }
 }
