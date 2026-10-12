@@ -2,6 +2,7 @@
 
 <?= $this->section('contenido') ?>
 <?php /** @var array $producto */ ?>
+<?php /** @var array $categorias */ ?>
 
 <div class="titulo-productos">
 
@@ -21,11 +22,11 @@
                 Nombre del producto
             </label>
 
-            <input type="text" class="form-control <?= session('errors.nombre') ? 'is-invalid' : '' ?>" id="nombre" name="nombre" value="<?= old('nombre', $producto['nombre']) ?>">
+            <input type="text" class="form-control <?= session('errors.nombre') ? 'is-invalid' : '' ?>" id="nombre" name="nombre" value="<?= esc(old('nombre', $producto['nombre'])) ?>">
 
             <?php if (session('errors.nombre')): ?>
                 <div class="invalid-feedback">
-                    <?= session('errors.nombre') ?>
+                    <?= esc(session('errors.nombre')) ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -37,11 +38,11 @@
             </label>
 
             <textarea class="form-control <?= session('errors.descripcion') ? 'is-invalid' : '' ?>" id="descripcion" name="descripcion" rows="4"
-            ><?= old('descripcion', $producto['descripcion']) ?></textarea>
+            ><?= esc(old('descripcion', $producto['descripcion'])) ?></textarea>
 
             <?php if (session('errors.descripcion')): ?>
                 <div class="invalid-feedback">
-                    <?= session('errors.descripcion') ?>
+                    <?= esc(session('errors.descripcion')) ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -52,11 +53,11 @@
                 Precio
             </label>
 
-            <input type="number" step="0.01" class="form-control <?= session('errors.precio') ? 'is-invalid' : '' ?>" id="precio" name="precio" value="<?= old('precio', $producto['precio']) ?>">
+            <input type="number" step="0.01" class="form-control <?= session('errors.precio') ? 'is-invalid' : '' ?>" id="precio" name="precio" value="<?= esc(old('precio', $producto['precio'])) ?>">
 
             <?php if (session('errors.precio')): ?>
                 <div class="invalid-feedback">
-                    <?= session('errors.precio') ?>
+                    <?= esc(session('errors.precio')) ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -66,54 +67,29 @@
             <label for="idCategoria" class="form-label">
                 Categoría
             </label>
-
-            <select class="form-select <?= session('errors.idCategoria') ? 'is-invalid' : '' ?>" id="idCategoria" name="idCategoria">
+            <select
+                class="form-select <?= session('errors.idCategoria') ? 'is-invalid' : '' ?>"
+                id="idCategoria"
+                name="idCategoria">
                 <option value="">Seleccioná una categoría</option>
 
-                <option value="1" <?= old('idCategoria', $producto['idCategoria']) == '1' ? 'selected' : '' ?>>
-                    Hamburguesas
-                </option>
-
-                <option value="2" <?= old('idCategoria', $producto['idCategoria']) == '2' ? 'selected' : '' ?>>
-                    Lomos
-                </option>
-
-                <option value="3" <?= old('idCategoria', $producto['idCategoria']) == '3' ? 'selected' : '' ?>>
-                    Milanesas
-                </option>
-
-                <option value="4" <?= old('idCategoria', $producto['idCategoria']) == '4' ? 'selected' : '' ?>>
-                    Pizzas
-                </option>
-
-                <option value="5" <?= old('idCategoria', $producto['idCategoria']) == '5' ? 'selected' : '' ?>>
-                    Empanadas
-                </option>
-
-                <option value="6" <?= old('idCategoria', $producto['idCategoria']) == '6' ? 'selected' : '' ?>>
-                    Panchos
-                </option>
-
-                <option value="7" <?= old('idCategoria', $producto['idCategoria']) == '7' ? 'selected' : '' ?>>
-                    Especiales
-                </option>
-
-                <option value="8" <?= old('idCategoria', $producto['idCategoria']) == '8' ? 'selected' : '' ?>>
-                    Papas
-                </option>
-
-                <option value="9" <?= old('idCategoria', $producto['idCategoria']) == '9' ? 'selected' : '' ?>>
-                    Bebidas
-                </option>
+                <?php foreach ($categorias as $categoria): ?>
+                    <option
+                        value="<?= esc($categoria['idCategoria']) ?>"
+                        <?= old('idCategoria', $producto['idCategoria']) == $categoria['idCategoria'] ? 'selected' : '' ?>
+                    >
+                        <?= esc($categoria['nombre']) ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
 
             <?php if (session('errors.idCategoria')): ?>
                 <div class="invalid-feedback">
-                    <?= session('errors.idCategoria') ?>
+                    <?= esc(session('errors.idCategoria')) ?>
                 </div>
             <?php endif; ?>
+           
         </div>
-
 
         <div class="d-flex justify-content-end gap-2 mt-4">
 

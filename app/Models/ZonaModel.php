@@ -16,7 +16,7 @@ class ZonaModel extends Model
         'idSucursal'
     ];
 
-    public function obtenerZonasAdmin($idSucursal)
+    public function obtenerZonasAdmin(int $idSucursal)
     {
         return $this->where('idSucursal', $idSucursal)
                     ->findAll();

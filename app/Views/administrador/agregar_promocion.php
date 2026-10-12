@@ -21,11 +21,11 @@
                 Nombre de la promoción
             </label>
 
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Hamburguesa super + papas" value="<?= old('nombre') ?>">
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Hamburguesa super + papas" value="<?= esc(old('nombre', '')) ?>">
 
             <?php if (session('errors.nombre')): ?>
                 <div class="text-danger mt-1">
-                    <?= session('errors.nombre') ?>
+                    <?= esc(session('errors.nombre')) ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -36,11 +36,11 @@
                 Descripción
             </label>
 
-            <textarea class="form-control" id="descripcion" name="descripcion" rows="4" placeholder="Ingresá los ingredientes o detalles de la promoción"><?= old('descripcion') ?></textarea>
+            <textarea class="form-control" id="descripcion" name="descripcion" rows="4" placeholder="Ingresá los ingredientes o detalles de la promoción"><?= esc(old('descripcion', '')) ?></textarea>
 
             <?php if (session('errors.descripcion')): ?>
                 <div class="text-danger mt-1">
-                    <?= session('errors.descripcion') ?>
+                    <?= esc(session('errors.descripcion')) ?>
                 </div>
             <?php endif; ?>
 
@@ -52,11 +52,11 @@
                 Precio
             </label>
 
-            <input type="number" class="form-control" id="precio" name="precio" placeholder="Ej: 8500" min="0" step="0.01"value="<?= old('precio') ?>">
+            <input type="number" class="form-control" id="precio" name="precio" placeholder="Ej: 8500" step="0.01" value="<?= esc(old('precio', '')) ?>">
 
             <?php if (session('errors.precio')): ?>
                 <div class="text-danger mt-1">
-                    <?= session('errors.precio') ?>
+                    <?= esc(session('errors.precio')) ?>
                 </div>
             <?php endif; ?>
 
@@ -68,15 +68,15 @@
                 Imagen
             </label>
 
-            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+            <input type="file" class="form-control <?= session('errors.imagen') ? 'is-invalid' : '' ?>" id="imagen" name="imagen" accept="image/*">
 
             <small class="text-muted">
-                Formatos permitidos: JPG, JPEG, PNG y WEBP.
+                Formatos permitidos: JPG, JPEG, PNG o WEBP. Tamaño máximo: 3 MB.
             </small>
 
             <?php if (session('errors.imagen')): ?>
                 <div class="text-danger mt-1">
-                    <?= session('errors.imagen') ?>
+                    <?= esc(session('errors.imagen')) ?>
                 </div>
             <?php endif; ?>
 

@@ -2,6 +2,8 @@
 
 <?= $this->section('contenido') ?>
 
+<?php /** @var array $categorias */ ?>
+
 <div class="titulo-productos">
 
     <div>
@@ -24,11 +26,11 @@
                 Nombre del producto
             </label>
 
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Lomo completo" value="<?= old('nombre') ?>">
+            <input type="text" class="form-control <?= session('errors.nombre') ? 'is-invalid' : '' ?>" id="nombre" name="nombre" placeholder="Ej: Lomo completo" value="<?= esc(old('nombre', '')) ?>">
 
             <?php if (session('errors.nombre')): ?>
                 <div class="text-danger mt-1">
-                    <?= session('errors.nombre') ?>
+                    <?= esc(session('errors.nombre')) ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -38,11 +40,11 @@
                 Descripción
             </label>
 
-            <textarea class="form-control" id="descripcion" name="descripcion" rows="4" placeholder="Ingresá los ingredientes o descripción del producto"><?= old('descripcion') ?></textarea>
+            <textarea class="form-control <?= session('errors.descripcion') ? 'is-invalid' : '' ?>" id="descripcion" name="descripcion" rows="4" placeholder="Ingresá los ingredientes o descripción del producto"><?= esc(old('descripcion', '')) ?></textarea>
 
             <?php if (session('errors.descripcion')): ?>
                 <div class="text-danger mt-1">
-                    <?= session('errors.descripcion') ?>
+                    <?= esc(session('errors.descripcion')) ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -52,11 +54,11 @@
                 Precio
             </label>
 
-            <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" placeholder="Ej: 8500" value="<?= old('precio') ?>">
+            <input type="number" class="form-control <?= session('errors.precio') ? 'is-invalid' : '' ?>" id="precio" name="precio" step="0.01" placeholder="Ej: 8500" value="<?= esc(old('precio', '')) ?>">
 
             <?php if (session('errors.precio')): ?>
                 <div class="text-danger mt-1">
-                    <?= session('errors.precio') ?>
+                    <?= esc(session('errors.precio')) ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -66,23 +68,24 @@
                 Categoría
             </label>
 
-            <select class="form-select" id="idCategoria" name="idCategoria">
+            <select
+                class="form-select <?= session('errors.idCategoria') ? 'is-invalid' : '' ?>"
+                id="idCategoria"
+                name="idCategoria">
                 <option value="">Seleccioná una categoría</option>
 
-                <option value="1" <?= old('idCategoria') == '1' ? 'selected' : '' ?>>Hamburguesas</option>
-                <option value="2" <?= old('idCategoria') == '2' ? 'selected' : '' ?>>Lomos</option>
-                <option value="3" <?= old('idCategoria') == '3' ? 'selected' : '' ?>>Milanesas</option>
-                <option value="4" <?= old('idCategoria') == '4' ? 'selected' : '' ?>>Pizzas</option>
-                <option value="5" <?= old('idCategoria') == '5' ? 'selected' : '' ?>>Empanadas</option>
-                <option value="6" <?= old('idCategoria') == '6' ? 'selected' : '' ?>>Panchos</option>
-                <option value="7" <?= old('idCategoria') == '7' ? 'selected' : '' ?>>Especiales</option>
-                <option value="8" <?= old('idCategoria') == '8' ? 'selected' : '' ?>>Papas</option>
-                <option value="9" <?= old('idCategoria') == '9' ? 'selected' : '' ?>>Bebidas</option>
+                <?php foreach ($categorias as $categoria): ?>
+                    <option
+                        value="<?= esc($categoria['idCategoria']) ?>"
+                        <?= old('idCategoria') == $categoria['idCategoria'] ? 'selected' : '' ?>>
+                        <?= esc($categoria['nombre']) ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
 
             <?php if (session('errors.idCategoria')): ?>
                 <div class="text-danger mt-1">
-                    <?= session('errors.idCategoria') ?>
+                    <?= esc(session('errors.idCategoria')) ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -92,7 +95,7 @@
                 Imagen del producto
             </label>
 
-            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+            <input type="file" class="form-control <?= session('errors.imagen') ? 'is-invalid' : '' ?>" id="imagen" name="imagen" accept="image/*">
 
             <small class="text-muted">
                 Formatos permitidos: JPG, JPEG, PNG o WEBP. Tamaño máximo: 3 MB.
@@ -100,7 +103,7 @@
 
             <?php if (session('errors.imagen')): ?>
                 <div class="text-danger mt-1">
-                    <?= session('errors.imagen') ?>
+                    <?= esc(session('errors.imagen')) ?>
                 </div>
             <?php endif; ?>
         </div>

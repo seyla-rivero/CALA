@@ -293,6 +293,19 @@
                         </label>
 
                     <?php endforeach; ?>
+                    
+                    <label class="destacado-opcion">
+                        <input
+                            type="radio"
+                            name="masVendida"
+                            value=""
+                            <?= empty(array_filter($promocionesActivas, fn($p) => $p['esMasVendida'] == 1)) ? 'checked' : '' ?>
+                        >
+
+                        <span>
+                            Ninguna
+                        </span>
+                    </label>
 
                 </div>
 
@@ -316,7 +329,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">¡Guardado correctamente!</h5>
+                    <h5 class="modal-title">Operación realizada</h5>
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">
                     </button>

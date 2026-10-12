@@ -54,7 +54,7 @@ class Promocion extends BaseController
             ],
 
             'imagen' => [
-                'rules' => 'uploaded[urlImagen]|is_image[urlImagen]|mime_in[urlImagen,image/jpg,image/jpeg,image/png,image/webp]|max_size[urlImagen,3072]',
+                'rules' => 'uploaded[imagen]|is_image[imagen]|mime_in[imagen,image/jpg,image/jpeg,image/png,image/webp]|max_size[imagen,3072]',
                 'errors' => [
                     'uploaded' => 'Debés seleccionar una imagen.',
                     'is_image' => 'El archivo seleccionado no es una imagen válida.',
@@ -70,46 +70,85 @@ class Promocion extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        // Datos del formulario
-        $nombre = $this->request->getPost('nombre');
-        $descripcion = $this->request->getPost('descripcion');
-        $precio = $this->request->getPost('precio');
-
+        // Obtener los datos del formulario.
         $incluyeBebida = $this->request->getPost('incluyeBebida') ? 1 : 0;
         $incluyeEmpanadas = $this->request->getPost('incluyeEmpanadas') ? 1 : 0;
 
-        // Imagen
+        // Obtener y guardar la imagen.
         $imagen = $this->request->getFile('imagen');
+        $nombreImagen = $imagen->getRandomName();
+        $rutaImagen = FCPATH . 'img/' . $nombreImagen;
 
-        // Guardamos primero el item
-        $datosItem = [
-            'nombre' => $nombre,
-            'descripcion' => $descripcion,
-            'precio' => $precio,
-            'activo' => 1,
-        ];
-
-        // Si hay imagen, la guardamos
-        if ($imagen && $imagen->isValid() && !$imagen->hasMoved()) {
-
-            $nombreImagen = $imagen->getRandomName();
-
+        try {
             $imagen->move(FCPATH . 'img', $nombreImagen);
+        } catch (\Throwable $e) {
+            log_message('error', 'Error al guardar imagen de promoción: ' . $e->getMessage());
 
-            $datosItem['urlImagen'] = $nombreImagen;
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'No se pudo guardar la imagen. Intentá nuevamente.');
         }
 
-        // Insertamos en item_pedido
-        $idItem = $itemPedidoModel->insert($datosItem);
+        // Datos generales de la promoción.
+        $datosItem = [
+            'nombre' => $this->request->getPost('nombre'),
+            'descripcion' => $this->request->getPost('descripcion'),
+            'urlImagen' => $nombreImagen,
+            'precio' => $this->request->getPost('precio'),
+            'activo' => 1
+        ];
 
-        // Creamos la promoción relacionada
-        $promocionModel->insert([
-            'idItem' => $idItem,
-            'esPromoDia' => 0,
-            'esMasVendida' => 0,
-            'incluyeBebida' => $incluyeBebida,
-            'incluyeEmpanadas' => $incluyeEmpanadas
-        ]);
+        // Iniciar la transacción.
+        $db = \Config\Database::connect();
+        $db->transBegin();
+
+        try {
+        // Guardar los datos generales en item_pedido.
+            if ($itemPedidoModel->insert($datosItem) === false) {
+                throw new \RuntimeException('No se pudieron guardar los datos generales de la promoción.');
+            }
+
+            $idItem = $itemPedidoModel->getInsertID();
+
+            if (!$idItem) {
+                throw new \RuntimeException('No se pudo obtener el identificador de la promoción.');
+            }
+
+            // Registrar los datos específicos en promocion.
+            if ($promocionModel->insert([
+                'idItem' => $idItem,
+                'esPromoDia' => 0,
+                'esMasVendida' => 0,
+                'incluyeBebida' => $incluyeBebida,
+                'incluyeEmpanadas' => $incluyeEmpanadas
+            ]) === false) {
+                throw new \RuntimeException('No se pudo registrar la promoción.');
+            }
+
+            // Comprobar el estado de la transacción.
+            if ($db->transStatus() === false) {
+                throw new \RuntimeException('Falló la transacción al guardar la promoción.');
+            }
+
+            // Confirmar ambas inserciones.
+            if (!$db->transCommit()) {
+                throw new \RuntimeException('No se pudo confirmar la transacción.');
+            }
+
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            // Eliminar la imagen si falló el guardado.
+            if (is_file($rutaImagen)) {
+                @unlink($rutaImagen);
+            }
+
+            log_message('error', 'Error al guardar promoción: ' . $e->getMessage());
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'No se pudo guardar la promoción. Intentá nuevamente.');
+        }
 
         return redirect()->to(base_url('admin/promociones'))
             ->with('mensajeExito', 'La promoción se agregó correctamente.');
@@ -117,45 +156,76 @@ class Promocion extends BaseController
 
     public function guardarMasVendida()
     {
-        $promocionesModel = new PromocionModel();
+        $promocionModel = new PromocionModel();
+        $itemPedidoModel = new ItemPedidoModel();
 
         $idItem = $this->request->getPost('masVendida');
+        // Verificar que la promoción seleccionada exista y esté activa.
+        if (!empty($idItem)) {
+            $promocion = $promocionModel->find($idItem);
+            $item = $itemPedidoModel->find($idItem);
 
-        $promocionesModel
+            if (!$promocion || !$item || $item['activo'] != 1) {
+                return redirect()->to(base_url('admin/promociones'))
+                    ->with('error', 'La promoción seleccionada no existe o está desactivada.');
+            }
+        }
+
+         // Quitar la marca de más vendida de todas las promociones.
+        $promocionModel
             ->where('idItem >', 0)
             ->set('esMasVendida', 0)
             ->update();
 
+        // Marcar la promoción seleccionada, si corresponde.
         if (!empty($idItem)) {
-            $promocionesModel
-                ->where('idItem', $idItem)
-                ->set('esMasVendida', 1)
-                ->update();
+            $promocionModel->update($idItem, [
+                'esMasVendida' => 1
+            ]);
         }
 
         return redirect()->to(base_url('admin/promociones'))
-            ->with('mensajeExito', 'La promoción se guardó correctamente como la más vendida.');
+            ->with('mensajeExito', 'La promoción más vendida se guardó correctamente.');
     }
     public function guardarPromoDelDia()
     {
-        $promocionesModel = new PromocionModel();
+        $promocionModel = new PromocionModel();
+        $itemPedidoModel = new ItemPedidoModel();
 
         $promosSeleccionadas = $this->request->getPost('promoDelDia');
 
-        $promocionesModel
+        // Normalizar la selección recibida.
+        if (!is_array($promosSeleccionadas)) {
+            $promosSeleccionadas = [];
+        }
+
+        // Verificar que todas las promociones seleccionadas existan y estén activas.
+        foreach ($promosSeleccionadas as $idItem) {
+            if (!ctype_digit((string) $idItem) || (int) $idItem <= 0) {
+                return redirect()->to(base_url('admin/promociones'))
+                    ->with('error', 'La selección de promociones no es válida.');
+            }
+
+            $promocion = $promocionModel->find((int) $idItem);
+            $item = $itemPedidoModel->find((int) $idItem);
+
+            if (!$promocion || !$item || $item['activo'] != 1) {
+                return redirect()->to(base_url('admin/promociones'))
+                    ->with('error', 'Una de las promociones seleccionadas no existe o está desactivada.');
+            }
+        }
+
+        // Quitar la marca de promoción del día de todas las promociones.
+        $promocionModel
             ->where('idItem >', 0)
             ->set('esPromoDia', 0)
             ->update();
 
-        if (!empty($promosSeleccionadas)) {
-
-            foreach ($promosSeleccionadas as $idItem) {
-
-                $promocionesModel
-                    ->where('idItem', $idItem)
-                    ->set('esPromoDia', 1)
-                    ->update();
-            }
+        // Marcar las promociones seleccionadas.
+        foreach ($promosSeleccionadas as $idItem) {
+            $promocionModel->update((int) $idItem, [
+                'esPromoDia' => 1
+            ]);
         }
 
         return redirect()->to(base_url('admin/promociones'))
@@ -175,24 +245,49 @@ class Promocion extends BaseController
                 ->with('error', 'La promoción no existe.');
         }
 
-        // Obtener los datos del producto
-        $producto = $itemPedidoModel->find($idItem);
+        // Obtener los datos generales de la promoción.
+        $datosPromocion = $itemPedidoModel->find($idItem);
 
-        // Agregar los datos propios de la promoción
-        $producto['incluyeBebida'] = $promocion['incluyeBebida'];
-        $producto['incluyeEmpanadas'] = $promocion['incluyeEmpanadas'];
+        if (!$datosPromocion) {
+            return redirect()->to(base_url('admin/promociones'))
+                ->with('error', 'No se encontraron los datos de la promoción.');
+        }
 
-        $datos['producto'] = $producto;
+        // Agregar los datos propios de la promoción.
+        $datosPromocion['incluyeBebida'] = $promocion['incluyeBebida'];
+        $datosPromocion['incluyeEmpanadas'] = $promocion['incluyeEmpanadas'];
+
+        $datos['promocion'] = $datosPromocion;
 
         return view('administrador/editar_promocion', $datos);
     }
     public function actualizarPromocion(int $idItem)
     {
+        $itemPedidoModel = new ItemPedidoModel();
+        $promocionModel = new PromocionModel();
+
+        // Verificar que exista como promoción.
+        $promocion = $promocionModel->find($idItem);
+
+        if (!$promocion) {
+            return redirect()->to(base_url('admin/promociones'))
+                ->with('error', 'La promoción no existe.');
+        }
+
+        // Verificar que existan los datos generales.
+        $promocionActual = $itemPedidoModel->find($idItem);
+
+        if (!$promocionActual) {
+            return redirect()->to(base_url('admin/promociones'))
+                ->with('error', 'No se encontraron los datos de la promoción.');
+        }
+
+        // Validar los datos del formulario.
         $reglas = [
             'nombre' => [
                 'rules' => 'required|min_length[3]|max_length[100]',
                 'errors' => [
-                    'required' => 'El nombre del producto es obligatorio.',
+                    'required' => 'El nombre de la promoción es obligatorio.',
                     'min_length' => 'El nombre debe tener al menos 3 caracteres.',
                     'max_length' => 'El nombre no puede superar los 100 caracteres.'
                 ]
@@ -212,7 +307,7 @@ class Promocion extends BaseController
                     'numeric' => 'El precio debe ser un número válido.',
                     'greater_than' => 'El precio debe ser mayor que 0.'
                 ]
-            ],
+            ]
         ];
 
         if (!$this->validate($reglas)) {
@@ -221,23 +316,67 @@ class Promocion extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        $itemPedidoModel = new ItemPedidoModel();
-        $promocionModel = new PromocionModel();
-
-        $datos = [
-            'nombre'      => $this->request->getPost('nombre'),
+        // Datos generales de la promoción.
+        $datosItem = [
+            'nombre' => $this->request->getPost('nombre'),
             'descripcion' => $this->request->getPost('descripcion'),
-            'precio'      => $this->request->getPost('precio')
+            'precio' => $this->request->getPost('precio')
         ];
 
-        $itemPedidoModel->update($idItem, $datos);
-
+        // Datos específicos de la promoción.
         $datosPromocion = [
-            'incluyeBebida'    => $this->request->getPost('incluyeBebida') ? 1 : 0,
+            'incluyeBebida' => $this->request->getPost('incluyeBebida') ? 1 : 0,
             'incluyeEmpanadas' => $this->request->getPost('incluyeEmpanadas') ? 1 : 0
         ];
 
-        $promocionModel->update($idItem, $datosPromocion);
+        // Actualizar ambas tablas dentro de una transacción.
+        $db = \Config\Database::connect();
+        $db->transBegin();
+
+        try {
+            $actualizadoItem = $itemPedidoModel->update($idItem, $datosItem);
+            $actualizadaPromocion = $promocionModel->update($idItem, $datosPromocion);
+
+            if (
+                !$actualizadoItem ||
+                !$actualizadaPromocion ||
+                $db->transStatus() === false
+            ) {
+                $db->transRollback();
+
+                log_message(
+                    'error',
+                    'No se pudieron actualizar todos los datos de la promoción ID ' . $idItem
+                );
+
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'No se pudo actualizar la promoción. Intentá nuevamente.');
+            }
+
+            if (!$db->transCommit()) {
+                log_message(
+                    'error',
+                    'No se pudo confirmar la actualización de la promoción ID ' . $idItem
+                );
+
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'No se pudo actualizar la promoción. Intentá nuevamente.');
+            }
+
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            log_message(
+                'error',
+                'Error al actualizar la promoción ID ' . $idItem . ': ' . $e->getMessage()
+            );
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Ocurrió un error al actualizar la promoción.');
+        }
 
         return redirect()->to(base_url('admin/promociones'))
             ->with('mensajeExito', 'Promoción actualizada correctamente.');
@@ -256,10 +395,21 @@ class Promocion extends BaseController
                 ->with('error', 'La promoción no existe.');
         }
 
-        $datos['producto'] = $itemPedidoModel->find($idItem);
-        $datos['tipo'] = 'promocion';
+        // Obtener los datos generales de la promoción.
+        $datosPromocion = $itemPedidoModel->find($idItem);
 
-        return view('administrador/editar_imagen', $datos);
+         if (!$datosPromocion) {
+            return redirect()->to(base_url('admin/promociones'))
+                ->with('error', 'No se encontraron los datos de la promoción.');
+        }
+
+        // Agregar los datos propios de la promoción.
+        $datosPromocion['incluyeBebida'] = $promocion['incluyeBebida'];
+        $datosPromocion['incluyeEmpanadas'] = $promocion['incluyeEmpanadas'];
+
+        $datos['promocion'] = $datosPromocion;
+
+        return view('administrador/editar_promocion', $datos);
     }
 
     public function actualizarImagen(int $idItem)
@@ -267,17 +417,23 @@ class Promocion extends BaseController
         $itemPedidoModel = new ItemPedidoModel();
         $promocionModel = new PromocionModel();
 
-        // Verificar que exista como promoción
+        // Verificar que exista como promoción.
         $promocion = $promocionModel->find($idItem);
 
         if (!$promocion) {
             return redirect()->to(base_url('admin/promociones'))
-                ->with('error', 'La promo no existe.');
+                ->with('error', 'La promoción no existe.');
         }
 
-        $imagen = $this->request->getFile('imagen');
+        // Obtener los datos actuales.
+        $promocionActual = $itemPedidoModel->find($idItem);
 
-        // Validar imagen
+        if (!$promocionActual) {
+            return redirect()->to(base_url('admin/promociones'))
+                ->with('error', 'No se encontraron los datos de la promoción.');
+        }
+
+        // Validar imagen.
         $reglas = [
             'imagen' => [
                 'rules' => 'uploaded[imagen]|is_image[imagen]|mime_in[imagen,image/jpg,image/jpeg,image/png,image/webp]|max_size[imagen,3072]',
@@ -296,27 +452,50 @@ class Promocion extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        // Obtener imagen anterior
-        $promocionActual = $itemPedidoModel->find($idItem);
-        $imagenAnterior = $promocionActual['urlImagen'];
-
-        // Generar un nombre nuevo para evitar conflictos
+        $imagen = $this->request->getFile('imagen');
+        $imagenAnterior = $promocionActual['urlImagen'] ?? null;
         $nombreImagen = $imagen->getRandomName();
+        $rutaImagenNueva = FCPATH . 'img/' . $nombreImagen;
 
-        // Mover imagen a public/img
-        $imagen->move(FCPATH . 'img', $nombreImagen);
+        // Guardar la nueva imagen.
+        try {
+            $imagen->move(FCPATH . 'img', $nombreImagen);
+        } catch (\Throwable $e) {
+            log_message('error', 'Error al guardar imagen de promoción: ' . $e->getMessage());
 
-        // Actualizar nombre de imagen en la base de datos
-        $itemPedidoModel->update($idItem, [
-            'urlImagen' => $nombreImagen
-        ]);
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'No se pudo guardar la nueva imagen.');
+        }
 
-        // Eliminar imagen anterior si existe
-        if (!empty($imagenAnterior)) {
+        // Actualizar la base de datos.
+        try {
+            $actualizado = $itemPedidoModel->update($idItem, [
+                'urlImagen' => $nombreImagen
+            ]);
+        } catch (\Throwable $e) {
+            $actualizado = false;
+
+            log_message('error', 'Error al actualizar imagen de promoción: ' . $e->getMessage());
+        }
+
+        // Si falla la actualización, conservar la imagen anterior.
+        if (!$actualizado) {
+            if (is_file($rutaImagenNueva)) {
+                @unlink($rutaImagenNueva);
+            }
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'No se pudo actualizar la imagen. Intentá nuevamente.');
+        }
+
+        // Eliminar la imagen anterior después de actualizar la base de datos.
+        if (!empty($imagenAnterior) && $imagenAnterior !== $nombreImagen) {
             $rutaImagenAnterior = FCPATH . 'img/' . $imagenAnterior;
 
-            if (file_exists($rutaImagenAnterior)) {
-                unlink($rutaImagenAnterior);
+            if (is_file($rutaImagenAnterior)) {
+                @unlink($rutaImagenAnterior);
             }
         }
 
@@ -324,11 +503,13 @@ class Promocion extends BaseController
             ->with('mensajeExito', 'Imagen actualizada correctamente.');
     }
 
+    
     public function desactivarPromocion(int $idItem)
     {
-        $itemPedidoModel = new ItemPedidoModel();
         $promocionModel = new PromocionModel();
+        $itemPedidoModel = new ItemPedidoModel();
 
+        // Verificar que el registro sea realmente una promoción.
         $promocion = $promocionModel->find($idItem);
 
         if (!$promocion) {
@@ -336,22 +517,48 @@ class Promocion extends BaseController
                 ->with('error', 'La promoción no existe.');
         }
 
-        $itemPedidoModel->update($idItem, [
-            'activo' => 0
-        ]);
+        try {
+            // Desactivar la promoción.
+            $resultado = $itemPedidoModel->update($idItem, [
+                'activo' => 0
+            ]);
 
-        $promocionModel->update($idItem, [
-            'esPromoDia' => 0,
-            'esMasVendida' => 0
-        ]);
+            if (!$resultado) {
+                log_message('error', 'No se pudo desactivar la promoción ID ' . $idItem);
 
-        return redirect()->to(base_url('admin/promociones'));
+                return redirect()->to(base_url('admin/promociones'))
+                    ->with('error', 'No se pudo desactivar la promoción. Intentá nuevamente.');
+            }
+
+            // Quitar las marcas de promoción del día y más vendida.
+            $resultadoMarcas = $promocionModel->update($idItem, [
+                'esPromoDia' => 0,
+                'esMasVendida' => 0
+            ]);
+
+            if (!$resultadoMarcas) {
+                log_message('error', 'No se pudieron actualizar las marcas de la promoción ID ' . $idItem);
+
+                return redirect()->to(base_url('admin/promociones'))
+                    ->with('error', 'La promoción se desactivó, pero no se pudieron actualizar sus marcas.');
+            }
+        } catch (\Throwable $e) {
+            log_message('error', 'Error al desactivar la promoción ID ' . $idItem . ': ' . $e->getMessage());
+
+            return redirect()->to(base_url('admin/promociones'))
+                ->with('error', 'Ocurrió un error al desactivar la promoción.');
+        }
+
+        return redirect()->to(base_url('admin/promociones'))
+            ->with('mensajeExito', 'Promoción desactivada correctamente.');
     }
+
     public function activarPromocion(int $idItem)
     {
-        $itemPedidoModel = new ItemPedidoModel();
         $promocionModel = new PromocionModel();
+        $itemPedidoModel = new ItemPedidoModel();
 
+        // Verificar que el registro sea realmente una promoción.
         $promocion = $promocionModel->find($idItem);
 
         if (!$promocion) {
@@ -359,10 +566,26 @@ class Promocion extends BaseController
                 ->with('error', 'La promoción no existe.');
         }
 
-        $itemPedidoModel->update($idItem, [
-            'activo' => 1
-        ]);
+        try {
+            $resultado = $itemPedidoModel->update($idItem, [
+                'activo' => 1
+            ]);
 
-        return redirect()->to(base_url('admin/promociones'));
+            if (!$resultado) {
+                log_message('error', 'No se pudo activar la promoción ID ' . $idItem);
+
+                return redirect()->to(base_url('admin/promociones'))
+                    ->with('error', 'No se pudo activar la promoción. Intentá nuevamente.');
+            }
+        } catch (\Throwable $e) {
+            log_message('error', 'Error al activar la promoción ID ' . $idItem . ': ' . $e->getMessage());
+
+            return redirect()->to(base_url('admin/promociones'))
+                ->with('error', 'Ocurrió un error al activar la promoción.');
+        }
+
+        return redirect()->to(base_url('admin/promociones'))
+            ->with('mensajeExito', 'Promoción activada correctamente.');
     }
+
 }    

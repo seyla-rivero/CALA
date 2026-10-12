@@ -10,7 +10,7 @@
     <div>
         <h1>Modificar imagen</h1>
         <p>
-            Actualizá la imagen del <?= $tipo === 'promocion' ? 'promoción' : 'producto' ?>
+            Actualizá la imagen de <?= $tipo === 'promocion' ? 'la promoción' : 'el producto' ?>
         </p>
     </div>
 
@@ -24,6 +24,7 @@
     ?>"
     method="post"
     enctype="multipart/form-data">
+        <?= csrf_field() ?>
 
         <div class="mb-4">
 
@@ -38,7 +39,7 @@
         <div class="mb-4">
 
             <label class="form-label">
-                Imagen
+                Imagen actual
             </label>
 
             <div class="text-center">
@@ -60,7 +61,7 @@
                          style="max-width: 300px; max-height: 250px; object-fit: contain;">
 
                     <p id="sinImagen" class="text-muted">
-                        Este <?= $tipo === 'promocion' ? 'promoción' : 'producto' ?>
+                        Esta <?= $tipo === 'promocion' ? 'promoción' : 'producto' ?>
                         no tiene una imagen cargada.
                     </p>
 
@@ -85,7 +86,7 @@
             <?php if (session('errors.imagen')): ?>
 
                 <div class="invalid-feedback">
-                    <?= session('errors.imagen') ?>
+                    <?= esc(session('errors.imagen')) ?>
                 </div>
 
             <?php endif; ?>
@@ -118,28 +119,32 @@
 </div>
 
 <script>
+const inputImagen = document.getElementById('imagen');
+const vistaPrevia = document.getElementById('vistaPrevia');
+const sinImagen = document.getElementById('sinImagen');
 
-document.getElementById('imagen').addEventListener('change', function(event) {
+let urlTemporal = null;
 
+inputImagen.addEventListener('change', function (event) {
     const archivo = event.target.files[0];
-    const vistaPrevia = document.getElementById('vistaPrevia');
-    const sinImagen = document.getElementById('sinImagen');
 
-    if (archivo) {
-
-        const url = URL.createObjectURL(archivo);
-
-        vistaPrevia.src = url;
-        vistaPrevia.classList.remove('d-none');
-
-        if (sinImagen) {
-            sinImagen.classList.add('d-none');
-        }
-
+    if (!archivo) {
+        return;
     }
 
-});
+    if (urlTemporal) {
+        URL.revokeObjectURL(urlTemporal);
+    }
 
+    urlTemporal = URL.createObjectURL(archivo);
+
+    vistaPrevia.src = urlTemporal;
+    vistaPrevia.classList.remove('d-none');
+
+    if (sinImagen) {
+        sinImagen.classList.add('d-none');
+    }
+});
 </script>
 
 <?= $this->endSection() ?>

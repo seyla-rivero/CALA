@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\ProductoModel;
 use App\Models\ItemPedidoModel;
+use App\Models\CategoriaModel;
 
 class Producto extends BaseController
 {
@@ -18,7 +19,11 @@ class Producto extends BaseController
 
     public function agregarProducto()
     {
-        return view('administrador/agregar_producto');
+        $categoriaModel = new CategoriaModel();
+
+        $datos['categorias'] = $categoriaModel->findAll();
+
+        return view('administrador/agregar_producto', $datos);
     }
 
     public function guardarProducto()
@@ -75,14 +80,18 @@ class Producto extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        // Obtener imagen
+        // Obtener y guardar imagen
         $imagen = $this->request->getFile('imagen');
-
-        // Generar nombre único
         $nombreImagen = $imagen->getRandomName();
+        $rutaImagen = FCPATH . 'img/' . $nombreImagen;
 
-        // Guardar imagen en public/img
-        $imagen->move(FCPATH . 'img', $nombreImagen);
+        try {
+            $imagen->move(FCPATH . 'img', $nombreImagen);
+        } catch (\Throwable $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'No se pudo guardar la imagen. Intentá nuevamente.');
+        }
 
         // Datos del producto
         $datos = [
@@ -94,23 +103,56 @@ class Producto extends BaseController
             'idCategoria' => $this->request->getPost('idCategoria')
         ];
 
-        // Guardar en item_pedido
         $itemPedidoModel = new ItemPedidoModel();
-
-        $itemPedidoModel->insert($datos);
-
-        // Obtener el idItem generado
-        $idItem = $itemPedidoModel->getInsertID();
-
-        // Guardar en producto
         $productoModel = new ProductoModel();
 
-        $productoModel->insert([
-            'idItem' => $idItem
-        ]);
+        // Iniciar la transacción.
+        $db = \Config\Database::connect();
+        $db->transBegin();
 
-    return redirect()->to(base_url('admin/productos'))
-        ->with('mensaje', 'Producto agregado correctamente.');
+        try {
+            // Guardar los datos generales en item_pedido.
+            if ($itemPedidoModel->insert($datos) === false) {
+                throw new \RuntimeException('No se pudo guardar el registro general.');
+            }
+
+            $idItem = $itemPedidoModel->getInsertID();
+
+            if (!$idItem) {
+                throw new \RuntimeException('No se pudo obtener el identificador.');
+            }
+
+            // Registrar el producto en la tabla producto.
+            if ($productoModel->insert([
+                'idItem' => $idItem
+            ]) === false) {
+                throw new \RuntimeException('No se pudo registrar el producto.');
+            }
+
+            // Confirmar ambas inserciones.
+            if ($db->transStatus() === false) {
+                throw new \RuntimeException('Falló la transacción.');
+            }
+
+            $db->transCommit();
+
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            // Eliminar la imagen si se revirtieron las inserciones.
+            if (is_file($rutaImagen)) {
+                @unlink($rutaImagen);
+            }
+
+            log_message('error', 'Error al guardar producto: ' . $e->getMessage());
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'No se pudo guardar el producto. Intentá nuevamente.');
+        }
+
+        return redirect()->to(base_url('admin/productos'))
+            ->with('mensaje', 'Producto agregado correctamente.');
     }
 
     public function editarProducto(int $idItem)
@@ -129,12 +171,26 @@ class Producto extends BaseController
         // Obtener los datos del producto
         $datos['producto'] = $itemPedidoModel->find($idItem);
 
+        $categoriaModel = new CategoriaModel();
+        $datos['categorias'] = $categoriaModel->findAll();
+
         return view('administrador/editar_producto', $datos);
     }
 
     public function actualizarProducto(int $idItem)
     {
-        $reglas = [
+        $productoModel = new ProductoModel();
+        $itemPedidoModel = new ItemPedidoModel();
+
+        // Verificar que el registro corresponda a un producto.
+        $producto = $productoModel->find($idItem);
+
+        if (!$producto) {
+            return redirect()->to('admin/productos')
+                ->with('error', 'El producto no existe.');
+        }
+
+        $rules = [
             'nombre' => [
                 'rules' => 'required|min_length[3]|max_length[100]',
                 'errors' => [
@@ -169,13 +225,11 @@ class Producto extends BaseController
             ]
         ];
 
-        if (!$this->validate($reglas)) {
+        if (!$this->validate($rules)) {
             return redirect()->back()
                 ->withInput()
                 ->with('errors', $this->validator->getErrors());
         }
-
-        $itemPedidoModel = new ItemPedidoModel();
 
         $datos = [
             'nombre'      => $this->request->getPost('nombre'),
@@ -184,7 +238,11 @@ class Producto extends BaseController
             'idCategoria' => $this->request->getPost('idCategoria')
         ];
 
-        $itemPedidoModel->update($idItem, $datos);
+        if (!$itemPedidoModel->update($idItem, $datos)) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'No se pudo actualizar el producto. Intentá nuevamente.');
+        }
 
         return redirect()->to(base_url('admin/productos'))
             ->with('mensaje', 'Producto actualizado correctamente.');
@@ -195,7 +253,7 @@ class Producto extends BaseController
         $itemPedidoModel = new ItemPedidoModel();
         $productoModel = new ProductoModel();
 
-        // Verificar que exista como producto
+        // Verificar que exista como producto.
         $producto = $productoModel->find($idItem);
 
         if (!$producto) {
@@ -203,19 +261,26 @@ class Producto extends BaseController
                 ->with('error', 'El producto no existe.');
         }
 
-        // Obtener los datos del producto
-        $datos['producto'] = $itemPedidoModel->find($idItem);
+        // Obtener los datos generales del producto.
+        $datosProducto = $itemPedidoModel->find($idItem);
+
+        if (!$datosProducto) {
+            return redirect()->to(base_url('admin/productos'))
+                ->with('error', 'No se encontraron los datos del producto.');
+        }
+
+        $datos['producto'] = $datosProducto;
         $datos['tipo'] = 'producto';
 
         return view('administrador/editar_imagen', $datos);
     }
-
+    
     public function actualizarImagen(int $idItem)
     {
         $itemPedidoModel = new ItemPedidoModel();
         $productoModel = new ProductoModel();
 
-        // Verificar que exista como producto
+        // Verificar que exista como producto.
         $producto = $productoModel->find($idItem);
 
         if (!$producto) {
@@ -223,9 +288,7 @@ class Producto extends BaseController
                 ->with('error', 'El producto no existe.');
         }
 
-        $imagen = $this->request->getFile('imagen');
-
-        // Validar imagen
+        // Validar imagen.
         $reglas = [
             'imagen' => [
                 'rules' => 'uploaded[imagen]|is_image[imagen]|mime_in[imagen,image/jpg,image/jpeg,image/png,image/webp]|max_size[imagen,3072]',
@@ -244,27 +307,58 @@ class Producto extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        // Obtener imagen anterior
+        // Obtener los datos actuales.
         $productoActual = $itemPedidoModel->find($idItem);
-        $imagenAnterior = $productoActual['urlImagen'];
 
-        // Generar un nombre nuevo para evitar conflictos
+        if (!$productoActual) {
+            return redirect()->to(base_url('admin/productos'))
+                ->with('error', 'No se encontraron los datos del producto.');
+        }
+
+        $imagen = $this->request->getFile('imagen');
+        $imagenAnterior = $productoActual['urlImagen'] ?? null;
         $nombreImagen = $imagen->getRandomName();
+        $rutaImagenNueva = FCPATH . 'img/' . $nombreImagen;
 
-        // Mover imagen a public/img
-        $imagen->move(FCPATH . 'img', $nombreImagen);
+        // Guardar la nueva imagen.
+        try {
+            $imagen->move(FCPATH . 'img', $nombreImagen);
+        } catch (\Throwable $e) {
+            log_message('error', 'Error al guardar imagen: ' . $e->getMessage());
 
-        // Actualizar nombre de imagen en la base de datos
-        $itemPedidoModel->update($idItem, [
-            'urlImagen' => $nombreImagen
-        ]);
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'No se pudo guardar la nueva imagen.');
+        }
 
-        // Eliminar imagen anterior si existe
-        if (!empty($imagenAnterior)) {
+        // Actualizar la base de datos.
+        try {
+            $actualizado = $itemPedidoModel->update($idItem, [
+                'urlImagen' => $nombreImagen
+            ]);
+        } catch (\Throwable $e) {
+            $actualizado = false;
+
+            log_message('error', 'Error al actualizar imagen del producto: ' . $e->getMessage());
+        }
+
+        // Si falla la actualización, conservar la imagen anterior.
+        if (!$actualizado) {
+            if (is_file($rutaImagenNueva)) {
+                @unlink($rutaImagenNueva);
+            }
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'No se pudo actualizar la imagen. Intentá nuevamente.');
+        }
+
+        // Eliminar la imagen anterior después de actualizar la base de datos.
+        if (!empty($imagenAnterior) && $imagenAnterior !== $nombreImagen) {
             $rutaImagenAnterior = FCPATH . 'img/' . $imagenAnterior;
 
-            if (file_exists($rutaImagenAnterior)) {
-                unlink($rutaImagenAnterior);
+            if (is_file($rutaImagenAnterior)) {
+                @unlink($rutaImagenAnterior);
             }
         }
 
@@ -274,37 +368,72 @@ class Producto extends BaseController
 
     public function desactivarProducto(int $idItem)
     {
+        $productoModel = new ProductoModel();
         $itemPedidoModel = new ItemPedidoModel();
 
-        $producto = $itemPedidoModel->find($idItem);
+        // Verificar que el registro sea realmente un producto.
+        $producto = $productoModel->find($idItem);
 
         if (!$producto) {
             return redirect()->to(base_url('admin/productos'))
                 ->with('error', 'El producto no existe.');
         }
 
-        $itemPedidoModel->update($idItem, [
-            'activo' => 0
-        ]);
+        try {
+            $resultado = $itemPedidoModel->update($idItem, [
+                'activo' => 0
+            ]);
 
-        return redirect()->to(base_url('admin/productos'));
+            if (!$resultado) {
+                log_message('error', 'No se pudo desactivar el producto ID ' . $idItem);
+
+                return redirect()->to(base_url('admin/productos'))
+                    ->with('error', 'No se pudo desactivar el producto. Intentá nuevamente.');
+            }
+        } catch (\Throwable $e) {
+            log_message('error', 'Error al desactivar el producto ID ' . $idItem . ': ' . $e->getMessage());
+
+            return redirect()->to(base_url('admin/productos'))
+                ->with('error', 'Ocurrió un error al desactivar el producto.');
+        }
+
+        return redirect()->to(base_url('admin/productos'))
+            ->with('mensajeExito', 'Producto desactivado correctamente.');
     }
+
     public function activarProducto(int $idItem)
     {
+        $productoModel = new ProductoModel();
         $itemPedidoModel = new ItemPedidoModel();
 
-        $producto = $itemPedidoModel->find($idItem);
+        // Verificar que el registro sea realmente un producto.
+        $producto = $productoModel->find($idItem);
 
         if (!$producto) {
             return redirect()->to(base_url('admin/productos'))
                 ->with('error', 'El producto no existe.');
         }
 
-        $itemPedidoModel->update($idItem, [
-            'activo' => 1
-        ]);
+        try {
+            $resultado = $itemPedidoModel->update($idItem, [
+                'activo' => 1
+            ]);
 
-        return redirect()->to(base_url('admin/productos'));
+            if (!$resultado) {
+                log_message('error', 'No se pudo activar el producto ID ' . $idItem);
+
+                return redirect()->to(base_url('admin/productos'))
+                    ->with('error', 'No se pudo activar el producto. Intentá nuevamente.');
+            }
+        } catch (\Throwable $e) {
+            log_message('error', 'Error al activar el producto ID ' . $idItem . ': ' . $e->getMessage());
+
+            return redirect()->to(base_url('admin/productos'))
+                ->with('error', 'Ocurrió un error al activar el producto.');
+        }
+
+        return redirect()->to(base_url('admin/productos'))
+            ->with('mensajeExito', 'Producto activado correctamente.');
     }
 
 }

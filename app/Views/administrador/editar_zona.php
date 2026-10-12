@@ -21,25 +21,25 @@
                 Nombre de la zona
             </label>
 
-            <input type="text" class="form-control <?= session('errors.nombre') ? 'is-invalid' : '' ?>" id="nombre" name="nombre" value="<?= old('nombre', $zona['nombre']) ?>">
+            <input type="text" class="form-control <?= session('errors.nombre') ? 'is-invalid' : '' ?>" id="nombre" name="nombre" value="<?= esc(old('nombre', $zona['nombre'])) ?>">
 
             <?php if (session('errors.nombre')): ?>
                 <div class="invalid-feedback">
-                    <?= session('errors.nombre') ?>
+                    <?= esc(session('errors.nombre')) ?>
                 </div>
             <?php endif; ?>
         </div>
 
         <div class="mb-3">
-            <label for="precio" class="form-label">
+            <label for="costoEnvio" class="form-label">
                 Costo de envío
             </label>
 
-            <input type="number" step="0.01" class="form-control <?= session('errors.costoEnvio') ? 'is-invalid' : '' ?>" id="costoEnvio" name="costoEnvio" value="<?= old('costoEnvio', $zona['costoEnvio']) ?>">
+            <input type="number" step="0.01" class="form-control <?= session('errors.costoEnvio') ? 'is-invalid' : '' ?>" id="costoEnvio" name="costoEnvio" value="<?= esc(old('costoEnvio', $zona['costoEnvio'])) ?>">
 
             <?php if (session('errors.costoEnvio')): ?>
                 <div class="invalid-feedback">
-                    <?= session('errors.costoEnvio') ?>
+                    <?= esc(session('errors.costoEnvio')) ?>
                 </div>
             <?php endif; ?>
         </div>
