@@ -255,3 +255,33 @@ body {
 .login-admin-footer i {
     color: #ff2b83;
 }
+
+
+/* Campo de contraseña: reducir el espacio inferior */
+.login-admin .admin-input-group:has(#adminPassword) {
+    margin-bottom: 0;
+}
+
+/* Enlace para recuperar la contraseña */
+.login-admin .text-end {
+    margin-top: 4px !important;
+    margin-bottom: 8px;
+}
+
+.login-admin .link-cala {
+    display: inline-block;
+    color: #ff2f7d;
+    text-decoration: none;
+    line-height: 1.2;
+}
+
+.login-admin .link-cala:hover {
+    color: #e91e63;
+    text-decoration: underline;
+}
+
+/* Botón de ingreso */
+.login-admin .btn-login-admin {
+    margin-top: 0 !important;
+}
+

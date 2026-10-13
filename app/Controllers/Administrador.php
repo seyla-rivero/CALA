@@ -46,11 +46,14 @@ class Administrador extends BaseController
             ->where('email', $email)
             ->first(); 
 
-        if (!password_verify($password, $administrador['contraseña'])) {
+        if (
+            !$administrador ||
+            !password_verify($password, $administrador['contraseña'])
+        ) {
             return redirect()->back()
                 ->withInput()
                 ->with('erroresLoginAdmin', [
-                    'password' => 'La contraseña es incorrecta'
+                    'password' => 'El correo o la contraseña son incorrectos.'
                 ]);
         }
 

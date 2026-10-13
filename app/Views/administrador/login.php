@@ -33,12 +33,12 @@
 
                     <i class="bi bi-envelope"></i>
 
-                    <input type="text" id="email" name="email" placeholder="Ingresá tu correo" value="<?= old('email') ?>" autocomplete="email">
+                    <input type="text" id="email" name="email" placeholder="Ingresá tu correo" value="<?= esc(old('email', '')) ?>" autocomplete="email">
                 </div>
 
                 <?php if (isset($errors['email'])): ?>
                     <small class="admin-error">
-                        <?= $errors['email'] ?>
+                        <?= esc($errors['email']) ?>
                     </small>
                 <?php endif; ?>
 
@@ -67,14 +67,19 @@
                 <?php if (isset($errors['password'])): ?>
 
                     <small class="admin-error">
-                        <?= $errors['password'] ?>
+                        <?= esc($errors['password']) ?>
                     </small>
 
                 <?php endif; ?>
 
             </div>
+            <div class="text-end mt-1">
+                <a href="#" class="link-cala" data-bs-toggle="modal" data-bs-target="#recuperarModal">
+                    ¿Olvidaste tu contraseña?
+                </a>
+            </div>
 
-            <button type="submit" class="btn-login-admin">
+            <button type="submit" class="btn-login-admin mt-3">
 
                 Ingresar al panel
 

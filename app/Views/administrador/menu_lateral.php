@@ -9,7 +9,7 @@
         <i class="bi bi-person-circle"></i>
         <div>
             <span class="nombre-admin">
-                <?= session()->get('nombreAdministrador') ?>
+                <?= esc(session()->get('nombreAdministrador') ?? 'Administrador') ?>
             </span>
             <span class="rol-admin">Administrador</span>
         </div>
