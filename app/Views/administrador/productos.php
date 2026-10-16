@@ -4,7 +4,6 @@
 
 <?php /** @var array $productos */ ?>
 
-<!-- Encabezado -->
 <div class="titulo-productos">
 
     <div>
@@ -25,7 +24,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
     </div>
 <?php endif; ?>
-<!-- Tabla de productos -->
+
 <div class="tabla-productos">
 
     <div class="tabla-header">

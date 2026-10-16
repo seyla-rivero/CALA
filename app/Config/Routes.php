@@ -7,9 +7,8 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
-// ========================================
-// RUTAS PUBLICAS DEL CLIENTE
-// ========================================
+
+// Rutas del cliente
 
 $routes->get('/', 'Home::index');
 $routes->post('validar-login', 'Autenticacion::validarLogin');
@@ -30,18 +29,12 @@ $routes->get('checkout', 'Carrito::checkout');
 $routes->post('carrito/confirmar-pedido', 'Carrito::confirmarPedido');
 
 
-// ========================================
-// ACCESO DEL ADMINISTRADOR
-// Estas rutas quedan publicas
-// ========================================
+// Acceso del administrador
 
 $routes->get('admin', 'Administrador::login');
 $routes->post('admin/validarLogin', 'Administrador::validarLogin');
 
-
-// ========================================
-// RUTAS PROTEGIDAS DEL ADMINISTRADOR
-// ========================================
+// Rutas protegidas del administrador
 
 $routes->group('admin', ['filter' => 'adminAuth'], static function ($routes) {
 

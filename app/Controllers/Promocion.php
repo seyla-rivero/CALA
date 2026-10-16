@@ -382,12 +382,13 @@ class Promocion extends BaseController
             ->with('mensajeExito', 'Promoción actualizada correctamente.');
     }
 
+    
     public function editarImagen(int $idItem)
     {
         $itemPedidoModel = new ItemPedidoModel();
         $promocionModel = new PromocionModel();
 
-        // Verificar que exista como promoción
+        // Verificar que exista como promoción.
         $promocion = $promocionModel->find($idItem);
 
         if (!$promocion) {
@@ -398,18 +399,15 @@ class Promocion extends BaseController
         // Obtener los datos generales de la promoción.
         $datosPromocion = $itemPedidoModel->find($idItem);
 
-         if (!$datosPromocion) {
+        if (!$datosPromocion) {
             return redirect()->to(base_url('admin/promociones'))
                 ->with('error', 'No se encontraron los datos de la promoción.');
         }
 
-        // Agregar los datos propios de la promoción.
-        $datosPromocion['incluyeBebida'] = $promocion['incluyeBebida'];
-        $datosPromocion['incluyeEmpanadas'] = $promocion['incluyeEmpanadas'];
+        $datos['producto'] = $datosPromocion;
+        $datos['tipo'] = 'promocion';
 
-        $datos['promocion'] = $datosPromocion;
-
-        return view('administrador/editar_promocion', $datos);
+        return view('administrador/editar_imagen', $datos);
     }
 
     public function actualizarImagen(int $idItem)

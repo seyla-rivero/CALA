@@ -39,7 +39,6 @@
     background: #f5f6fa;
 }
 
-/* Sidebar */
 .sidebar {
     width: 260px;
     background: black;
@@ -56,7 +55,6 @@
     width: 140px;
 }
 
-/* Menú */
 .menu-panel {
     list-style: none;
     padding: 0;
@@ -90,7 +88,6 @@
     font-size: 1.2rem;
 }
 
-/* Contenido */
 .contenido-panel {
     flex: 1;
     padding: 40px;
@@ -104,7 +101,6 @@
     font-weight: 700;
 }
 
-/* Cards del Dashboard */
 .card-dashboard {
     background: white;
     border-radius: 20px;
@@ -124,7 +120,6 @@
     font-weight: 700;
 }
 
-/* Tabla de pedidos */
 .tabla-pedidos {
     margin-top: 40px;
     background: white;
@@ -175,7 +170,6 @@
 
 @media (max-width: 768px) {
 
-    /* Usuario administrador en celular */
 
     .usuario-panel {
         justify-content: center;
@@ -191,14 +185,12 @@
         display: none;
     }
 
-    /* Sidebar reducido */
     .sidebar {
         width: 75px;
         flex: 0 0 75px;
         padding: 20px 10px;
     }
 
-    /* Logo */
     .logo-panel {
         margin-bottom: 30px;
     }
@@ -207,7 +199,6 @@
         width: 55px;
     }
 
-    /* Menú */
     .menu-panel li {
         margin-bottom: 8px;
     }
@@ -217,7 +208,6 @@
         padding: 13px 8px;
     }
 
-    /* Ocultamos los textos y dejamos los íconos */
     .menu-panel li a span {
         display: none;
     }
@@ -227,12 +217,10 @@
         margin: 0;
     }
 
-    /* Contenido */
     .contenido-panel {
         padding: 25px 18px;
     }
 
-    /* Títulos */
     .titulo-panel {
         margin-bottom: 25px;
     }
@@ -241,7 +229,6 @@
         font-size: 1.8rem;
     }
 
-    /* Encabezado productos */
     .titulo-productos {
         flex-direction: column;
         align-items: flex-start;
@@ -257,7 +244,6 @@
         justify-content: center;
     }
 
-    /* Tabla */
     .tabla-productos {
         padding: 18px;
     }
@@ -309,7 +295,6 @@
         margin-bottom: 4px;
     }
 
-    /* Imagen */
     .tabla-productos-datos tbody td:first-child {
         text-align: center;
         padding-bottom: 12px;
@@ -320,13 +305,11 @@
         height: 85px;
     }
 
-    /* Producto */
     .tabla-productos-datos tbody td:nth-child(2) {
         text-align: center;
         font-size: 1rem;
     }
 
-    /* Descripción */
     .tabla-productos-datos tbody td:nth-child(3) {
         text-align: center;
     }
@@ -337,18 +320,15 @@
         line-height: 1.4;
     }
 
-    /* Precio */
     .tabla-productos-datos tbody td:nth-child(4) {
         text-align: center;
         font-size: 1rem;
     }
 
-    /* Estado */
     .tabla-productos-datos tbody td:nth-child(5) {
         text-align: center;
     }
 
-    /* Acciones */
     .tabla-productos-datos tbody td:nth-child(6) {
         display: flex;
         justify-content: center;
@@ -360,7 +340,6 @@
         gap: 10px;
     }
     
-    /* Formulario */
     .formulario-producto {
         width: 100%;
         max-width: 100%;
@@ -368,7 +347,6 @@
         margin-top: 20px;
     }
 
-    /* Botones del formulario */
     .acciones-formulario {
         flex-direction: column-reverse;
     }
@@ -436,7 +414,6 @@
 }
 
 /* Gestión de pedidos */
-
 .gestion-pedidos {
     margin-top: 35px;
 }
@@ -576,7 +553,6 @@
 /*Resposive para celular*/
 @media (max-width: 768px) {
 
-    /* Título de la sección */
     .titulo-seccion-pedidos {
         align-items: flex-start;
         gap: 12px;
@@ -596,7 +572,6 @@
         font-size: .8rem;
     }
 
-    /* Estados */
     .estados-pedidos {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
@@ -619,7 +594,6 @@
         font-size: .8rem;
     }
 
-    /* Últimos pedidos */
     .ultimos-pedidos {
         padding: 18px;
     }
@@ -647,7 +621,6 @@
         box-shadow: 0 3px 10px rgba(0, 0, 0, .06);
     }
 
-    /* Cada dato del pedido */
     .tabla-pedidos-dashboard tbody td {
         display: block;
         width: 100%;
@@ -658,45 +631,37 @@
         line-height: 1.4;
     }
 
-    /* Quitamos la línea del último dato */
     .tabla-pedidos-dashboard tbody td:last-child {
         border-bottom: none;
     }
 
-    /* Número de pedido */
     .tabla-pedidos-dashboard tbody td:first-child {
         font-weight: 700;
         color: #222;
         padding-top: 0;
     }
 
-    /* Cliente */
     .tabla-pedidos-dashboard tbody td:nth-child(2) {
         color: #555;
     }
 
-    /* Fecha */
     .tabla-pedidos-dashboard tbody td:nth-child(3) {
         color: #666;
     }
 
-    /* Tipo de entrega */
     .tabla-pedidos-dashboard tbody td:nth-child(4) {
         color: #555;
     }
 
-    /* Total */
     .tabla-pedidos-dashboard tbody td:nth-child(5) {
         font-weight: 700;
         color: #222;
     }
 
-    /* Estado */
     .tabla-pedidos-dashboard tbody td:nth-child(6) {
         padding-bottom: 0;
     }
 
-    /* Estado */
     .estado-pedido-tabla {
         display: inline-block;
         padding: 6px 10px;
@@ -713,7 +678,6 @@
         margin-top: 25px;
     }
 
-    /* Título y Próximamente */
     .titulo-seccion-pedidos {
         flex-direction: column;
         align-items: flex-start;
@@ -723,7 +687,6 @@
         align-self: flex-start;
     }
 
-    /* Estados */
     .estados-pedidos {
         grid-template-columns: 1fr;
         gap: 12px;
@@ -733,7 +696,6 @@
         padding: 15px;
     }
 
-    /* Últimos pedidos */
     .ultimos-pedidos {
         padding: 12px; 
     }

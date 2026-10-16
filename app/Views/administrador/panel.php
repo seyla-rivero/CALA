@@ -10,10 +10,8 @@
 
 </div>
 
-<!-- Cards de información -->
 <div class="row g-4">
 
-    <!-- Pedidos pendientes -->
     <div class="col-md-4">
 
         <div class="card-dashboard">
@@ -28,7 +26,6 @@
 
     </div>
 
-    <!-- Productos activos -->
     <div class="col-md-4">
 
         <div class="card-dashboard">
@@ -43,7 +40,6 @@
 
     </div>
 
-    <!-- Promociones activas -->
     <div class="col-md-4">
 
         <div class="card-dashboard">
@@ -59,7 +55,7 @@
     </div>
 
 </div>
-<!-- Gestión de pedidos -->
+
 <div class="gestion-pedidos">
 
     <div class="titulo-seccion-pedidos">
@@ -73,7 +69,6 @@
         </span>
     </div>
 
-    <!-- Estados de pedidos -->
     <div class="estados-pedidos">
 
         <div class="estado-pedido">
@@ -110,7 +105,6 @@
 
     </div>
 
-    <!-- Últimos pedidos -->
     <div class="ultimos-pedidos">
 
         <div class="titulo-ultimos-pedidos">

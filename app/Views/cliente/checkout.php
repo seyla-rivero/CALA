@@ -102,6 +102,30 @@
 
                 <div id="datosDelivery" style="display: none;">
 
+                    <!-- Mapa de zonas de envío -->
+                    <div class="mt-4 mb-3">
+
+                        <h5 class="checkout-label">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            Zonas de envío
+                        </h5>
+
+                        <p class="text-muted small">
+                            Consultá el mapa para identificar la zona
+                            correspondiente a tu domicilio.
+                        </p>
+                        
+                        <div class="mapa-envios">
+                            <iframe
+                                src="https://www.google.com/maps/d/u/4/embed?mid=1EbuDgcPTvc9pCun102DFlf2OvnWEgP0&ehbc=2E312F&noprof=1"
+                                title="Zonas de reparto CALA"
+                                loading="lazy"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+
+                    </div>
+
                     <label class="checkout-label">
                         Dirección de entrega
                     </label>

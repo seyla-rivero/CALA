@@ -17,7 +17,7 @@
     </a>
 
 </div>
-<!-- Tabla de promociones -->
+
 <div class="tabla-productos">
 
     <div class="tabla-header">
@@ -51,30 +51,25 @@
 
                 <?php foreach ($promociones as $promocion): ?>
                     <tr>
-                        <!-- Imagen -->
                         <td>
                             <img class="imagen-producto" src="<?= base_url('img/' . $promocion['urlImagen']) ?>" alt="<?= esc($promocion['nombre']) ?>">
 
                         </td>
-                        <!-- Nombre -->
                         <td>
                             <strong>
                                 <?= esc($promocion['nombre']) ?>
                             </strong>
                         </td>
-                        <!-- Descripción -->
                         <td>
                             <span class="descripcion-producto">
                                 <?= esc($promocion['descripcion']) ?>
                             </span>
                         </td>
-                        <!-- Precio -->
                         <td>
                             <strong class="precio-producto">
                                 $<?= number_format($promocion['precio'], 2, ',', '.') ?>
                             </strong>
                         </td>
-                        <!-- Bebida -->
                         <td class="dato-promocion">
 
                             <span class="titulo-dato-mobile">Bebida</span>
@@ -96,7 +91,6 @@
                             <?php endif; ?>
 
                         </td>
-                        <!-- Empanadas -->
                         <td class="dato-promocion">
 
                             <span class="titulo-dato-mobile">Empanadas</span>
@@ -118,7 +112,6 @@
                             <?php endif; ?>
 
                         </td>
-                        <!-- Estado -->
                         <td class="dato-promocion">
 
                             <?php if ($promocion['activo'] == 1): ?>
@@ -138,20 +131,16 @@
                             <?php endif; ?>
 
                         </td>
-                        <!-- Acciones -->
                         <td>
 
                             <div class="acciones-producto">
                             
-                                <!-- Modificar -->
                                 <a href="<?= base_url('admin/editar_promocion/' . $promocion['idItem']) ?>" class="btn-accion editar" title="Modificar promoción">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <!-- Modificar imagen -->
                                 <a href="<?= base_url('admin/editar_imagen_promocion/' . $promocion['idItem']) ?>" class="btn-accion imagen" title="Modificar imagen">
                                     <i class="bi bi-image"></i>
                                 </a>
-                                <!-- Activar / desactivar -->
                                 <?php if ($promocion['activo'] == 1): ?>
 
                                     <form action="<?= site_url('admin/desactivar_promocion/' . $promocion['idItem']) ?>" method="post" style="display: inline;">
@@ -185,7 +174,6 @@
     </div>
 
 </div>
-<!-- Destacados -->
 <div class="tabla-productos destacados-productos">
 
     <div class="tabla-header">
@@ -197,7 +185,6 @@
 
     <div class="destacados-contenido">
 
-        <!-- Promo del día -->
         <div class="destacado-card">
 
             <div class="destacado-titulo">
@@ -252,7 +239,6 @@
             </form>
 
         </div>
-        <!-- La más vendida -->
         <div class="destacado-card">
 
             <div class="destacado-titulo">

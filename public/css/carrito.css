@@ -346,3 +346,31 @@
     background-color: #ed2b72;
     color: white;
 }
+
+.mapa-envios {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+}
+
+.mapa-envios iframe {
+    display: block;
+    width: 100%;
+    height: 500px;
+    border: 0;
+    transform: translateY(-59px);
+}
+
+@media (max-width: 576px) {
+    .mapa-envios {
+        height: 350px;
+    }
+
+    .mapa-envios iframe {
+        height: 450px;
+    }
+}
+

@@ -17,7 +17,6 @@
 
     <ul class="menu-panel">
 
-        <!-- Dashboard -->
         <li class="<?= uri_string() == 'admin/panel' ? 'activo' : '' ?>">
             <a href="<?= base_url('admin/panel') ?>">
                 <i class="bi bi-speedometer2"></i>
@@ -25,7 +24,6 @@
             </a>
         </li>
 
-        <!-- Pedidos -->
         <li class="<?= uri_string() == 'admin/pedidos' ? 'activo' : '' ?>">
             <a href="<?= base_url('admin/pedidos') ?>">
                 <i class="bi bi-receipt"></i>
@@ -33,7 +31,6 @@
             </a>
         </li>
 
-        <!-- Productos -->
         <li class="<?= uri_string() == 'admin/productos' ? 'activo' : '' ?>">
             <a href="<?= base_url('admin/productos') ?>">
                 <i class="bi bi-box-seam"></i>
@@ -41,7 +38,6 @@
             </a>
         </li>
 
-        <!-- Promociones -->
         <li class="<?= uri_string() == 'admin/promociones' ? 'activo' : '' ?>">
             <a href="<?= base_url('admin/promociones') ?>">
                 <i class="bi bi-gift"></i>
@@ -49,7 +45,6 @@
             </a>
         </li>
 
-        <!-- Zonas -->
         <li class="<?= uri_string() == 'admin/zonas' ? 'activo' : '' ?>">
             <a href="<?= base_url('admin/zonas') ?>">
                 <i class="bi bi-geo-alt"></i>
@@ -57,7 +52,6 @@
             </a>
         </li>
 
-        <!-- Cerrar sesión -->
         <li>
            <a href="<?= site_url('logoutAdmi') ?>" title="Cerrar sesión">
                 <i class="bi bi-box-arrow-right"></i>
