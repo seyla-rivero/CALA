@@ -168,6 +168,19 @@
 
 </div>
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const modalElemento = document.getElementById("productoAgregadoModal");
+
+    if (!modalElemento) return;
+
+    modalElemento.addEventListener("hide.bs.modal", function () {
+        if (modalElemento.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+    });
+});
+</script>
+<script>
 //Filtro de categorias    
 const botonesCategoria = document.querySelectorAll(".categoria");
 const seccionesCategoria = document.querySelectorAll(".categoria-seccion");

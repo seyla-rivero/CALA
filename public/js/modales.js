@@ -1,21 +1,36 @@
 //Se abre el modal con los errores del Login y Registro
+
 document.addEventListener("DOMContentLoaded", function () {
 
+    if (typeof modalAbrir === "undefined" || !modalAbrir) {
+        return;
+    }
+
+    let idModal = null;
+
     if (modalAbrir === "registro") {
-        let modal = new bootstrap.Modal(
-            document.getElementById("loginRegistro")
-        );
-
-        modal.show();
+        idModal = "loginRegistro";
+    } else if (modalAbrir === "login") {
+        idModal = "loginModal";
     }
 
-    if (modalAbrir === "login") {
-        let modal = new bootstrap.Modal(
-            document.getElementById("loginModal")
-        );
-
-        modal.show();
+    if (!idModal) {
+        return;
     }
+
+    const elementoModal = document.getElementById(idModal);
+
+    if (!elementoModal) {
+        console.error("No se encontró el modal:", idModal);
+        return;
+    }
+
+    if (typeof bootstrap === "undefined" || !bootstrap.Modal) {
+        console.error("Bootstrap Modal no está disponible.");
+        return;
+    }
+
+    bootstrap.Modal.getOrCreateInstance(elementoModal).show();
 
 });
 
@@ -147,17 +162,20 @@ function validarOpciones() {
     }
 }
 
-const bebida = document.getElementById("bebida");
+document.addEventListener("DOMContentLoaded", function () {
 
-if (bebida) {
-    bebida.addEventListener("change", validarOpciones);
-}
+    const bebida = document.getElementById("bebida");
+    const empanadas = document.getElementById("empanadas");
 
-const empanadas = document.getElementById("empanadas");
+    if (bebida) {
+        bebida.addEventListener("change", validarOpciones);
+    }
 
-if (empanadas) {
-    empanadas.addEventListener("change", validarOpciones);
-}
+    if (empanadas) {
+        empanadas.addEventListener("change", validarOpciones);
+    }
+
+});
 
 // Actualizacion de botones + y - en el Detalle del pedido
 function actualizarPrecio() {

@@ -45,9 +45,9 @@ function agregarAlCarrito() {
 
             actualizarContadorCarrito();
 
-            const modal = new bootstrap.Modal(
-                document.getElementById("productoAgregadoModal")
-            );
+            const elementoModal = document.getElementById("productoAgregadoModal");
+
+            const modal = bootstrap.Modal.getOrCreateInstance(elementoModal);
 
             modal.show();
 
@@ -139,12 +139,17 @@ function actualizarContadorCarrito() {
         .then(response => response.json())
         .then(data => {
 
-            document.getElementById("contadorCarrito").textContent =
-                data.cantidad;
+            console.log("Cantidad recibida:", data);
+
+            const contador = document.getElementById("contadorCarrito");
+
+            if (contador) {
+                contador.textContent = data.cantidad ?? 0;
+            }
 
         })
         .catch(error => {
-            console.error("Error al obtener la cantidad del carrito:", error);
+            console.error("Error al obtener la cantidad:", error);
         });
 }
 

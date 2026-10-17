@@ -27,6 +27,9 @@ $routes->get('carrito/cantidad', 'Carrito::cantidadCarrito');
 
 $routes->get('checkout', 'Carrito::checkout');
 $routes->post('carrito/confirmar-pedido', 'Carrito::confirmarPedido');
+// Mis pedidos
+$routes->get('mis-pedidos', 'Carrito::misPedidos');
+$routes->get('mis-pedidos/detalle/(:num)', 'Carrito::detallePedido/$1');
 
 
 // Acceso del administrador

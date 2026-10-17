@@ -797,4 +797,64 @@ class Carrito extends BaseController
             'idPedido' => $pedido['idPedido']
         ]);
     }
+    
+    
+    public function misPedidos()
+    {
+        $session = session();
+
+        // Verificar que el cliente haya iniciado sesión
+        if (!$session->get('logueado')) {
+            return redirect()->to('/');
+        }
+
+        $idCliente = $session->get('idCliente');
+
+        $pedidoModel = new PedidoModel();
+        $detallePedidoModel = new DetallePedidoModel();
+
+        // Obtener los pedidos del cliente, excepto el carrito actual
+        $pedidos = $pedidoModel
+            ->select('pedido.*, sucursal.nombre AS nombreSucursal,
+                    zona.nombre AS nombreZona')
+            ->join(
+                'sucursal',
+                'sucursal.idSucursal = pedido.idSucursal',
+                'left'
+            )
+            ->join(
+                'zona',
+                'zona.idZona = pedido.idZona',
+                'left'
+            )
+            ->where('pedido.idCliente', $idCliente)
+            ->where('pedido.estado !=', 'carrito')
+            ->orderBy('pedido.fecha', 'DESC')
+            ->findAll();
+
+        // Obtener los productos de cada pedido
+        foreach ($pedidos as &$pedido) {
+
+            $pedido['detalles'] = $detallePedidoModel
+                ->select(
+                    'detalle_pedido.*,
+                    item_pedido.nombre,
+                    item_pedido.urlImagen'
+                )
+                ->join(
+                    'item_pedido',
+                    'item_pedido.idItem = detalle_pedido.idItem',
+                    'left'
+                )
+                ->where('detalle_pedido.idPedido', $pedido['idPedido'])
+                ->findAll();
+        }
+
+        unset($pedido);
+
+        return view('cliente/mis_pedidos', [
+            'pedidos' => $pedidos
+        ]);
+    }
+
 }

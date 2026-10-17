@@ -418,43 +418,25 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-
     const opcionesEntrega = document.querySelectorAll('input[name="tipoEntrega"]');
-
     const datosRetiro = document.getElementById('datosRetiro');
-
     const datosDelivery = document.getElementById('datosDelivery');
-
     const sucursalRetiro = document.getElementById('sucursalRetiro');
-
     const zonaDelivery = document.getElementById('zonaDelivery');
-
     const direccionInput = document.getElementById('direccionDelivery');
-
     const direccionRetiro = document.getElementById('direccionRetiro');
-
     const direccionSucursal = document.getElementById('direccionSucursal');
-
     const sucursalAsignada = document.getElementById('sucursalAsignada');
-
     const costoEnvio = document.getElementById('costoEnvio');
-
     const costoEnvioResumen = document.getElementById('costoEnvioResumen');
-
     const totalPedido = document.getElementById('totalPedido');
-
     const mensajeTransferencia = document.getElementById('mensajeTransferencia');
-
     const titularTransferencia = document.getElementById('titularTransferencia');
-
     const aliasTransferencia = document.getElementById('aliasTransferencia');
-
     const cbuTransferencia = document.getElementById('cbuTransferencia');
-
     const errorSucursal = document.getElementById('errorSucursal');
     const errorZona = document.getElementById('errorZona');
     const errorDireccion = document.getElementById('errorDireccion');
-
     const metodosPago = document.querySelectorAll('input[name="metodoPago"]');
 
     const subtotal = <?= $total ?>;  

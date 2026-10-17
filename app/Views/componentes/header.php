@@ -28,12 +28,17 @@
                 </a>
             </li>
 
-            <?php if(session('logueado')): ?>
+            <?php if (session('logueado')): ?>
                 <li class="nav-item">
-                    <a class="nav-link <?= uri_string() == 'mis-pedidos' ? 'active' : '' ?>"
-                    href="<?= base_url('mis-pedidos') ?>">
-                    MIS PEDIDOS
-                </a>
+                    <a
+                        class="nav-link <?= (
+                            uri_string() === 'mis-pedidos' ||
+                            strpos(uri_string(), 'mis-pedidos/detalle/') === 0
+                        ) ? 'active' : '' ?>"
+                        href="<?= base_url('mis-pedidos') ?>"
+                    >
+                        MIS PEDIDOS
+                    </a>
                 </li>
             <?php endif; ?>
         </ul>
