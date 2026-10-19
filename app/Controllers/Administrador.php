@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\AdministradorModel;
+use App\Models\PedidoModel;
 
 class Administrador extends BaseController
 {
@@ -96,7 +97,7 @@ class Administrador extends BaseController
     
     public function pedidos()
     {
-        // Verificar que haya un administrador autenticado
+        // Verificar que haya un administrador autenticado.
         if (!session()->get('administradorLogueado')) {
             return redirect()->to('/admin');
         }
@@ -109,7 +110,7 @@ class Administrador extends BaseController
 
         $db = \Config\Database::connect();
 
-        // Obtener pedidos de la sucursal del administrador
+        // Obtener los pedidos de la sucursal.
         $pedidos = $db->table('pedido p')
             ->select('
                 p.*,
@@ -126,9 +127,10 @@ class Administrador extends BaseController
             ->get()
             ->getResultArray();
 
-        // Obtener los detalles de los pedidos
-        if (!empty($pedidos)) {
+        // Obtener los detalles de todos los pedidos.
+        $detallesPorPedido = [];
 
+        if (!empty($pedidos)) {
             $idsPedidos = array_column($pedidos, 'idPedido');
 
             $detalles = $db->table('detalle_pedido d')
@@ -143,28 +145,159 @@ class Administrador extends BaseController
                 ->get()
                 ->getResultArray();
 
-            // Agrupar productos por pedido
-            $detallesPorPedido = [];
-
             foreach ($detalles as $detalle) {
                 $detallesPorPedido[$detalle['idPedido']][] = $detalle;
             }
-
-            foreach ($pedidos as &$pedido) {
-                $pedido['detalles'] =
-                    $detallesPorPedido[$pedido['idPedido']] ?? [];
-            }
-
-            unset($pedido);
-
         }
 
+        // Preparar los datos para la vista.
+        foreach ($pedidos as &$pedido) {
+            $pedido['detalles'] =
+                $detallesPorPedido[$pedido['idPedido']] ?? [];
+
+            // Estado del pedido.
+            $estado = strtolower(trim((string) ($pedido['estado'] ?? '')));
+
+            $claseEstado = 'otro';
+
+            if (str_contains($estado, 'pendiente')) {
+                $claseEstado = 'pendiente';
+            } elseif (str_contains($estado, 'prepar')) {
+                $claseEstado = 'preparacion';
+            } elseif (
+                str_contains($estado, 'camino') ||
+                str_contains($estado, 'reparto')
+            ) {
+                $claseEstado = 'camino';
+            } elseif (
+                str_contains($estado, 'entregado') ||
+                str_contains($estado, 'retirado') ||
+                str_contains($estado, 'finalizado')
+            ) {
+                $claseEstado = 'finalizado';
+            } elseif (str_contains($estado, 'cancel')) {
+                $claseEstado = 'cancelado';
+            }
+
+            $pedido['claseEstado'] = $claseEstado;
+
+            // Datos del cliente.
+            $pedido['nombreCompleto'] = trim(
+                ($pedido['nombreCliente'] ?? '') . ' ' .
+                ($pedido['apellidoCliente'] ?? '')
+            ) ?: 'Cliente';
+
+            // Tipo de entrega.
+            $tipoEntrega = strtolower(
+                trim((string) ($pedido['tipoEntrega'] ?? ''))
+            );
+
+            $pedido['esDelivery'] = str_contains($tipoEntrega, 'delivery');
+            $pedido['claseEntrega'] = $pedido['esDelivery']
+                ? 'delivery'
+                : 'retiro';
+
+            // Método de pago.
+            $metodoPago = strtolower(
+                trim((string) ($pedido['metodoPago'] ?? ''))
+            );
+
+            $claseMetodoPago = 'otro';
+
+            if (str_contains($metodoPago, 'efectivo')) {
+                $claseMetodoPago = 'efectivo';
+            } elseif (str_contains($metodoPago, 'transferencia')) {
+                $claseMetodoPago = 'transferencia';
+            }
+
+            $pedido['claseMetodoPago'] = $claseMetodoPago;
+
+            // Estado del pago.
+            $estadoPago = strtolower(
+                trim((string) ($pedido['estadoPago'] ?? ''))
+            );
+
+            $clasePago = '';
+            $textoEstadoPago = '';
+
+            if (str_contains($estadoPago, 'rechaz')) {
+                $clasePago = 'rechazado';
+                $textoEstadoPago = 'Rechazado';
+            } elseif (str_contains($estadoPago, 'verific')) {
+                $clasePago = 'verificado';
+                $textoEstadoPago = 'Verificado';
+            } elseif (
+                str_contains($estadoPago, 'aprob') ||
+                str_contains($estadoPago, 'pagado') ||
+                str_contains($estadoPago, 'confirmado')
+            ) {
+                $clasePago = 'aprobado';
+                $textoEstadoPago = 'Pagado';
+            } elseif (str_contains($metodoPago, 'efectivo')) {
+                $textoEstadoPago = 'A cobrar';
+            } elseif (str_contains($metodoPago, 'transferencia')) {
+                $clasePago = 'pendiente';
+                $textoEstadoPago = 'Por verificar';
+            } else {
+                $textoEstadoPago = 'Pendiente';
+            }
+
+            $pedido['clasePago'] = $clasePago;
+            $pedido['textoEstadoPago'] = $textoEstadoPago;
+
+            // Fecha del pedido.
+            $fechaMostrar = 'Fecha no disponible';
+
+            if (!empty($pedido['fecha'])) {
+                $timestamp = strtotime($pedido['fecha']);
+
+                if ($timestamp !== false) {
+                    $fechaMostrar = date('d/m/Y · H:i', $timestamp);
+                }
+            }
+
+            $pedido['fechaMostrar'] = $fechaMostrar;
+
+            // Acciones permitidas para el estado actual.
+            $accionesPedido = [
+                'pendiente' => [
+                    'estado' => 'en preparación',
+                    'texto' => 'Pasar a preparación',
+                    'icono' => 'bi-fire',
+                    'clase' => 'btn-cala-preparar',
+                ],
+                'en preparación' => [
+                    'estado' => 'listo',
+                    'texto' => 'Marcar como listo',
+                    'icono' => 'bi-check-circle-fill',
+                    'clase' => 'btn-cala-listo',
+                ],
+            ];
+
+            $pedido['accion'] = $accionesPedido[$estado] ?? null;
+
+            if ($estado === 'listo') {
+                $esDelivery = $pedido['esDelivery'];
+
+                $pedido['accion'] = [
+                    'estado' => $esDelivery ? 'entregado' : 'retirado',
+                    'texto' => $esDelivery
+                        ? 'Marcar como entregado'
+                        : 'Marcar como retirado',
+                    'icono' => 'bi-check2-circle',
+                    'clase' => 'btn-cala-finalizar',
+                ];
+            }
+        }
+
+        unset($pedido);
+
         return view('administrador/pedidos', [
-            'pedidos' => $pedidos
+            'pedidos' => $pedidos,
         ]);
-    }
+    }  
     
-    public function actualizarEstadoPedido($idPedido)
+    public function actualizarEstadoPedido(int $idPedido)
     {
         if (!session()->get('administradorLogueado')) {
             return redirect()->to('/admin');
@@ -176,9 +309,12 @@ class Administrador extends BaseController
             return redirect()->to('/admin');
         }
 
-        $pedidoModel = new \App\Models\PedidoModel();
+        $nuevoEstado = strtolower(trim(
+            (string) $this->request->getPost('nuevoEstado')
+        ));
 
-        // Verificar que el pedido pertenezca a esta sucursal
+        $pedidoModel = new PedidoModel();
+
         $pedido = $pedidoModel
             ->where('idPedido', $idPedido)
             ->where('idSucursal', $idSucursal)
@@ -189,35 +325,136 @@ class Administrador extends BaseController
                 ->with('error', 'No se encontró el pedido.');
         }
 
-        // Solo permitir pasar pedidos pendientes a preparación
-        if ($pedido['estado'] !== 'pendiente') {
-            return redirect()->to(base_url('admin/pedidos'))
-                ->with('error', 'El estado del pedido ya fue modificado.');
-        }
-               
-        $db = \Config\Database::connect();
+        $estadoActual = strtolower(trim(
+            (string) ($pedido['estado'] ?? '')
+        ));
 
-        $datosActualizar = [
-            'estado' => 'en preparación'
+        // Transiciones permitidas.
+        $transiciones = [
+            'pendiente' => ['en preparación'],
+            'en preparación' => ['listo'],
+            'listo' => [
+                'entregado',
+                'retirado'
+            ],
         ];
 
-        // Si el pedido es por transferencia, verificar el pago
+        if (
+            !isset($transiciones[$estadoActual]) ||
+            !in_array(
+                $nuevoEstado,
+                $transiciones[$estadoActual],
+                true
+            )
+        ) {
+            return redirect()->to(base_url('admin/pedidos'))
+                ->with('error', 'No se puede realizar ese cambio de estado.');
+        }
+
+        // Determinar la modalidad de entrega.
+        if ($nuevoEstado === 'entregado' || $nuevoEstado === 'retirado') {
+            $tipoEntrega = strtolower(trim(
+                (string) ($pedido['tipoEntrega'] ?? '')
+            ));
+
+            if (
+                ($nuevoEstado === 'entregado' &&
+                    !str_contains($tipoEntrega, 'delivery')) ||
+                ($nuevoEstado === 'retirado' &&
+                    !str_contains($tipoEntrega, 'retiro'))
+            ) {
+                return redirect()->to(base_url('admin/pedidos'))
+                    ->with('error', 'El estado no coincide con el tipo de entrega.');
+            }
+        }
+
+        $db = \Config\Database::connect();
+
+        $actualizado = $db->table('pedido')
+            ->where('idPedido', $idPedido)
+            ->where('idSucursal', $idSucursal)
+            ->where('estado', $pedido['estado'])
+            ->update([
+                'estado' => $nuevoEstado
+            ]);
+
+        if (!$actualizado || $db->affectedRows() !== 1) {
+            return redirect()->to(base_url('admin/pedidos'))
+                ->with('error', 'No se pudo actualizar el pedido. Revisá su estado actual.');
+        }
+
+        $mensajes = [
+            'en preparación' => 'El pedido pasó a preparación.',
+            'listo' => 'El pedido está listo.',
+            'entregado' => 'El pedido fue marcado como entregado.',
+            'retirado' => 'El pedido fue marcado como retirado.',
+        ];
+
+        return redirect()->to(base_url('admin/pedidos'))
+            ->with('mensaje', $mensajes[$nuevoEstado]);
+    }
+    
+    public function verificarPagoTransferencia(int $idPedido)
+    {
+        if (!session()->get('administradorLogueado')) {
+            return redirect()->to('/admin');
+        }
+
+        $idSucursal = session()->get('idSucursal');
+
+        if (!$idSucursal) {
+            return redirect()->to('/admin');
+        }
+
+        $pedidoModel = new PedidoModel();
+
+        $pedido = $pedidoModel
+            ->where('idPedido', $idPedido)
+            ->where('idSucursal', $idSucursal)
+            ->first();
+
+        if (!$pedido) {
+            return redirect()->to(base_url('admin/pedidos'))
+                ->with('error', 'No se encontró el pedido.');
+        }
+
         $metodoPago = strtolower(trim(
             (string) ($pedido['metodoPago'] ?? '')
         ));
 
-        if (str_contains($metodoPago, 'transferencia')) {
-            $datosActualizar['estadoPago'] = 'verificado';
+        $estadoPago = strtolower(trim(
+            (string) ($pedido['estadoPago'] ?? '')
+        ));
+
+        if (!str_contains($metodoPago, 'transferencia')) {
+            return redirect()->to(base_url('admin/pedidos'))
+                ->with('error', 'Este pedido no utiliza transferencia.');
         }
 
-        // Actualizar el pedido
-        $db->table('pedido')
+        if (
+            str_contains($estadoPago, 'rechaz') ||
+            str_contains($estadoPago, 'verific')
+        ) {
+            return redirect()->to(base_url('admin/pedidos'))
+                ->with('error', 'El pago ya fue verificado o rechazado.');
+        }
+
+        $db = \Config\Database::connect();
+
+        $actualizado = $db->table('pedido')
             ->where('idPedido', $idPedido)
             ->where('idSucursal', $idSucursal)
-            ->update($datosActualizar);
+            ->update([
+                'estadoPago' => 'verificado'
+            ]);
+
+        if (!$actualizado || $db->affectedRows() !== 1) {
+            return redirect()->to(base_url('admin/pedidos'))
+                ->with('error', 'No se pudo verificar el pago.');
+        }
 
         return redirect()->to(base_url('admin/pedidos'))
-            ->with('mensaje', 'El pedido pasó a preparación correctamente.');
+            ->with('mensaje', 'La transferencia fue verificada correctamente.');
     }
 
 }

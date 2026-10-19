@@ -20,21 +20,47 @@
             <?= count($pedidos) === 1 ? 'pedido' : 'pedidos' ?>
         </div>
     </div>
-
+    
     <?php if ($mensaje = session()->getFlashdata('mensaje')): ?>
-        <div class="alert alert-success">
-            <i class="bi bi-check-circle-fill"></i>
-            <?= esc($mensaje) ?>
+        <div class="notificacion-cala notificacion-exito" role="status">
+            <div class="notificacion-cala-icono">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+
+            <div class="notificacion-cala-texto">
+                <strong>¡Listo!</strong>
+                <span><?= esc($mensaje) ?></span>
+            </div>
+
+            <button type="button"
+                    class="notificacion-cala-cerrar"
+                    aria-label="Cerrar notificación"
+                    onclick="this.closest('.notificacion-cala').remove()">
+                <i class="bi bi-x-lg"></i>
+            </button>
         </div>
     <?php endif; ?>
 
     <?php if ($error = session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger">
-            <i class="bi bi-exclamation-circle-fill"></i>
-            <?= esc($error) ?>
+        <div class="notificacion-cala notificacion-error" role="alert">
+            <div class="notificacion-cala-icono">
+                <i class="bi bi-exclamation-circle-fill"></i>
+            </div>
+
+            <div class="notificacion-cala-texto">
+                <strong>Ocurrió un problema</strong>
+                <span><?= esc($error) ?></span>
+            </div>
+
+            <button type="button"
+                    class="notificacion-cala-cerrar"
+                    aria-label="Cerrar notificación"
+                    onclick="this.closest('.notificacion-cala').remove()">
+                <i class="bi bi-x-lg"></i>
+            </button>
         </div>
     <?php endif; ?>
-
+    
     <div class="grid-cala-pedidos">
 
         <?php if (empty($pedidos)): ?>
@@ -51,112 +77,24 @@
                 <?php
                     $detalles = $pedido['detalles'] ?? [];
 
+                    // Datos preparados en el controller.
                     $estado = strtolower(trim(
                         (string) ($pedido['estado'] ?? '')
                     ));
 
-                    $claseEstado = 'otro';
+                    $claseEstado = $pedido['claseEstado'] ?? 'otro';
 
-                    if (str_contains($estado, 'pendiente')) {
-                        $claseEstado = 'pendiente';
-                    } elseif (str_contains($estado, 'prepar')) {
-                        $claseEstado = 'preparacion';
-                    } elseif (
-                        str_contains($estado, 'camino') ||
-                        str_contains($estado, 'reparto')
-                    ) {
-                        $claseEstado = 'camino';
-                    } elseif (
-                        str_contains($estado, 'entregado') ||
-                        str_contains($estado, 'retirado') ||
-                        str_contains($estado, 'finalizado')
-                    ) {
-                        $claseEstado = 'finalizado';
-                    } elseif (str_contains($estado, 'cancel')) {
-                        $claseEstado = 'cancelado';
-                    }
+                    $esDelivery = $pedido['esDelivery'] ?? false;
+                    $claseEntrega = $pedido['claseEntrega'] ?? 'retiro';
 
-                    $esPendiente = in_array($estado, [
-                        'pendiente',
-                        'pendientes'
-                    ], true);
+                    $claseMetodoPago = $pedido['claseMetodoPago'] ?? 'otro';
+                    $clasePago = $pedido['clasePago'] ?? '';
+                    $textoEstadoPago = $pedido['textoEstadoPago'] ?? 'Pendiente';
 
-                    $tipoEntrega = strtolower(trim(
-                        (string) ($pedido['tipoEntrega'] ?? '')
-                    ));
+                    $fechaMostrar = $pedido['fechaMostrar'] ?? 'Fecha no disponible';
+                    $nombreCompleto = $pedido['nombreCompleto'] ?? 'Cliente';
 
-                    $esDelivery = str_contains($tipoEntrega, 'delivery');
-
-                    $claseEntrega = $esDelivery ? 'delivery' : 'retiro';
-
-                    $metodoPago = strtolower(trim(
-                        (string) ($pedido['metodoPago'] ?? '')
-                    ));
-
-                    $claseMetodoPago = 'otro';
-
-                    if (str_contains($metodoPago, 'efectivo')) {
-                        $claseMetodoPago = 'efectivo';
-                    } elseif (str_contains($metodoPago, 'transferencia')) {
-                        $claseMetodoPago = 'transferencia';
-                    }
-
-                    // Determinar el texto y el color del estado del pago.
-                    
-                    $estadoPago = strtolower(trim(
-                        (string) ($pedido['estadoPago'] ?? '')
-                    ));
-
-                    $clasePago = '';
-                    $textoEstadoPago = '';
-
-                    if (str_contains($estadoPago, 'rechaz')) {
-                        $clasePago = 'rechazado';
-                        $textoEstadoPago = 'Rechazado';
-
-                    } elseif (str_contains($estadoPago, 'verific')) {
-                        $clasePago = 'verificado';
-                        $textoEstadoPago = 'Verificado';
-
-                    } elseif (
-                        str_contains($estadoPago, 'aprob') ||
-                        str_contains($estadoPago, 'pagado') ||
-                        str_contains($estadoPago, 'confirmado')
-                    ) {
-                        $clasePago = 'aprobado';
-                        $textoEstadoPago = 'Pagado';
-
-                    } elseif (str_contains($metodoPago, 'efectivo')) {
-                        $textoEstadoPago = 'A cobrar';
-
-                    } elseif (str_contains($metodoPago, 'transferencia')) {
-                        $clasePago = 'pendiente';
-                        $textoEstadoPago = 'Por verificar';
-
-                    } else {
-                        $textoEstadoPago = 'Pendiente';
-                    }
-
-                    $fechaMostrar = 'Fecha no disponible';
-
-                    if (!empty($pedido['fecha'])) {
-                        $timestamp = strtotime($pedido['fecha']);
-
-                        if ($timestamp !== false) {
-                            $fechaMostrar = date(
-                                'd/m/Y · H:i',
-                                $timestamp
-                            );
-                        }
-                    }
-
-                    $nombreCompleto = trim(
-                        ($pedido['nombreCliente'] ?? '') . ' ' .
-                        ($pedido['apellidoCliente'] ?? '')
-                    );
-
-                    $nombreCompleto = $nombreCompleto ?: 'Cliente';
-
+                    // Construir la URL de la imagen del producto.
                     $crearUrlImagen = static function ($imagen) {
                         if (empty($imagen)) {
                             return null;
@@ -185,12 +123,12 @@
                             </h2>
                             <div class="card-cala-fecha">
                                 <i class="bi bi-clock"></i>
-                                <?= esc($fechaMostrar) ?>
+                                <?= esc($pedido['fechaMostrar']) ?>
                             </div>
                         </div>
 
-                        <span class="card-cala-estado <?= esc($claseEstado) ?>">
-                            <?= esc(ucfirst($pedido['estado'] ?? 'Sin estado')) ?>
+                        <span class="card-cala-estado <?= esc($pedido['claseEstado']) ?>">
+                            <?= esc($pedido['estado'] ?? 'Sin estado') ?>
                         </span>
                     </div>
 
@@ -376,9 +314,32 @@
                                     <?= esc($pedido['metodoPago'] ?? 'Pago') ?>
                                 </span>
 
-                                <span class="card-cala-estado-pago <?= esc($clasePago) ?>">
-                                    <?= esc($textoEstadoPago) ?>
-                                </span>
+                                
+                                <?php if (
+                                    $claseMetodoPago === 'transferencia' &&
+                                    $clasePago === 'pendiente'
+                                ): ?>
+
+                                    
+                                        <form action="<?= base_url('admin/pedidos/verificar-pago/' .$pedido['idPedido']) ?>"
+                                            method="post" class="form-cala-confirmacion" data-mensaje="¿Confirmás que recibiste la transferencia del pedido #<?= esc($pedido['idPedido'], 'attr') ?>?">
+
+                                        <?= csrf_field() ?>
+
+                                        <button type="submit" class="btn-cala-verificar-pago">
+                                            <i class="bi bi-check-circle"></i>
+                                            Confirmar pago
+                                        </button>
+                                    </form>
+
+                                <?php else: ?>
+
+                                    <span class="card-cala-estado-pago <?= esc($clasePago) ?>">
+                                        <?= esc($textoEstadoPago) ?>
+                                    </span>
+
+                                <?php endif; ?>
+
                             </div>
 
                             <div class="card-cala-pago-linea">
@@ -420,33 +381,49 @@
                         </div>
 
                     </div>
-
+                 
                     <!-- ACCION DEL ADMINISTRADOR -->
                     <div class="card-cala-acciones">
 
-                        <?php if ($esPendiente): ?>
+                        <?php if (!empty($pedido['accion'])): ?>
+                            <?php $accion = $pedido['accion']; ?>
 
-                            <form
-                                action="<?= base_url(
-                                    'admin/pedidos/actualizar-estado/' .
-                                    $pedido['idPedido']
-                                ) ?>"
-                                method="post"
-                                onsubmit="return confirm('¿Querés pasar este pedido a preparación?');"
-                            >
+                            
+                                <form action="<?= base_url('admin/pedidos/actualizar-estado/' .$pedido['idPedido']) ?>" method="post" class="form-cala-confirmacion" data-mensaje="¿Querés continuar con la acción: <?= esc($accion['texto'], 'attr') ?>?">
+
                                 <?= csrf_field() ?>
 
-                                <button type="submit" class="btn-cala-preparar">
-                                    <i class="bi bi-fire"></i>
-                                    Pasar a preparación
+                                <input
+                                    type="hidden"
+                                    name="nuevoEstado"
+                                    value="<?= esc($accion['estado']) ?>"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="<?= esc($accion['clase']) ?>"
+                                >
+                                    <i class="bi <?= esc($accion['icono']) ?>"></i>
+                                    <?= esc($accion['texto']) ?>
                                 </button>
                             </form>
 
-                        <?php elseif (str_contains($estado, 'prepar')): ?>
+                        <?php elseif (
+                            str_contains($estado, 'entregado') ||
+                            str_contains($estado, 'retirado') ||
+                            str_contains($estado, 'finalizado')
+                        ): ?>
 
                             <div class="card-cala-en-proceso">
-                                <i class="bi bi-fire"></i>
-                                Pedido en preparación
+                                <i class="bi bi-check-circle-fill"></i>
+                                Pedido finalizado
+                            </div>
+
+                        <?php elseif (str_contains($estado, 'cancel')): ?>
+
+                            <div class="card-cala-en-proceso">
+                                <i class="bi bi-x-circle-fill"></i>
+                                Pedido cancelado
                             </div>
 
                         <?php endif; ?>
@@ -463,4 +440,144 @@
 
 </div>
 
+<!-- MODAL DE CONFIRMACIÓN CALA DELIVERY -->
+<div id="modalConfirmacionCala" class="cala-modal-fondo" aria-hidden="true" hidden>
+
+    <div class="cala-modal" role="dialog" aria-modal="true" aria-labelledby="calaModalTitulo" aria-describedby="calaModalMensaje">
+
+        <div class="cala-modal-icono">
+            <i class="bi bi-question-circle-fill"></i>
+        </div>
+
+        <h2 id="calaModalTitulo">¿Confirmar acción?</h2>
+
+        <p id="calaModalMensaje">
+            ¿Querés continuar con esta acción?
+        </p>
+
+        <div class="cala-modal-botones">
+            <button type="button" id="calaModalCancelar" class="cala-modal-btn cancelar">
+                Cancelar
+            </button>
+
+            <button type="button" id="calaModalAceptar" class="cala-modal-btn aceptar">
+                <i class="bi bi-check-lg"></i>
+                Sí, continuar
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.notificacion-cala').forEach(function (notificacion) {
+        setTimeout(function () {
+            if (!notificacion.isConnected) return;
+
+            notificacion.style.opacity = '0';
+            notificacion.style.transform = 'translateY(-8px)';
+
+            setTimeout(function () {
+                notificacion.remove();
+            }, 300);
+        }, 4000);
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('modalConfirmacionCala');
+    const mensaje = document.getElementById('calaModalMensaje');
+    const botonCancelar = document.getElementById('calaModalCancelar');
+    const botonAceptar = document.getElementById('calaModalAceptar');
+
+    if (!modal || !mensaje || !botonCancelar || !botonAceptar) {
+        return;
+    }
+
+    let formularioPendiente = null;
+    let elementoAnterior = null;
+
+    function cerrarModal() {
+        modal.hidden = true;
+        modal.setAttribute('aria-hidden', 'true');
+        formularioPendiente = null;
+
+        if (elementoAnterior && elementoAnterior.isConnected) {
+            elementoAnterior.focus();
+        }
+
+        elementoAnterior = null;
+    }
+
+    document.querySelectorAll('.form-cala-confirmacion').forEach(function (formulario) {
+        formulario.addEventListener('submit', function (evento) {
+            // Permitir el envío cuando el administrador ya confirmó.
+            if (formulario.dataset.confirmado === '1') {
+                delete formulario.dataset.confirmado;
+                return;
+            }
+
+            // Primera instancia: mostrar la confirmación personalizada.
+            evento.preventDefault();
+
+            formularioPendiente = formulario;
+            elementoAnterior = document.activeElement;
+
+            mensaje.textContent =
+                formulario.dataset.mensaje ||
+                '¿Querés continuar con esta acción?';
+
+            modal.hidden = false;
+            modal.setAttribute('aria-hidden', 'false');
+
+            botonCancelar.focus();
+        });
+    });
+
+    botonCancelar.addEventListener('click', cerrarModal);
+
+    botonAceptar.addEventListener('click', function () {
+        if (!formularioPendiente) {
+            cerrarModal();
+            return;
+        }
+
+        const formulario = formularioPendiente;
+
+        // Evitar que la confirmación vuelva a aparecer al enviar.
+        formulario.dataset.confirmado = '1';
+
+        cerrarModal();
+
+        // Respeta la validación HTML y los demás eventos del formulario.
+        if (typeof formulario.requestSubmit === 'function') {
+            formulario.requestSubmit();
+        } else {
+            delete formulario.dataset.confirmado;
+            formulario.submit();
+        }
+    });
+
+    // Cerrar al hacer clic fuera de la tarjeta.
+    modal.addEventListener('click', function (evento) {
+        if (evento.target === modal) {
+            cerrarModal();
+        }
+    });
+
+    // Cerrar con la tecla Escape.
+    document.addEventListener('keydown', function (evento) {
+        if (evento.key === 'Escape' && !modal.hidden) {
+            cerrarModal();
+        }
+    });
+});
+</script>
+
 <?= $this->endSection() ?>
+
+
+

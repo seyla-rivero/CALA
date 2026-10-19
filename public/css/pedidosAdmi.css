@@ -720,3 +720,348 @@
     border-color: #f5dfad;
     color: #8b5700;
 }
+
+/* =========================================
+   AJUSTES DEL PANEL DE PEDIDOS
+   ========================================= */
+
+/* Pago verificado: verde */
+.card-cala-estado-pago.verificado {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+/* Pago pendiente: amarillo */
+.card-cala-estado-pago.pendiente {
+    background: #fff0d6;
+    color: #925400;
+    border: 1px solid #f5d79a;
+}
+
+/* Pago aprobado: verde */
+.card-cala-estado-pago.aprobado {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+/* Detalles del producto más compactos */
+.card-cala-detalle {
+    gap: 7px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    border-radius: 7px;
+}
+
+.card-cala-detalle > i {
+    font-size: 13px;
+}
+
+.card-cala-detalle > div {
+    gap: 2px;
+}
+
+.card-cala-detalle strong {
+    font-size: 10px;
+}
+
+.card-cala-detalle span {
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+/* Botones secundarios */
+.btn-cala-verificar-pago,
+.btn-cala-listo,
+.btn-cala-finalizar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+}
+
+.btn-cala-verificar-pago {
+    background: #fff0d6;
+    color: #925400;
+    border-color: #f5d79a;
+}
+
+.btn-cala-verificar-pago:hover {
+    background: #ffe4b5;
+}
+
+.btn-cala-listo {
+    width: 100%;
+    background: #dcfce7;
+    color: #166534;
+    border-color: #bbf7d0;
+}
+
+.btn-cala-listo:hover {
+    background: #bbf7d0;
+}
+
+.btn-cala-finalizar {
+    width: 100%;
+    background: #f3e8ff;
+    color: #6b21a8;
+    border-color: #e9d5ff;
+}
+
+.btn-cala-finalizar:hover {
+    background: #e9d5ff;
+}
+
+/* Mantener accesibles los botones con teclado */
+.btn-cala-verificar-pago:focus-visible,
+.btn-cala-listo:focus-visible,
+.btn-cala-finalizar:focus-visible {
+    outline: 3px solid #ffc0d8;
+    outline-offset: 2px;
+}
+
+/* Notificaciones de Cala Delivery */
+.notificacion-cala {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    margin: 0 0 22px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+    animation: calaNotificacionEntrada 0.35s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.notificacion-exito {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #166534;
+}
+
+.notificacion-error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #991b1b;
+}
+
+.notificacion-cala-icono {
+    font-size: 25px;
+    flex-shrink: 0;
+}
+
+.notificacion-cala-texto {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.notificacion-cala-texto strong {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.notificacion-cala-texto span {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.notificacion-cala-cerrar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.notificacion-cala-cerrar:hover {
+    background: rgba(0, 0, 0, 0.06);
+    opacity: 1;
+}
+
+@keyframes calaNotificacionEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 576px) {
+    .notificacion-cala {
+        gap: 10px;
+        padding: 13px;
+    }
+}
+
+/* Fondo de la ventana modal */
+.cala-modal-fondo[hidden] {
+    display: none !important;
+}
+
+.cala-modal-fondo {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(25, 18, 30, 0.58);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    animation: calaModalFondo 0.2s ease;
+}
+
+/* Tarjeta central */
+.cala-modal {
+    width: 100%;
+    max-width: 420px;
+    padding: 30px 26px 24px;
+    border-radius: 22px;
+    background: #ffffff;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    animation: calaModalEntrada 0.25s ease;
+}
+
+.cala-modal-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: #fff0f6;
+    color: #ff2f7d;
+    font-size: 32px;
+}
+
+.cala-modal h2 {
+    margin: 0 0 12px;
+    color: #29212a;
+    font-size: 22px;
+    font-weight: 750;
+}
+
+.cala-modal p {
+    margin: 0;
+    color: #6b626c;
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.cala-modal-botones {
+    display: flex;
+    gap: 12px;
+    margin-top: 26px;
+}
+
+.cala-modal-btn {
+    display: inline-flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 46px;
+    padding: 11px 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.cala-modal-btn:hover {
+    transform: translateY(-1px);
+}
+
+.cala-modal-btn.cancelar {
+    background: #f3f1f4;
+    color: #514752;
+}
+
+.cala-modal-btn.cancelar:hover {
+    background: #e8e4ea;
+}
+
+.cala-modal-btn.aceptar {
+    background: #ff2f7d;
+    color: #ffffff;
+}
+
+.cala-modal-btn.aceptar:hover {
+    background: #e91e68;
+}
+
+.cala-modal-btn:focus-visible {
+    outline: 3px solid #f9a8d4;
+    outline-offset: 3px;
+}
+
+@keyframes calaModalFondo {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes calaModalEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 420px) {
+    .cala-modal {
+        padding: 25px 18px 20px;
+    }
+
+    .cala-modal-botones {
+        flex-direction: column-reverse;
+    }
+
+    .cala-modal-btn {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cala-modal-fondo,
+    .cala-modal {
+        animation: none;
+    }
+
+    .cala-modal-btn {
+        transition: none;
+    }
+}
+

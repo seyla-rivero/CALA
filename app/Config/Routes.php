@@ -80,6 +80,7 @@ $routes->group('admin', ['filter' => 'adminAuth'], static function ($routes) {
     //Pedidos
     $routes->get('pedidos', 'Administrador::pedidos');
     $routes->post('pedidos/actualizar-estado/(:num)','Administrador::actualizarEstadoPedido/$1');
+    $routes->post('pedidos/verificar-pago/(:num)','Administrador::verificarPagoTransferencia/$1');
 
 });
 
