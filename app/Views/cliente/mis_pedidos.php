@@ -279,10 +279,12 @@
 
                             <p class="mb-2">
                                 <strong>Sucursal:</strong>
-                                <?= esc(
-                                    $pedido['nombreSucursal']
-                                    ?? 'No disponible'
-                                ) ?>
+                                <?= esc($pedido['nombreSucursal'] ?? 'No disponible') ?>
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Dirección de la sucursal:</strong>
+                                <?= esc($pedido['direccionSucursal'] ?? 'No disponible') ?>
                             </p>
 
                         </div>

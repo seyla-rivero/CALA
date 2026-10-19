@@ -32,15 +32,18 @@
 }
 
 .encabezado-cala-pedidos h1 {
-    font-size: 25px;
-    font-weight: 800;
-    margin: 0 0 4px;
+    color: #111111;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 8px;
 }
 
 .encabezado-cala-pedidos p {
-    color: var(--gris);
+    color: #777777;
     margin: 0;
-    font-size: 13px;
+    font-size: 15px;
+    line-height: 1.5;
 }
 
 .contador-cala-pedidos {
@@ -572,15 +575,16 @@
     font-weight: 800;
 }
 
-/* SIN PEDIDOS */
+/* Mensaje cuando todavía no hay pedidos */
 
 .card-cala-vacio {
     grid-column: 1 / -1;
     padding: 40px 20px;
     text-align: center;
-    border: 1px dashed var(--borde);
-    border-radius: 15px;
-    background: #fff;
+    background: #ffffff;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .card-cala-vacio i {
@@ -589,15 +593,18 @@
 }
 
 .card-cala-vacio h3 {
-    font-size: 17px;
-    font-weight: 800;
-    margin: 10px 0 5px;
+    color: #111111;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 12px 0 6px;
 }
 
 .card-cala-vacio p {
-    margin: 0;
-    color: var(--gris);
-    font-size: 12px;
+    max-width: 550px;
+    margin: 0 auto;
+    color: #777777;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 /* AVISOS */

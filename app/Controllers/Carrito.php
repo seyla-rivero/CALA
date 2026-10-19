@@ -769,32 +769,99 @@ class Carrito extends BaseController
         // Calcular total
         $total = $subtotal + $costoEnvio;
 
-        // Determinar estado del pago
-        // Determinar estado inicial del pago
+        // Usar la fecha y hora de Argentina
+        $zonaHoraria = new \DateTimeZone('America/Argentina/Buenos_Aires');
+        $ahora = new \DateTimeImmutable('now', $zonaHoraria);
+
+        $fechaPedido = $ahora->format('Y-m-d H:i:s');
+        $fechaNumero = $ahora->format('Y-m-d');
+
+        // Estado inicial del pago
         $estadoPago = 'pendiente';
 
-        // Actualizar el pedido
-        $pedidoModel->update($pedido['idPedido'], [
-            'idSucursal' => $idSucursal,
-            'idZona' => $idZona,
-            'fecha' => date('Y-m-d H:i:s'),
-            'estado' => 'pendiente',
-            'tipoEntrega' => $tipoEntrega,
-            'direccionEntrega' => $direccionEntrega,
-            'metodoPago' => $metodoPago,
-            'estadoPago' => $estadoPago,
-            'subTotal' => $subtotal,
-            'costoEnvio' => $costoEnvio,
-            'total' => $total
-        ]);
+        $db = \Config\Database::connect();
 
-        return $this->response->setJSON([
-            'ok' => true,
-            'mensaje' => 'Pedido confirmado correctamente.',
-            'idPedido' => $pedido['idPedido']
-        ]);
+        // Iniciar transacción para evitar números duplicados
+        $db->transBegin();
+
+        try {
+            // Incrementar el contador correspondiente a esta sucursal y día.
+            // Si todavía no existe, comienza en el número 1.
+            $db->query(
+                "INSERT INTO contador_pedidos_diarios
+                    (idSucursal, fecha, ultimoNumero)
+                 VALUES (?, ?, 1)
+                 ON DUPLICATE KEY UPDATE
+                    ultimoNumero = ultimoNumero + 1",
+                [$idSucursal, $fechaNumero]
+            );
+
+            // Obtener el número asignado a esta sucursal para hoy
+            $contador = $db->table('contador_pedidos_diarios')
+                ->where('idSucursal', $idSucursal)
+                ->where('fecha', $fechaNumero)
+                ->get()
+                ->getRowArray();
+
+            if (!$contador) {
+                throw new \RuntimeException(
+                    'No se pudo obtener el número del pedido.'
+                );
+            }
+
+            $numeroPedido = (int) $contador['ultimoNumero'];
+
+            // Actualizar el pedido que estaba en estado carrito
+            $db->table('pedido')
+                ->where('idPedido', $pedido['idPedido'])
+                ->where('estado', 'carrito')
+                ->update([
+                    'idSucursal'       => $idSucursal,
+                    'idZona'           => $idZona,
+                    'numeroPedido'     => $numeroPedido,
+                    'fecha'            => $fechaPedido,
+                    'estado'           => 'pendiente',
+                    'tipoEntrega'      => $tipoEntrega,
+                    'direccionEntrega' => $direccionEntrega,
+                    'metodoPago'       => $metodoPago,
+                    'estadoPago'       => $estadoPago,
+                    'subTotal'         => $subtotal,
+                    'costoEnvio'       => $costoEnvio,
+                    'total'             => $total
+                ]);
+
+            // Verificar que el pedido se haya actualizado correctamente
+            if (!$db->transStatus() || $db->affectedRows() < 1) {
+                throw new \RuntimeException(
+                    'No se pudo confirmar el pedido.'
+                );
+            }
+
+            // Confirmar los cambios
+            $db->transCommit();
+
+            return $this->response->setJSON([
+                'ok'           => true,
+                'mensaje'      => 'Pedido confirmado correctamente.',
+                'idPedido'     => $pedido['idPedido'],
+                'numeroPedido' => $numeroPedido
+            ]);
+
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            log_message(
+                'error',
+                'Error al confirmar pedido: ' . $e->getMessage()
+            );
+
+            return $this->response->setStatusCode(500)->setJSON([
+                'ok'      => false,
+                'mensaje' => 'No se pudo confirmar el pedido. Intentá nuevamente.'
+            ]);
+        }
+
     }
-    
     
     public function misPedidos()
     {
@@ -812,8 +879,10 @@ class Carrito extends BaseController
 
         // Obtener los pedidos del cliente, excepto el carrito actual
         $pedidos = $pedidoModel
-            ->select('pedido.*, sucursal.nombre AS nombreSucursal,
-                    zona.nombre AS nombreZona')
+            ->select('pedido.*,
+                sucursal.nombre AS nombreSucursal,
+                sucursal.direccion AS direccionSucursal,
+                zona.nombre AS nombreZona')
             ->join(
                 'sucursal',
                 'sucursal.idSucursal = pedido.idSucursal',
@@ -848,10 +917,48 @@ class Carrito extends BaseController
         }
 
         unset($pedido);
+        
+        $db = \Config\Database::connect();
 
+        $notificaciones = $db
+            ->table('notificacion_cliente')
+            ->where('idCliente', $idCliente)
+            ->orderBy('fecha', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        $cantidadNotificacionesNoLeidas = $db
+            ->table('notificacion_cliente')
+            ->where('idCliente', $idCliente)
+            ->where('leida', 0)
+            ->countAllResults();
+        
         return view('cliente/mis_pedidos', [
-            'pedidos' => $pedidos
+            'pedidos' => $pedidos,
+            'notificaciones' => $notificaciones,
+            'cantidadNotificacionesNoLeidas' => $cantidadNotificacionesNoLeidas,
         ]);
+    }
+    
+    public function marcarNotificacionesLeidas()
+    {
+        $session = session();
+
+        if (!$session->get('logueado')) {
+            return $this->response
+                ->setStatusCode(401)
+                ->setJSON(['ok' => false]);
+        }
+
+        $idCliente = $session->get('idCliente');
+
+        \Config\Database::connect()
+            ->table('notificacion_cliente')
+            ->where('idCliente', $idCliente)
+            ->where('leida', 0)
+            ->update(['leida' => 1]);
+
+        return $this->response->setJSON(['ok' => true]);
     }
 
 }

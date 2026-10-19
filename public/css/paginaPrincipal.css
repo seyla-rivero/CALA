@@ -64,6 +64,130 @@ body {
     justify-content: center;
 }
 
+/* Campanita */
+.campana-notificaciones {
+    color: white;
+    border: none;
+    padding: 8px;
+    background: transparent;
+    line-height: 1;
+}
+
+.campana-notificaciones:hover,
+.campana-notificaciones:focus {
+    color: #ffd1e3;
+    background: rgba(255, 255, 255, 0.10);
+    box-shadow: none;
+}
+
+.badge-notificaciones {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    background: #ff2f7d;
+    color: white;
+    border: 2px solid white;
+    border-radius: 50px;
+    min-width: 19px;
+    height: 19px;
+    padding: 1px 4px;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Panel desplegable */
+.panel-notificaciones {
+    width: 340px;
+    max-width: calc(100vw - 24px);
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+    margin-top: 12px !important;
+}
+
+.encabezado-notificaciones {
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.encabezado-notificaciones strong {
+    font-size: 16px;
+    color: #252525;
+}
+
+.encabezado-notificaciones span {
+    font-size: 12px;
+    color: #777;
+}
+
+.lista-notificaciones {
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.item-notificacion {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    white-space: normal;
+}
+
+.item-notificacion:hover {
+    background: #fff5f9;
+}
+
+.icono-notificacion {
+    color: #ff2f7d;
+    font-size: 20px;
+    padding-top: 2px;
+}
+
+.contenido-notificacion {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.contenido-notificacion p {
+    font-size: 14px;
+    color: #333;
+}
+
+.contenido-notificacion small {
+    color: #888;
+    font-size: 11px;
+}
+
+.notificaciones-vacias {
+    padding: 28px 16px;
+    text-align: center;
+    color: #888;
+    font-size: 13px;
+}
+
+.pie-notificaciones {
+    display: block;
+    text-align: center;
+    padding: 13px;
+    color: #ff2f7d;
+    font-weight: 600;
+    text-decoration: none;
+    border-top: 1px solid #eee;
+}
+
+.pie-notificaciones:hover {
+    background: #fff5f9;
+    color: #d91d64;
+}
+
+
 /*Seccion*/
 .portada {
     width: 100%;

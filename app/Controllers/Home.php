@@ -11,6 +11,39 @@ use App\Models\SucursalModel;
 
 class Home extends BaseController
 {
+    private function obtenerDatosNotificaciones(): array
+    {
+        $session = session();
+
+        if (!$session->get('logueado') || !$session->get('idCliente')) {
+            return [
+                'notificaciones' => [],
+                'cantidadNotificacionesNoLeidas' => 0,
+            ];
+        }
+
+        $idCliente = $session->get('idCliente');
+        $db = \Config\Database::connect();
+
+        $notificaciones = $db
+            ->table('notificacion_cliente')
+            ->where('idCliente', $idCliente)
+            ->orderBy('fecha', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        $cantidadNoLeidas = $db
+            ->table('notificacion_cliente')
+            ->where('idCliente', $idCliente)
+            ->where('leida', 0)
+            ->countAllResults();
+
+        return [
+            'notificaciones' => $notificaciones,
+            'cantidadNotificacionesNoLeidas' => $cantidadNoLeidas,
+        ];
+    }
+
     public function index(): string
     {
 
@@ -26,6 +59,8 @@ class Home extends BaseController
 
         $data['masVendida'] = $promocionModel->obtenerMasVendida();
 
+        $data = array_merge($data, $this->obtenerDatosNotificaciones());
+
         return view('cliente/paginaPrincipal', $data);
     }
 
@@ -37,6 +72,8 @@ class Home extends BaseController
         $data['productos'] = $productoModel->obtenerProductosMenu();
         $data['categorias'] = $categoriaModel->findAll();
 
+        $data = array_merge($data, $this->obtenerDatosNotificaciones());
+
         return view('cliente/menu', $data);
     }
 
@@ -45,6 +82,8 @@ class Home extends BaseController
         $promocionModel = new PromocionModel();
 
         $data['productos'] = $promocionModel->obtenerPromociones();
+
+        $data = array_merge($data, $this->obtenerDatosNotificaciones());
 
         return view('cliente/promociones', $data);
     }

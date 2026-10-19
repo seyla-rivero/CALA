@@ -30,7 +30,7 @@ $routes->post('carrito/confirmar-pedido', 'Carrito::confirmarPedido');
 // Mis pedidos
 $routes->get('mis-pedidos', 'Carrito::misPedidos');
 $routes->get('mis-pedidos/detalle/(:num)', 'Carrito::detallePedido/$1');
-
+$routes->post('notificaciones/marcar-leidas','Carrito::marcarNotificacionesLeidas');
 
 // Acceso del administrador
 

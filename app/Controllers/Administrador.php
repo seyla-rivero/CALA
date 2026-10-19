@@ -381,6 +381,23 @@ class Administrador extends BaseController
         if (!$actualizado || $db->affectedRows() !== 1) {
             return redirect()->to(base_url('admin/pedidos'))
                 ->with('error', 'No se pudo actualizar el pedido. Revisá su estado actual.');
+        }        
+        
+        $mensajesNotificacion = [
+            'en preparación' => '¡Tu pedido está en preparación!',
+            'listo'          => '¡Tu pedido está listo!',
+            'entregado'      => '¡Tu pedido fue entregado! Gracias por elegir Cala.',
+            'retirado'       => '¡Tu pedido fue retirado! Gracias por elegir Cala.',
+        ];
+
+        if (isset($mensajesNotificacion[$nuevoEstado])) {
+            $db->table('notificacion_cliente')->insert([
+                'idCliente' => $pedido['idCliente'],
+                'idPedido'  => $idPedido,
+                'mensaje'   => $mensajesNotificacion[$nuevoEstado],
+                'leida'     => 0,
+                'fecha'     => date('Y-m-d H:i:s'),
+            ]);
         }
 
         $mensajes = [
@@ -452,6 +469,14 @@ class Administrador extends BaseController
             return redirect()->to(base_url('admin/pedidos'))
                 ->with('error', 'No se pudo verificar el pago.');
         }
+        
+        $db->table('notificacion_cliente')->insert([
+            'idCliente' => $pedido['idCliente'],
+            'idPedido'  => $idPedido,
+            'mensaje'   => '¡Tu transferencia fue verificada correctamente!',
+            'leida'     => 0,
+            'fecha'     => date('Y-m-d H:i:s'),
+        ]);
 
         return redirect()->to(base_url('admin/pedidos'))
             ->with('mensaje', 'La transferencia fue verificada correctamente.');

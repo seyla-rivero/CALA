@@ -1,122 +1,63 @@
+/* ==============================
+   CONTENEDOR PRINCIPAL
+============================== */
+
 .pedidos-container {
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding-top: 28px;
+    padding-bottom: 28px;
 }
 
 /* Título principal */
 .pedidos-titulo {
-    color: #222222;
-    font-size: 1.8rem;
-    font-weight: 800;
-    border-left: 5px solid #ff2f7d;
-    padding-left: 15px;
-    margin-bottom: 28px;
+    color: #111111;
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 30px;
 }
 
-/* Tarjeta de cada pedido */
+/* ==============================
+   TARJETA DE CADA PEDIDO
+============================== */
+
 .pedidos-card {
     background: #ffffff;
     border: 1px solid #eeeeee;
-    border-radius: 18px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    border-radius: 14px;
+    box-shadow: 0 2px 9px rgba(0, 0, 0, 0.045);
     overflow: hidden;
     transition: box-shadow 0.25s ease;
+    margin-bottom: 18px !important;
 }
 
 .pedidos-card:hover {
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.09);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.075);
 }
 
-/* Encabezado */
+/* Reduce el espacio interior de la tarjeta */
+.pedidos-card > .card-body {
+    padding: 18px !important;
+}
+
+/* ==============================
+   ENCABEZADO DEL PEDIDO
+============================== */
+
 .pedidos-numero {
     color: #222222;
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     font-weight: 800;
 }
 
 .pedidos-fecha {
     color: #777777;
-    font-size: 0.95rem;
+    font-size: 0.86rem;
 }
 
-.pedidos-separador {
-    border-color: #dedede;
-    opacity: 0.8;
-}
-
-/* Títulos de las secciones */
-.pedidos-seccion-titulo {
-    color: #222222;
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
-.pedidos-seccion-titulo i {
-    color: #ff2f7d;
-    font-size: 1.1rem;
-    margin-right: 7px;
-}
-
-/* Productos */
-.pedidos-producto {
-    padding: 8px 0;
-}
-
-.pedidos-producto-imagen {
-    width: 120px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 12px;
-    display: block;
-    margin: 0 auto;
-}
-
-.pedidos-producto-nombre {
-    color: #222222;
-    font-weight: 700;
-    font-size: 1.05rem;
-}
-
-.pedidos-producto-info {
-    color: #555555;
-    font-size: 0.95rem;
-}
-
-.pedidos-producto-comentario {
-    color: #333333;
-    font-size: 0.95rem;
-    overflow-wrap: anywhere;
-}
-
-/* Precio de cada producto */
-.pedidos-precio {
-    color: #ff2f7d;
-    font-size: 1.2rem;
-    font-weight: 800;
-}
-
-/* Datos de entrega y pago */
-.pedidos-datos {
-    padding: 10px 4px;
-}
-
-.pedidos-datos p {
-    color: #333333;
-    line-height: 1.6;
-    overflow-wrap: anywhere;
-}
-
-.pedidos-datos strong {
-    color: #222222;
-}
-
-/* Estado del pedido */
 .pedidos-estado {
     display: inline-block;
-    padding: 7px 12px;
+    padding: 6px 10px;
     border-radius: 8px;
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     font-weight: 700;
     text-align: center;
 }
@@ -151,65 +92,170 @@
     color: #555555;
 }
 
-/* Resumen de importes */
+/* Separadores */
+.pedidos-separador {
+    border-color: #e5e5e5;
+    opacity: 0.8;
+    margin: 13px 0;
+}
+
+/* ==============================
+   TÍTULOS DE LAS SECCIONES
+============================== */
+
+.pedidos-seccion-titulo {
+    color: #222222;
+    font-size: 0.98rem;
+    font-weight: 750;
+    margin-bottom: 10px;
+}
+
+.pedidos-seccion-titulo i {
+    color: #ff2f7d;
+    font-size: 1rem;
+    margin-right: 5px;
+}
+
+/* ==============================
+   PRODUCTOS DEL PEDIDO
+============================== */
+
+.pedidos-producto {
+    padding: 4px 0;
+    margin-bottom: 0 !important;
+}
+
+/* Imágenes más pequeñas */
+.pedidos-producto-imagen {
+    width: 82px;
+    height: 76px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+.pedidos-producto-nombre {
+    color: #222222;
+    font-weight: 750;
+    font-size: 0.98rem;
+    margin-bottom: 5px !important;
+}
+
+.pedidos-producto-info {
+    color: #555555;
+    font-size: 0.86rem;
+    margin-bottom: 3px !important;
+}
+
+.pedidos-producto-comentario {
+    color: #444444;
+    font-size: 0.84rem;
+    margin-top: 4px;
+    overflow-wrap: anywhere;
+}
+
+/* Precio por producto */
+.pedidos-precio {
+    color: #ff2f7d;
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+/* ==============================
+   DATOS DE ENTREGA Y PAGO
+============================== */
+
+.pedidos-card .row.mt-2 {
+    margin-top: 10px !important;
+}
+
+.pedidos-datos {
+    padding: 6px 4px;
+}
+
+.pedidos-datos p {
+    color: #333333;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    margin-bottom: 7px !important;
+    overflow-wrap: anywhere;
+}
+
+.pedidos-datos strong {
+    color: #222222;
+}
+
+/* ==============================
+   RESUMEN DE IMPORTES
+============================== */
+
 .pedidos-resumen {
-    margin-top: 24px;
-    background-color: #fff3f8;
+    margin-top: 16px;
+    background-color: #fff5f9;
     border: 1px solid #ffe1ec;
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
 }
 
 .pedidos-resumen .card-body {
-    padding: 20px;
+    padding: 13px 16px;
 }
 
 .pedidos-resumen-fila {
-    color: #333333;
-    font-size: 1rem;
+    color: #444444;
+    font-size: 0.88rem;
+    margin-bottom: 8px !important;
 }
 
 .pedidos-resumen hr {
     border-color: #e7cbd6;
-    opacity: 0.9;
+    opacity: 0.8;
+    margin: 10px 0;
 }
 
 .pedidos-total-etiqueta {
     color: #222222;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     font-weight: 800;
 }
 
 .pedidos-total {
     color: #ff2f7d;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 800;
 }
 
-/* Pantalla sin pedidos */
+/* ==============================
+   SIN PEDIDOS
+============================== */
+/* Mensaje cuando todavía no hay pedidos */
+
 .pedidos-vacio {
-    padding: 55px 25px;
+    padding: 40px 22px;
     text-align: center;
-    background-color: #fff7fa;
-    border: 1px dashed #f3a4c3;
-    border-radius: 18px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 0;
 }
 
 .pedidos-vacio-icono {
     color: #ff2f7d;
-    font-size: 3.5rem;
-    margin-bottom: 15px;
+    font-size: 3rem;
+    margin-bottom: 12px;
 }
 
 .pedidos-vacio h4 {
-    color: #222222;
-    font-weight: 800;
+    color: #111111;
+    font-weight: 700;
+    font-size: 1.2rem;
 }
 
 .pedidos-vacio p {
     color: #777777;
     max-width: 550px;
-    margin: 12px auto 22px;
+    margin: 10px auto 18px;
+    font-size: 0.92rem;
 }
 
 /* Botón para ir al menú */
@@ -218,9 +264,10 @@
     background-color: #ff2f7d;
     color: #ffffff;
     border: 2px solid #ff2f7d;
-    border-radius: 10px;
-    padding: 10px 22px;
-    font-weight: 700;
+    border-radius: 9px;
+    padding: 9px 18px;
+    font-weight: 600;
+    font-size: 0.95rem;
     text-decoration: none;
     transition: all 0.2s ease;
 }
@@ -229,51 +276,92 @@
     background-color: #e91e6b;
     border-color: #e91e6b;
     color: #ffffff;
-    transform: translateY(-2px);
 }
 
-/* Adaptación a celulares */
+/* ==============================
+   ADAPTACIÓN A CELULARES
+============================== */
+
 @media (max-width: 767px) {
+
     .pedidos-container {
-        padding-top: 25px;
-        padding-bottom: 25px;
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
 
     .pedidos-titulo {
-        font-size: 1.55rem;
+        font-size: 1.4rem;
+        margin-bottom: 16px;
     }
 
     .pedidos-card {
-        border-radius: 14px;
+        border-radius: 12px;
     }
 
-    .pedidos-producto-imagen {
-        width: 100%;
-        max-width: 120px;
-        height: 95px;
+    .pedidos-card > .card-body {
+        padding: 13px !important;
     }
 
-    .pedidos-producto-nombre {
-        font-size: 0.98rem;
-    }
-
-    .pedidos-precio {
-        font-size: 1.1rem;
-    }
-
-    .pedidos-resumen .card-body {
-        padding: 16px;
-    }
-
-    .pedidos-total-etiqueta {
+    .pedidos-numero {
         font-size: 1.05rem;
     }
 
+    .pedidos-fecha {
+        font-size: 0.8rem;
+    }
+
+    .pedidos-estado {
+        padding: 5px 8px;
+        font-size: 0.73rem;
+    }
+
+    .pedidos-producto-imagen {
+        width: 70px;
+        height: 68px;
+    }
+
+    .pedidos-producto-nombre {
+        font-size: 0.9rem;
+    }
+
+    .pedidos-producto-info,
+    .pedidos-producto-comentario {
+        font-size: 0.8rem;
+    }
+
+    .pedidos-precio {
+        font-size: 0.98rem;
+    }
+
+    .pedidos-datos {
+        padding: 5px 3px;
+    }
+
+    .pedidos-datos p {
+        font-size: 0.83rem;
+    }
+
+    .pedidos-resumen {
+        margin-top: 12px;
+    }
+
+    .pedidos-resumen .card-body {
+        padding: 11px 12px;
+    }
+
+    .pedidos-resumen-fila {
+        font-size: 0.84rem;
+    }
+
+    .pedidos-total-etiqueta {
+        font-size: 0.95rem;
+    }
+
     .pedidos-total {
-        font-size: 1.2rem;
+        font-size: 1.08rem;
     }
 
     .pedidos-vacio {
-        padding: 40px 18px;
+        padding: 30px 15px;
     }
 }

@@ -21,6 +21,7 @@ class PedidoModel extends Model
         'estadoPago',
         'subTotal',
         'costoEnvio',
-        'total'
+        'total',
+        'numeroPedido'
     ];
 }

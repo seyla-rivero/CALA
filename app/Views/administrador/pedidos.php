@@ -119,7 +119,7 @@
                     <div class="card-cala-cabecera">
                         <div>
                             <h2 class="card-cala-numero">
-                                Pedido #<?= esc($pedido['idPedido']) ?>
+                                Pedido #<?= esc($pedido['numeroPedido'] ?? $pedido['idPedido']) ?>
                             </h2>
                             <div class="card-cala-fecha">
                                 <i class="bi bi-clock"></i>
@@ -322,7 +322,7 @@
 
                                     
                                         <form action="<?= base_url('admin/pedidos/verificar-pago/' .$pedido['idPedido']) ?>"
-                                            method="post" class="form-cala-confirmacion" data-mensaje="¿Confirmás que recibiste la transferencia del pedido #<?= esc($pedido['idPedido'], 'attr') ?>?">
+                                            method="post" class="form-cala-confirmacion" data-mensaje="¿Confirmás que recibiste la transferencia del pedido #<?= esc($pedido['numeroPedido'] ?? $pedido['idPedido'], 'attr') ?>?">
 
                                         <?= csrf_field() ?>
 
@@ -389,7 +389,7 @@
                             <?php $accion = $pedido['accion']; ?>
 
                             
-                                <form action="<?= base_url('admin/pedidos/actualizar-estado/' .$pedido['idPedido']) ?>" method="post" class="form-cala-confirmacion" data-mensaje="¿Querés continuar con la acción: <?= esc($accion['texto'], 'attr') ?>?">
+                                <form action="<?= base_url('admin/pedidos/actualizar-estado/' .$pedido['idPedido']) ?>" method="post" class="form-cala-confirmacion" data-mensaje="¿Querés continuar con la acción: <?= esc($accion['texto'], 'attr') ?> del pedido #<?= esc($pedido['numeroPedido'] ?? $pedido['idPedido'], 'attr') ?>?">
 
                                 <?= csrf_field() ?>
 
