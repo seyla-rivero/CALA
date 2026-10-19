@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="<?= base_url('css/administrador.css') ?>">
     <link rel="stylesheet" href="<?= base_url('css/panel.css') ?>">
     <link rel="stylesheet" href="<?= base_url('css/produc_promo_zonas.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/pedidosAdmi.css') ?>">
 </head>
 <body>
 

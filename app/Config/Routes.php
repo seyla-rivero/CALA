@@ -76,6 +76,11 @@ $routes->group('admin', ['filter' => 'adminAuth'], static function ($routes) {
     $routes->post('actualizar_zona/(:num)', 'Zona::actualizarZona/$1');
     $routes->post('desactivar_zona/(:num)', 'Zona::desactivarZona/$1');
     $routes->post('activar_zona/(:num)', 'Zona::activarZona/$1');
+
+    //Pedidos
+    $routes->get('pedidos', 'Administrador::pedidos');
+    $routes->post('pedidos/actualizar-estado/(:num)','Administrador::actualizarEstadoPedido/$1');
+
 });
 
 // Cerrar sesion del administrador

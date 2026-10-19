@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="<?= base_url('css/modalLoginRegistro.css') ?>">
     <link rel="stylesheet" href="<?= base_url('css/menu.css') ?>">
     <link rel="stylesheet" href="<?= base_url('css/carrito.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/misPedidosCliente.css') ?>">
 </head>
 <body>
  

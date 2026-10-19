@@ -770,11 +770,8 @@ class Carrito extends BaseController
         $total = $subtotal + $costoEnvio;
 
         // Determinar estado del pago
-        if ($metodoPago === 'transferencia') {
-            $estadoPago = 'pendiente';
-        } else {
-            $estadoPago = 'no_aplica';
-        }
+        // Determinar estado inicial del pago
+        $estadoPago = 'pendiente';
 
         // Actualizar el pedido
         $pedidoModel->update($pedido['idPedido'], [

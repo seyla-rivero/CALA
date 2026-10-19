@@ -1,0 +1,722 @@
+
+/* =========================================
+   PEDIDOS ADMINISTRADOR - CALA DELIVERY
+   ========================================= */
+
+.pedidos-cala {
+    --rosa: #ff2f7d;
+    --rosa-hover: #e51e68;
+    --rosa-claro: #fff0f6;
+    --borde: #f0dfe7;
+    --texto: #33262d;
+    --gris: #817680;
+
+    color: var(--texto);
+}
+
+.pedidos-cala *,
+.pedidos-cala *::before,
+.pedidos-cala *::after {
+    box-sizing: border-box;
+}
+
+/* ENCABEZADO */
+
+.encabezado-cala-pedidos {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.encabezado-cala-pedidos h1 {
+    font-size: 25px;
+    font-weight: 800;
+    margin: 0 0 4px;
+}
+
+.encabezado-cala-pedidos p {
+    color: var(--gris);
+    margin: 0;
+    font-size: 13px;
+}
+
+.contador-cala-pedidos {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 13px;
+    background: var(--rosa-claro);
+    color: var(--rosa);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* DISTRIBUCIÓN DE TARJETAS */
+
+.grid-cala-pedidos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 15px;
+}
+
+.card-cala-pedido {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #eee1e8;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px rgba(55, 20, 39, .05);
+    transition: box-shadow .2s, transform .2s;
+}
+
+.card-cala-pedido:hover {
+    box-shadow: 0 6px 17px rgba(55, 20, 39, .09);
+    transform: translateY(-2px);
+}
+
+
+/* CABECERA Y ESTADO */
+
+.card-cala-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 13px;
+    background: #fff7fa;
+    border-bottom: 1px solid var(--borde);
+}
+
+.card-cala-numero {
+    font-size: 16px;
+    font-weight: 850;
+    margin: 0 0 4px;
+}
+
+.card-cala-fecha {
+    color: var(--gris);
+    font-size: 11px;
+}
+
+/* Estilo general */
+.card-cala-estado {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Pendiente: ámbar */
+.card-cala-estado.pendiente {
+    background: #fff0d6;
+    color: #925400;
+    border: 1px solid #f5d79a;
+}
+
+/* Estado desconocido: gris */
+.card-cala-estado.otro {
+    background: #f0edf2;
+    color: #65556b;
+}
+
+/* En preparación: azul */
+.card-cala-estado.preparacion {
+    background: #e0f2fe;
+    color: #075985;
+}
+
+/* En camino: celeste */
+.card-cala-estado.camino {
+    background: #e7f1ff;
+    color: #245a9d;
+}
+
+/* Finalizado: verde */
+.card-cala-estado.finalizado {
+    background: #dcfce7;
+    color: #166534;
+}
+
+/* Cancelado: rojo */
+.card-cala-estado.cancelado {
+    background: #ffe8e8;
+    color: #b42332;
+}
+
+
+/* FOTOS: MÁS COMPACTAS */
+
+.card-cala-fotos {
+    display: flex;
+    gap: 7px;
+    padding: 10px 12px 2px;
+}
+
+.card-cala-foto-principal {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 92px;
+    overflow: hidden;
+    background: var(--rosa-claro);
+    border-radius: 10px;
+}
+
+.card-cala-foto-principal img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-cala-foto-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--rosa);
+    font-size: 27px;
+}
+
+.card-cala-miniaturas {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 48px;
+    flex-shrink: 0;
+}
+
+.card-cala-miniatura {
+    width: 48px;
+    height: 42px;
+    overflow: hidden;
+    border-radius: 7px;
+    background: var(--rosa-claro);
+}
+
+.card-cala-miniatura img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-cala-mas-fotos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 25px;
+    width: 48px;
+    border-radius: 7px;
+    background: var(--rosa-claro);
+    color: #b81e5b;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+/* CONTENIDO */
+
+.card-cala-contenido {
+    flex: 1;
+    padding: 11px 13px 12px;
+}
+
+.card-cala-cliente {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    margin-bottom: 10px;
+}
+
+.card-cala-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    background: var(--rosa-claro);
+    color: var(--rosa);
+    border-radius: 50%;
+    font-size: 17px;
+}
+
+.card-cala-cliente-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.card-cala-cliente-info strong {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.card-cala-cliente-info a {
+    display: block;
+    margin-top: 3px;
+    color: #c21f61;
+    text-decoration: none;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.card-cala-cliente-info a:hover {
+    text-decoration: underline;
+}
+
+.card-cala-cliente-info small {
+    display: block;
+    margin-top: 3px;
+    color: var(--gris);
+    font-size: 10px;
+    overflow-wrap: anywhere;
+}
+
+.card-cala-separador {
+    border: 0;
+    border-top: 1px solid #f1e7ec;
+    margin: 9px 0;
+}
+
+
+/* PRODUCTOS CON IMÁGENES */
+
+.card-cala-producto {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid #f5e9ef;
+}
+
+.card-cala-producto:last-child {
+    border-bottom: none;
+}
+
+.card-cala-producto-imagen {
+    width: 65px;
+    height: 65px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--rosa-claro);
+}
+
+.card-cala-producto-imagen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-cala-producto-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--rosa);
+    font-size: 23px;
+    background: var(--rosa-claro);
+}
+
+.card-cala-producto-nombre {
+    min-width: 0;
+    flex: 1;
+}
+
+.card-cala-producto-nombre strong {
+    display: block;
+    font-size: 12px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.card-cala-producto-nombre small {
+    display: block;
+    color: var(--gris);
+    margin-top: 4px;
+    font-size: 10px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.card-cala-precio {
+    flex-shrink: 0;
+    color: var(--rosa);
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* ENTREGA */
+
+.card-cala-entrega {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 9px;
+    background: #fffafd;
+    border: 1px solid #f3e7ed;
+    border-radius: 9px;
+    font-size: 11px;
+}
+
+.card-cala-entrega > i {
+    color: var(--rosa);
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.card-cala-entrega strong {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 12px;
+}
+
+.card-cala-entrega span {
+    display: block;
+    color: var(--gris);
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+
+/* COLORES SEGÚN TIPO DE ENTREGA */
+
+/* Delivery: celeste */
+.card-cala-entrega.delivery {
+    background: #eff8ff;
+    border-color: #bfdef7;
+}
+
+.card-cala-entrega.delivery > i {
+    color: #1672b8;
+}
+
+.card-cala-entrega.delivery strong {
+    color: #145b91;
+}
+
+/* Retiro: violeta */
+.card-cala-entrega.retiro {
+    background: #f7f0ff;
+    border-color: #e3d0fa;
+}
+
+.card-cala-entrega.retiro > i {
+    color: #8241b8;
+}
+
+.card-cala-entrega.retiro strong {
+    color: #7133a5;
+}
+
+/* COLORES SEGÚN MÉTODO DE PAGO */
+
+.card-cala-metodo-pago {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 9px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+/* Efectivo: gris neutro */
+.card-cala-metodo-pago.efectivo {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+/* Transferencia: violeta */
+.card-cala-metodo-pago.transferencia {
+    background: #f3e8ff;
+    color: #6b21a8;
+}
+
+/* Otro método */
+.card-cala-metodo-pago.otro {
+    background: #f0edf2;
+    color: #65556b;
+}
+
+
+/* PAGO Y MONTOS */
+
+.card-cala-pago {
+    margin-top: 9px;
+}
+
+.card-cala-pago-linea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+    font-size: 11px;
+}
+
+.card-cala-pago-linea > span:first-child {
+    color: var(--gris);
+}
+
+.card-cala-estado-pago {
+    display: inline-block;
+    padding: 4px 7px;
+    border-radius: 7px;
+    background: #fff0d7;
+    color: #965700;
+    font-size: 10px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.card-cala-estado-pago.aprobado {
+    background: #e5f7eb;
+    color: #247442;
+}
+
+.card-cala-estado-pago.rechazado {
+    background: #ffe8e8;
+    color: #b42332;
+}
+
+.card-cala-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding-top: 9px;
+    margin-top: 8px;
+    border-top: 1px dashed #eac5d5;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.card-cala-total strong {
+    color: var(--rosa);
+    font-size: 19px;
+    white-space: nowrap;
+}
+
+/* BOTÓN PRINCIPAL */
+
+.card-cala-acciones {
+    padding: 0 13px 13px;
+    margin-top: auto;
+}
+
+.card-cala-acciones form {
+    margin: 0;
+}
+
+.btn-cala-preparar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    padding: 11px 9px;
+    background: var(--rosa);
+    border: none;
+    border-radius: 9px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.btn-cala-preparar:hover {
+    background: var(--rosa-hover);
+}
+
+.btn-cala-preparar:focus-visible {
+    outline: 3px solid #ffc0d8;
+    outline-offset: 2px;
+}
+
+.card-cala-en-proceso {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    padding: 10px;
+    border-radius: 9px;
+    background: #fff0f6;
+    color: #b92360;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+/* SIN PEDIDOS */
+
+.card-cala-vacio {
+    grid-column: 1 / -1;
+    padding: 40px 20px;
+    text-align: center;
+    border: 1px dashed var(--borde);
+    border-radius: 15px;
+    background: #fff;
+}
+
+.card-cala-vacio i {
+    font-size: 38px;
+    color: var(--rosa);
+}
+
+.card-cala-vacio h3 {
+    font-size: 17px;
+    font-weight: 800;
+    margin: 10px 0 5px;
+}
+
+.card-cala-vacio p {
+    margin: 0;
+    color: var(--gris);
+    font-size: 12px;
+}
+
+/* AVISOS */
+
+.pedidos-cala .alert {
+    font-size: 13px;
+    border-radius: 10px;
+}
+
+/* ADAPTACIÓN A PANTALLAS */
+
+@media (min-width: 1500px) {
+    .grid-cala-pedidos {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 851px) and (max-width: 1199px) {
+    .grid-cala-pedidos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 850px) {
+    .grid-cala-pedidos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .grid-cala-pedidos {
+        grid-template-columns: 1fr;
+    }
+
+    .encabezado-cala-pedidos h1 {
+        font-size: 22px;
+    }
+
+    .card-cala-foto-principal {
+        height: 115px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card-cala-pedido,
+    .btn-cala-preparar {
+        transition: none;
+    }
+
+    .card-cala-pedido:hover {
+        transform: none;
+    }
+}
+.card-cala-cliente-info small {
+    display: none;
+}
+
+.card-cala-cliente-info:hover small {
+    display: block;
+}
+.card-cala-email {
+    display: none !important;
+}
+
+/* DETALLES IMPORTANTES DEL PRODUCTO */
+
+.card-cala-detalle {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 9px;
+    margin-top: 7px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+}
+
+.card-cala-detalle > i {
+    flex-shrink: 0;
+    font-size: 15px;
+    margin-top: 1px;
+}
+
+.card-cala-detalle > div {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.card-cala-detalle strong {
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.card-cala-detalle span {
+    font-size: 12px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+/* Comentarios: rosa */
+.card-cala-comentario {
+    background: #fff0f6;
+    border-color: #ffd0e2;
+    color: #a91d57;
+}
+
+/* Bebidas: celeste */
+.card-cala-bebida {
+    background: #eff8ff;
+    border-color: #c9e5fa;
+    color: #145b91;
+}
+
+/* Empanadas: amarillo */
+.card-cala-empanadas {
+    background: #fff7e5;
+    border-color: #f5dfad;
+    color: #8b5700;
+}
