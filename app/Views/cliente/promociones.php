@@ -10,10 +10,26 @@
         <h1>Promociones</h1>
         <p>¡Aprovechá nuestras promos!</p>
     </div>
+  
+    <?php if (empty($haySucursalAbierta)): ?>
+        <div class="aviso-cala-cerrado mt-4" role="alert">
+            <div class="aviso-cala-icono">
+                <i class="bi bi-clock-history"></i>
+            </div>
+
+            <div class="aviso-cala-contenido">
+                <h5>¡En este momento estamos cerrados!</h5>
+                <p>
+                    Podés consultar nuestro menú y descubrir las promociones.
+                    Para realizar tu pedido, volvé durante nuestro horario de atención.
+                </p>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <?php if (!empty($productos)): ?>
     
-        <div class="productos-grid">
+        <div class="productos-grid mt-3">
 
             <?php foreach ($productos as $producto): ?>
 
@@ -120,9 +136,11 @@
 
                 <textarea id="comentario" name="comentario" placeholder="Ej.: Sin mayonesa, sin cebolla..." maxlength="200"></textarea>
             </div>
-
-            <button type="button" id="btnAgregarPedido" class="btn-agregar mt-3" onclick="agregarAlCarrito()" disabled>
-                Agregar al pedido
+            
+            <button type="button" id="btnAgregarPedido" class="btn-agregar mt-3" onclick="agregarAlCarrito()">
+                <?= empty($haySucursalAbierta)
+                    ? 'Sucursal cerrada'
+                    : 'Agregar al pedido' ?>
             </button>
 
         </div>
@@ -149,12 +167,8 @@
                     El producto fue agregado correctamente a tu pedido.
                 </p>
 
-                <button type="button"
-                        class="btn boton-login mt-3"
-                        data-bs-dismiss="modal">
-
+                <button type="button" class="btn boton-login mt-3" data-bs-dismiss="modal">
                     Aceptar
-
                 </button>
 
             </div>
@@ -164,4 +178,44 @@
     </div>
 
 </div>
+<!-- Modal: sucursal cerrada -->
+<div class="modal fade" id="sucursalCerradaModal" tabindex="-1"
+     aria-labelledby="sucursalCerradaTitulo" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-sucursal-cerrada">
+
+            <div class="modal-body text-center p-4">
+
+                <div class="icono-sucursal-cerrada mb-3">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+
+                <h5 class="titulo-sucursal-cerrada mb-3"
+                    id="sucursalCerradaTitulo">
+                    ¡En este momento estamos cerrados!
+                </h5>
+
+                <p class="mensaje-sucursal-cerrada mb-4">
+                    Podés consultar nuestro menú y elegir tus productos.
+                    Volvé durante nuestro horario de atención para
+                    realizar tu pedido.
+                </p>
+
+                <button type="button"
+                        class="btn btn-sucursal-cerrada"
+                        data-bs-dismiss="modal">
+                    Entendido
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const comprasHabilitadas =
+        <?= !empty($haySucursalAbierta) ? 'true' : 'false' ?>;
+</script>
 <?= $this->endSection() ?>

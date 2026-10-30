@@ -7,6 +7,7 @@ use App\Models\PedidoModel;
 use App\Models\DetallePedidoModel;
 use App\Models\ZonaModel;
 use App\Models\SucursalModel;
+use App\Models\HorarioSucursalModel;
 
 class Carrito extends BaseController
 {
@@ -89,10 +90,26 @@ class Carrito extends BaseController
             'total' => $total
         ]);
     }
-        
+
+    
+    private function comprasHabilitadas(): bool
+    {
+        $horarioModel = new HorarioSucursalModel();
+
+        return $horarioModel->haySucursalAbierta();
+    }
+     
     public function agregar()
     {
         $session = session();
+
+        if (!$this->comprasHabilitadas()) {
+            return $this->response->setJSON([
+                'ok' => false,
+                'cerrado' => true,
+                'mensaje' => 'En este momento las sucursales están cerradas. No se pueden realizar pedidos.'
+            ]);
+        }
 
         // Verificar si el cliente está logueado
         if (!$session->get('logueado')) {
@@ -497,6 +514,43 @@ class Carrito extends BaseController
             'cantidad' => (int) ($resultado['cantidad'] ?? 0)
         ]);
     }
+    private function sucursalEstaAbierta(int $idSucursal): bool
+    {
+        $zonaHoraria = new \DateTimeZone('America/Argentina/Buenos_Aires');
+        $ahora = new \DateTimeImmutable('now', $zonaHoraria);
+
+        // Obtener el día de la semana con el mismo formato de la base de datos.
+        $dias = [
+            1 => 'Lunes',
+            2 => 'Martes',
+            3 => 'Miercoles',
+            4 => 'Jueves',
+            5 => 'Viernes',
+            6 => 'Sabado',
+            7 => 'Domingo'
+        ];
+
+        $diaActual = $dias[(int) $ahora->format('N')];
+        $horaActual = $ahora->format('H:i:s');
+
+        $horarioModel = new HorarioSucursalModel();
+
+        $horarios = $horarioModel
+            ->where('idSucursal', $idSucursal)
+            ->where('diaSemana', $diaActual)
+            ->findAll();
+
+        foreach ($horarios as $horario) {
+            if (
+                $horaActual >= $horario['horaApertura'] &&
+                $horaActual <= $horario['horaCierre']
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     
     public function checkout()
     {
@@ -507,6 +561,11 @@ class Carrito extends BaseController
         }
 
         $idCliente = $session->get('idCliente');
+
+        if (!$this->comprasHabilitadas()) {
+            return redirect()->to('/carrito')
+                ->with('error', 'Las sucursales están cerradas. Podés realizar tu pedido durante el horario de atención.');
+        }
 
         $pedidoModel = new PedidoModel();
         $detallePedidoModel = new DetallePedidoModel();
@@ -610,6 +669,14 @@ class Carrito extends BaseController
         }
 
         $idCliente = $session->get('idCliente');
+
+        if (!$this->comprasHabilitadas()) {
+            return $this->response->setJSON([
+                'ok' => false,
+                'cerrado' => true,
+                'mensaje' => 'No se puede confirmar el pedido porque las sucursales están cerradas.'
+            ]);
+        }
 
         // Obtener los datos enviados desde JavaScript
         $datos = $this->request->getJSON(true);
@@ -745,7 +812,7 @@ class Carrito extends BaseController
             $subtotal += $nuevoSubtotal;
         }
 
-        // Calcular costo de envío
+        // Validar la zona y calcular el costo de envío.
         $costoEnvio = 0;
 
         if ($tipoEntrega === 'delivery') {
@@ -763,7 +830,16 @@ class Carrito extends BaseController
                 ]);
             }
 
-            $costoEnvio = $zona['costoEnvio'];
+            $costoEnvio = (float) $zona['costoEnvio'];
+        }
+
+        // Verificar el horario de la sucursal correspondiente al pedido.
+        if (!$this->sucursalEstaAbierta((int) $idSucursal)) {
+            return $this->response->setJSON([
+                'ok' => false,
+                'cerrado' => true,
+                'mensaje' => 'La sucursal seleccionada está cerrada. Elegí otra sucursal abierta o realizá tu pedido durante su horario de atención.'
+            ]);
         }
 
         // Calcular total
@@ -898,8 +974,29 @@ class Carrito extends BaseController
             ->orderBy('pedido.fecha', 'DESC')
             ->findAll();
 
+        // Obtener la numeración acumulativa de los pedidos del cliente.
+        $pedidosNumerados = $pedidoModel
+            ->select('idPedido')
+            ->where('idCliente', $idCliente)
+            ->where('estado !=', 'carrito')
+            ->orderBy('fecha', 'ASC')
+            ->orderBy('idPedido', 'ASC')
+            ->findAll();
+
+        $numeraciones = [];
+
+        $contador = 0;
+
+        foreach ($pedidosNumerados as $pedidoNumerado) {
+            $contador++;
+
+            $numeraciones[$pedidoNumerado['idPedido']] = $contador;
+        }    
+
         // Obtener los productos de cada pedido
         foreach ($pedidos as &$pedido) {
+            $pedido['numeroCliente'] =
+            $numeraciones[$pedido['idPedido']] ?? 0;
 
             $pedido['detalles'] = $detallePedidoModel
                 ->select(

@@ -76,13 +76,203 @@ class Administrador extends BaseController
 
     public function panel()
     {
-        // Verificar que haya un administrador autenticado
+        // Verificar que haya un administrador autenticado.
         if (!session()->get('administradorLogueado')) {
             return redirect()->to('/admin');
         }
 
-        return view('administrador/panel');
+        $idSucursal = session()->get('idSucursal');
+
+        if (!$idSucursal) {
+            return redirect()->to('/admin');
+        }
+
+        $db = \Config\Database::connect();
+
+        $hoy = date('Y-m-d');
+
+        $inicioDia = $hoy . ' 00:00:00';
+        $inicioManana = date(
+            'Y-m-d',
+            strtotime($hoy . ' +1 day')
+        ) . ' 00:00:00';
+
+        // 1. Clientes registrados en el sistema.
+        $totalClientes = $db->table('cliente')
+            ->countAllResults();
+
+        // 2. Pedidos de hoy de la sucursal del administrador.
+        $pedidosHoy = $db->table('pedido')
+            ->where('idSucursal', $idSucursal)
+            ->where('fecha >=', $inicioDia)
+            ->where('fecha <', $inicioManana)
+            ->where('estado !=', 'carrito')
+            ->get()
+            ->getResultArray();
+
+        $totalPedidosHoy = count($pedidosHoy);
+
+        $ventasHoy = 0;
+
+        $estadosPedidos = [
+            'pendientes' => 0,
+            'preparacion' => 0,
+            'listos' => 0,
+            'finalizados' => 0,
+            'cancelados' => 0
+        ];
+
+        // Calcular ventas y cantidades por estado.
+        foreach ($pedidosHoy as $pedido) {
+
+            $estado = strtolower(trim(
+                (string) ($pedido['estado'] ?? '')
+            ));
+
+            // No sumar pedidos cancelados a las ventas.
+            if (!str_contains($estado, 'cancel')) {
+                $ventasHoy += (float) ($pedido['total'] ?? 0);
+            }
+
+            if (str_contains($estado, 'pendiente')) {
+
+                $estadosPedidos['pendientes']++;
+
+            } elseif (str_contains($estado, 'prepar')) {
+
+                $estadosPedidos['preparacion']++;
+
+            } elseif (str_contains($estado, 'listo')) {
+
+                $estadosPedidos['listos']++;
+
+            } elseif (
+                str_contains($estado, 'entregado') ||
+                str_contains($estado, 'retirado') ||
+                str_contains($estado, 'finalizado')
+            ) {
+
+                $estadosPedidos['finalizados']++;
+
+            } elseif (str_contains($estado, 'cancel')) {
+
+                $estadosPedidos['cancelados']++;
+            }
+        }
+        // Últimos cinco pedidos de esta sucursal.
+        $ultimosPedidos = $db->table('pedido p')
+            ->select('
+                p.idPedido,
+                p.fecha,
+                p.tipoEntrega,
+                p.total,
+                p.estado,
+                c.nombre AS nombreCliente,
+                c.apellido AS apellidoCliente
+            ')
+            ->join('cliente c', 'c.idCliente = p.idCliente')
+            ->where('p.idSucursal', $idSucursal)
+            ->orderBy('p.fecha', 'DESC')
+            ->limit(5)
+            ->get()
+            ->getResultArray();
+
+        $numeracionesDiarias = $this->obtenerNumeracionDiaria($db, $idSucursal);    
+
+        // Preparar los datos para mostrarlos en la vista.
+        foreach ($ultimosPedidos as &$pedido) {
+            $pedido['numeroDiario'] =
+            $numeracionesDiarias[$pedido['idPedido']] ?? 0;
+
+            $pedido['nombreCompleto'] = trim(
+                ($pedido['nombreCliente'] ?? '') . ' ' .
+                ($pedido['apellidoCliente'] ?? '')
+            ) ?: 'Cliente';
+
+            $pedido['fechaMostrar'] = !empty($pedido['fecha'])
+                ? date('d/m/Y H:i', strtotime($pedido['fecha']))
+                : 'Fecha no disponible';
+
+            $tipoEntrega = strtolower(trim(
+                (string) ($pedido['tipoEntrega'] ?? '')
+            ));
+
+            $pedido['textoEntrega'] =
+                str_contains($tipoEntrega, 'delivery')
+                    ? 'Delivery'
+                    : 'Retiro en sucursal';
+
+            $estado = strtolower(trim(
+                (string) ($pedido['estado'] ?? '')
+            ));
+
+            if (str_contains($estado, 'pendiente')) {
+                $pedido['claseEstado'] = 'pendiente';
+                $pedido['textoEstado'] = 'Pendiente';
+            } elseif (str_contains($estado, 'prepar')) {
+                $pedido['claseEstado'] = 'preparacion';
+                $pedido['textoEstado'] = 'En preparación';
+            } elseif (str_contains($estado, 'listo')) {
+                $pedido['claseEstado'] = 'listo';
+                $pedido['textoEstado'] = 'Listo';
+            } elseif (
+                str_contains($estado, 'entregado') ||
+                str_contains($estado, 'retirado') ||
+                str_contains($estado, 'finalizado')
+            ) {
+                $pedido['claseEstado'] = 'entregado';
+                $pedido['textoEstado'] = 'Finalizado';
+            } elseif (str_contains($estado, 'cancel')) {
+                $pedido['claseEstado'] = 'cancelado';
+                $pedido['textoEstado'] = 'Cancelado';
+            } else {
+                $pedido['claseEstado'] = 'otro';
+                $pedido['textoEstado'] = $pedido['estado'] ?? 'Sin estado';
+            }
+        }
+
+        unset($pedido);
+
+        return view('administrador/panel', [
+            'totalClientes' => $totalClientes,
+            'totalPedidosHoy' => $totalPedidosHoy,
+            'ventasHoy' => $ventasHoy,
+            'estadosPedidos' => $estadosPedidos,
+            'ultimosPedidos' => $ultimosPedidos
+        ]);
     }
+    
+    private function obtenerNumeracionDiaria($db, int $idSucursal): array
+    {
+        // Obtener todos los pedidos de esta sucursal,
+        // ordenados desde el más antiguo al más reciente.
+        $pedidos = $db->table('pedido')
+            ->select('idPedido, fecha')
+            ->where('idSucursal', $idSucursal)
+            ->orderBy('fecha', 'ASC')
+            ->orderBy('idPedido', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $numeraciones = [];
+        $contadorPorFecha = [];
+
+        foreach ($pedidos as $pedido) {
+            $fecha = date('Y-m-d', strtotime($pedido['fecha']));
+
+            if (!isset($contadorPorFecha[$fecha])) {
+                $contadorPorFecha[$fecha] = 0;
+            }
+
+            $contadorPorFecha[$fecha]++;
+
+            $numeraciones[$pedido['idPedido']] =
+                $contadorPorFecha[$fecha];
+        }
+
+        return $numeraciones;
+    }
+
     public function logoutAdmi()
     {
         session()->remove([
@@ -126,6 +316,8 @@ class Administrador extends BaseController
             ->orderBy('p.fecha', 'DESC')
             ->get()
             ->getResultArray();
+        
+        $numeracionesDiarias = $this->obtenerNumeracionDiaria($db, $idSucursal);
 
         // Obtener los detalles de todos los pedidos.
         $detallesPorPedido = [];
@@ -152,6 +344,9 @@ class Administrador extends BaseController
 
         // Preparar los datos para la vista.
         foreach ($pedidos as &$pedido) {
+            $pedido['numeroDiario'] =
+            $numeracionesDiarias[$pedido['idPedido']] ?? 0;
+
             $pedido['detalles'] =
                 $detallesPorPedido[$pedido['idPedido']] ?? [];
 

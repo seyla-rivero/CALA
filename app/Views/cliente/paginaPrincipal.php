@@ -76,7 +76,7 @@
                 <div class="banner-promo mas-vendida">
 
                     <img
-                        src="<?= base_url('img/lamasvendidaa.png') ?>"
+                        src="<?= base_url('img/la mas vendida.png') ?>"
                         alt="Hamburguesa más vendida"
                         class="img-mas-vendida">
 

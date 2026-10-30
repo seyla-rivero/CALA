@@ -416,6 +416,44 @@
     </div>
 </div>
 
+<!-- Modal: sucursal cerrada -->
+<div class="modal fade" id="sucursalCerradaModal" tabindex="-1"
+     aria-labelledby="sucursalCerradaTitulo" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-sucursal-cerrada">
+
+            <div class="modal-body text-center p-4">
+
+                <div class="icono-sucursal-cerrada mb-3">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+
+                <h5 class="titulo-sucursal-cerrada mb-3"
+                    id="sucursalCerradaTitulo">
+                    ¡Sucursal cerrada!
+                </h5>
+
+                <p class="mensaje-sucursal-cerrada mb-4">
+                    En este momento la sucursal seleccionada
+                    no se encuentra atendiendo pedidos.
+                    <br>
+                    Por favor, intentá nuevamente durante
+                    su horario de atención.
+                </p>
+
+                <button type="button"
+                        class="btn btn-sucursal-cerrada"
+                        data-bs-dismiss="modal">
+                    Entendido
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const opcionesEntrega = document.querySelectorAll('input[name="tipoEntrega"]');
@@ -645,6 +683,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
+    function mostrarModalSucursalCerrada() {
+
+        const elemento = document.getElementById('sucursalCerradaModal');
+
+        if (!elemento) {
+            console.error('No se encontró el modal de sucursal cerrada.');
+            return;
+        }
+
+        const modal = bootstrap.Modal.getOrCreateInstance(elemento);
+        modal.show();
+    }
+
     const botonConfirmar =
         document.getElementById('btnConfirmarPedido');
 
@@ -738,6 +789,11 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
 
             if (!data.ok) {
+
+                if (data.cerrado) {
+                    mostrarModalSucursalCerrada();
+                    return;
+                }
 
                 alert(data.mensaje);
                 return;

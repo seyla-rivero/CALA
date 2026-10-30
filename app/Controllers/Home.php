@@ -7,6 +7,7 @@ use App\Models\CategoriaModel;
 use App\Models\PromocionModel;
 use App\Models\ItemPedidoModel;
 use App\Models\SucursalModel;
+use App\Models\HorarioSucursalModel;
 
 
 class Home extends BaseController
@@ -48,8 +49,10 @@ class Home extends BaseController
     {
 
         $promocionModel = new PromocionModel();
-        $itemPedidoModel = new ItemPedidoModel();
+        
         $sucursalModel = new SucursalModel();
+
+        $horarioSucursalModel = new HorarioSucursalModel(); 
 
         $data['promociones'] = $promocionModel->obtenerPromociones();
 
@@ -58,6 +61,8 @@ class Home extends BaseController
         $data['sucursales'] = $sucursalModel->where('activo', 1)->findAll();
 
         $data['masVendida'] = $promocionModel->obtenerMasVendida();
+
+        $data['haySucursalAbierta'] = $horarioSucursalModel->haySucursalAbierta();
 
         $data = array_merge($data, $this->obtenerDatosNotificaciones());
 
@@ -68,9 +73,11 @@ class Home extends BaseController
 
         $productoModel = new ProductoModel();
         $categoriaModel = new CategoriaModel();
+        $horarioSucursalModel = new HorarioSucursalModel(); 
 
         $data['productos'] = $productoModel->obtenerProductosMenu();
         $data['categorias'] = $categoriaModel->findAll();
+        $data['haySucursalAbierta'] = $horarioSucursalModel->haySucursalAbierta();
 
         $data = array_merge($data, $this->obtenerDatosNotificaciones());
 
@@ -80,8 +87,11 @@ class Home extends BaseController
     public function promocion(): string{
 
         $promocionModel = new PromocionModel();
+        $horarioSucursalModel = new HorarioSucursalModel(); 
 
         $data['productos'] = $promocionModel->obtenerPromociones();
+
+        $data['haySucursalAbierta'] = $horarioSucursalModel->haySucursalAbierta();
 
         $data = array_merge($data, $this->obtenerDatosNotificaciones());
 

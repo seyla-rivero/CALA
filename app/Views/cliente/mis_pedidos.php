@@ -82,7 +82,7 @@
 
                         <div>
                             <h5 class="pedidos-numero mb-1">
-                                Pedido #<?= esc($pedido['idPedido']) ?>
+                                Pedido #<?= esc($pedido['numeroCliente']) ?>
                             </h5>
 
                             <div class="pedidos-fecha">

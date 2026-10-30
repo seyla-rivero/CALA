@@ -372,3 +372,99 @@
         height: 220px;
     }
 }
+
+/* Modal de sucursal cerrada */
+.icono-sucursal-cerrada {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff0f5;
+    color: #e72e75;
+    border-radius: 50%;
+    font-size: 2.5rem;
+}
+
+#sucursalCerradaModal .modal-content {
+    border: 1px solid #ffd3e2;
+    border-radius: 20px;
+}
+
+#sucursalCerradaModal h3 {
+    color: #e72e75;
+    font-size: 1.45rem;
+    font-weight: 800;
+}
+
+.texto-sucursal-cerrada {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Aviso de sucursales cerradas */
+.aviso-cala-cerrado {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 25px;
+    background: #fff5f8;
+    border: 1px solid #ffd0e0;
+    border-left: 5px solid #ff2f7d;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(255, 47, 125, 0.07);
+}
+
+/* Ícono */
+.aviso-cala-icono {
+    flex-shrink: 0;
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffe1eb;
+    color: #ff2f7d;
+    border-radius: 50%;
+    font-size: 1.8rem;
+}
+
+/* Texto */
+.aviso-cala-contenido h5 {
+    margin: 0 0 7px;
+    color: #292929;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.aviso-cala-contenido p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 576px) {
+    .aviso-cala-cerrado {
+        align-items: flex-start;
+        gap: 12px;
+        padding: 17px;
+    }
+
+    .aviso-cala-icono {
+        width: 45px;
+        height: 45px;
+        font-size: 1.4rem;
+    }
+
+    .aviso-cala-contenido h5 {
+        font-size: 1rem;
+    }
+
+    .aviso-cala-contenido p {
+        font-size: 0.88rem;
+    }
+}

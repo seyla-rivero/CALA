@@ -1,5 +1,48 @@
+// Sucursal cerrada
+function mostrarModalSucursalCerrada() {
+    const elemento = document.getElementById("sucursalCerradaModal");
+
+    if (!elemento) {
+        alert("En este momento las sucursales están cerradas. Volvé durante el horario de atención.");
+        return;
+    }
+
+    const elementoAnterior = document.activeElement;
+    const modal = bootstrap.Modal.getOrCreateInstance(elemento);
+
+    // Registrar la corrección una sola vez.
+    if (!elemento.dataset.correccionFoco) {
+        elemento.addEventListener("hide.bs.modal", function () {
+            // Quitar el foco antes de que Bootstrap oculte el modal.
+            if (elemento.contains(document.activeElement)) {
+                document.activeElement.blur();
+            }
+        });
+
+        elemento.dataset.correccionFoco = "true";
+    }
+
+    // Devolver el foco cuando el modal ya terminó de cerrarse.
+    elemento.addEventListener("hidden.bs.modal", function devolverFoco() {
+        if (
+            elementoAnterior &&
+            elementoAnterior.isConnected &&
+            typeof elementoAnterior.focus === "function"
+        ) {
+            elementoAnterior.focus();
+        }
+    }, { once: true });
+
+    modal.show();
+}
+
 // Boton de agregar al carrito
 function agregarAlCarrito() {
+
+    /*if (!comprasHabilitadas) {
+        mostrarModalSucursalCerrada();
+        return;
+    }*/
 
     const comentario = document.getElementById("comentario").value.trim();
     const bebida = document.getElementById("bebida");
@@ -61,10 +104,10 @@ function agregarAlCarrito() {
 
             modalLogin.show();
 
+        } else if (data.cerrado) {
+            mostrarModalSucursalCerrada();
         } else {
-
             alert(data.mensaje);
-
         }
 
     })

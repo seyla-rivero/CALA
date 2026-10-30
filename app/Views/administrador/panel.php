@@ -1,114 +1,115 @@
 <?= $this->extend('layouts/admin') ?>
 
 <?= $this->section('contenido') ?>
+<?php /** @var float|int $totalPedidosHoy */ ?>
+<?php /** @var float|int $ventasHoy */ ?>
+<?php /** @var float|int $totalClientes */ ?>
+<?php /** @var array $estadosPedidos */ ?>
 
 <div class="titulo-panel">
-
     <h1>Bienvenido</h1>
-
     <p>Panel de administración CALA Delivery Sandwich</p>
-
 </div>
 
+<!-- TARJETAS PRINCIPALES -->
 <div class="row g-4">
 
     <div class="col-md-4">
-
         <div class="card-dashboard">
-
             <i class="bi bi-bag-check"></i>
-
-            <h3>15</h3>
-
+            <h3><?= number_format($totalPedidosHoy, 0, ',', '.') ?></h3>
             <p>Pedidos de hoy</p>
-
         </div>
-
     </div>
 
     <div class="col-md-4">
-
         <div class="card-dashboard">
-
             <i class="bi bi-cash-stack"></i>
-
-            <h3>$450.000</h3>
-
+            <h3>$<?= number_format($ventasHoy, 2, ',', '.') ?></h3>
             <p>Ventas de hoy</p>
-
         </div>
-
     </div>
 
     <div class="col-md-4">
-
         <div class="card-dashboard">
-
             <i class="bi bi-people"></i>
-
-            <h3>50</h3>
-
+            <h3><?= number_format($totalClientes, 0, ',', '.') ?></h3>
             <p>Clientes registrados</p>
-
         </div>
-
     </div>
 
 </div>
 
+<!-- RESUMEN DE PEDIDOS -->
 <div class="gestion-pedidos">
 
     <div class="titulo-seccion-pedidos">
         <div>
-            <h2>Resumen de pedidos</h2>
-            <p>Vista preliminar de los pedidos realizados</p>
+            <h2>Resumen de pedidos de hoy</h2>
+            <p>Estado actual de los pedidos de tu sucursal</p>
         </div>
 
-        <span class="proximamente">
-            Próximamente
-        </span>
+        <a href="<?= base_url('admin/pedidos') ?>"
+           class="btn-ver-pedidos">
+            Ver todos los pedidos
+            <i class="bi bi-arrow-right"></i>
+        </a>
     </div>
 
     <div class="estados-pedidos">
 
+        <!-- Pendientes -->
         <div class="estado-pedido">
             <i class="bi bi-clock"></i>
             <div>
-                <span class="cantidad-estado">8</span>
+                <span class="cantidad-estado">
+                    <?= $estadosPedidos['pendientes'] ?>
+                </span>
                 <span class="nombre-estado">Pendientes</span>
             </div>
         </div>
 
+        <!-- En preparación -->
         <div class="estado-pedido">
             <i class="bi bi-fire"></i>
             <div>
-                <span class="cantidad-estado">4</span>
+                <span class="cantidad-estado">
+                    <?= $estadosPedidos['preparacion'] ?>
+                </span>
                 <span class="nombre-estado">En preparación</span>
             </div>
         </div>
 
-        <div class="estado-pedido">
-            <i class="fa-solid fa-motorcycle"></i>
-            <div>
-                <span class="cantidad-estado">3</span>
-                <span class="nombre-estado">En camino</span>
-            </div>
-        </div>
-
+        <!-- Listos -->
         <div class="estado-pedido">
             <i class="bi bi-check-circle"></i>
             <div>
-                <span class="cantidad-estado">17</span>
-                <span class="nombre-estado">Entregados</span>
+                <span class="cantidad-estado">
+                    <?= $estadosPedidos['listos'] ?>
+                </span>
+                <span class="nombre-estado">Listos</span>
+            </div>
+        </div>
+
+        <!-- Finalizados -->
+        <div class="estado-pedido">
+            <i class="bi bi-bag-check"></i>
+            <div>
+                <span class="cantidad-estado">
+                    <?= $estadosPedidos['finalizados'] ?>
+                </span>
+                <span class="nombre-estado">Finalizados</span>
             </div>
         </div>
 
     </div>
 
+    <!-- ÚLTIMOS PEDIDOS -->
     <div class="ultimos-pedidos">
 
         <div class="titulo-ultimos-pedidos">
             <h3>Últimos pedidos</h3>
+            <p>Los cinco pedidos más recientes de tu sucursal</p>
         </div>
 
         <div class="table-responsive">
@@ -128,57 +129,55 @@
 
                 <tbody>
 
-                    <tr>
-                        <td>#00125</td>
-                        <td>Juan Pérez</td>
-                        <td>06/10/2026 10:45</td>
-                        <td>Delivery</td>
-                        <td>$12.500</td>
-                        <td>
-                            <span class="estado-pedido-tabla pendiente">
-                                Pendiente
-                            </span>
-                        </td>
-                    </tr>
+                    <?php if (!empty($ultimosPedidos)): ?>
 
-                    <tr>
-                        <td>#00124</td>
-                        <td>María López</td>
-                        <td>06/10/2026 10:20</td>
-                        <td>Retiro en sucursal</td>
-                        <td>$18.000</td>
-                        <td>
-                            <span class="estado-pedido-tabla preparacion">
-                                En preparación
-                            </span>
-                        </td>
-                    </tr>
+                        <?php foreach ($ultimosPedidos as $pedido): ?>
 
-                    <tr>
-                        <td>#00123</td>
-                        <td>Pedro Gómez</td>
-                        <td>06/10/2026 09:55</td>
-                        <td>Delivery</td>
-                        <td>$9.500</td>
-                        <td>
-                            <span class="estado-pedido-tabla camino">
-                                En camino
-                            </span>
-                        </td>
-                    </tr>
+                            <tr>
+                                <td>
+                                    #<?= esc($pedido['numeroDiario']) ?>
+                                </td>
 
-                    <tr>
-                        <td>#00122</td>
-                        <td>Lucía Fernández</td>
-                        <td>06/10/2026 09:30</td>
-                        <td>Retiro en sucursal</td>
-                        <td>$15.200</td>
-                        <td>
-                            <span class="estado-pedido-tabla entregado">
-                                Entregado
-                            </span>
-                        </td>
-                    </tr>
+                                <td>
+                                    <?= esc($pedido['nombreCompleto']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($pedido['fechaMostrar']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($pedido['textoEntrega']) ?>
+                                </td>
+
+                                <td>
+                                    $<?= number_format(
+                                        (float) ($pedido['total'] ?? 0),
+                                        2,
+                                        ',',
+                                        '.'
+                                    ) ?>
+                                </td>
+
+                                <td>
+                                    <span class="estado-pedido-tabla <?= esc($pedido['claseEstado']) ?>">
+                                        <?= esc($pedido['textoEstado']) ?>
+                                    </span>
+                                </td>
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    <?php else: ?>
+
+                        <tr>
+                            <td colspan="6" class="sin-pedidos">
+                                <i class="bi bi-inbox"></i>
+                                <p>No hay pedidos registrados todavía.</p>
+                            </td>
+                        </tr>
+
+                    <?php endif; ?>
 
                 </tbody>
 
