@@ -187,7 +187,169 @@ body {
     color: #d91d64;
 }
 
+/* =====================================
+   ACCIONES DE LA CABECERA
+===================================== */
 
+.navbar-acciones {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+/* CARRITO */
+.carrito-icono {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.carrito-icono a {
+    display: flex;
+    align-items: center;
+    margin: 0 !important;
+}
+
+/* CAMPANITA */
+.campana-notificaciones {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =====================================
+   COMPUTADORA
+===================================== */
+
+@media (min-width: 992px) {
+
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+    }
+
+    .navbar-collapse {
+        display: flex !important;
+        align-items: center;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .navbar-collapse .navbar-nav {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        flex-direction: row;
+    }
+
+    .navbar-acciones {
+        margin-left: 0;
+        margin-right: 15px;
+    }
+
+    .usuario-navbar {
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    .navbar-acciones .navbar-toggler {
+        display: none;
+    }
+}
+
+/* =====================================
+   CELULAR Y TABLET
+===================================== */
+
+@media (max-width: 991.98px) {
+
+    .nav-logo {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar-acciones {
+        margin-left: auto;
+        gap: 10px;
+        position: relative;
+    }
+
+    .navbar-acciones .dropdown {
+        position: static;
+    }
+
+    .navbar-acciones .panel-notificaciones {
+        right: 0;
+        left: auto;
+    }
+
+    .navbar-collapse {
+        flex-basis: 100%;
+        width: 100%;
+        text-align: center;
+        padding-top: 15px;
+    }
+
+    .navbar-collapse .navbar-nav {
+        align-items: center;
+    }
+
+    .navbar-collapse .nav-link {
+        padding: 12px;
+    }
+
+    .usuario-navbar {
+        padding: 15px 0;
+    }
+
+    .usuario-navbar .d-flex {
+        justify-content: center;
+    }
+}
+/* ACCIONES DEL NAVBAR */
+
+.navbar-acciones {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+/* INICIAR SESIÓN EN COMPUTADORA */
+@media (min-width: 992px) {
+
+    .navbar-acciones .usuario-navbar {
+        margin-left: 5px;
+        padding: 0;
+    }
+
+    .navbar-acciones .usuario-navbar .text-center {
+        margin-top: 0 !important;
+    }
+
+    .navbar-acciones .usuario-navbar br {
+        display: none;
+    }
+}
+
+/* CELULAR */
+@media (max-width: 991.98px) {
+
+    .navbar-acciones {
+        margin-left: auto;
+    }
+
+    .navbar-acciones .navbar-toggler {
+        display: block;
+    }
+
+    .navbar-collapse .usuario-navbar {
+        padding: 15px 0;
+    }
+}
 /*Seccion*/
 .portada {
     width: 100%;
@@ -625,4 +787,120 @@ footer{
     }
 
 }
+
+/* =================================
+   CARDS RESPONSIVE - CELULAR
+================================= */
+
+@media (max-width: 767.98px) {
+
+    /* Altura general de las cards */
+    .banner-promo {
+        height: 300px;
+        margin-bottom: 20px;
+    }
+
+    /* LA MÁS VENDIDA */
+
+    .mas-vendida .banner-overlay {
+        width: 62%;
+        padding: 15px;
+        padding-left: 18px;
+        transform: none;
+        z-index: 2;
+    }
+
+    .img-mas-vendida {
+        height: 95%;
+        max-width: 65%;
+        width: auto;
+        right: -5px;
+        bottom: 0;
+        object-fit: contain;
+    }
+
+    .vendida-titulo {
+        font-size: 23px;
+        line-height: 1.05;
+    }
+
+    .mas-vendida .banner-overlay h3 {
+        font-size: 14px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        max-width: 100%;
+    }
+
+    .promo-precio {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .btn-promo {
+        width: 130px;
+        height: 38px;
+        font-size: 13px;
+    }
+
+
+    /* RETIRO O DELIVERY */
+
+    .retiro-delivery {
+        height: 300px;
+    }
+
+    .img-bolsa-cala {
+        width: 85%;
+        height: 100%;
+        right: -35px;
+        bottom: 0;
+        object-fit: contain;
+    }
+
+    .retiro-overlay {
+        width: 70%;
+        height: 100%;
+        padding: 15px;
+        padding-left: 18px;
+        z-index: 2;
+    }
+
+    .retiro-overlay h3 {
+        font-size: 22px;
+        line-height: 1.05;
+    }
+
+    .retiro-overlay h3 span {
+        display: block;
+    }
+
+    .retiro-overlay p {
+        font-size: 14px;
+        margin: 8px 0 15px;
+        max-width: 140px;
+    }
+
+    .opciones-entrega {
+        width: 100%;
+        gap: 8px;
+        justify-content: flex-start;
+    }
+
+    .opcion {
+        flex: 1;
+        min-width: 0;
+        font-size: 11px;
+    }
+
+    .opcion i {
+        font-size: 23px;
+    }
+
+    .separador {
+        height: 35px;
+        flex-shrink: 0;
+    }
+
+}
+
 

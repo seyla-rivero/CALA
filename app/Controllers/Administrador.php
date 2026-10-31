@@ -249,6 +249,7 @@ class Administrador extends BaseController
         $pedidos = $db->table('pedido')
             ->select('idPedido, fecha')
             ->where('idSucursal', $idSucursal)
+            ->where('estado !=', 'carrito')
             ->orderBy('fecha', 'ASC')
             ->orderBy('idPedido', 'ASC')
             ->get()

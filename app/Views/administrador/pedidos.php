@@ -119,7 +119,7 @@
                     <div class="card-cala-cabecera">
                         <div>
                             <h2 class="card-cala-numero">
-                                Pedido #<?= esc($pedido['numeroPedido'] ?? $pedido['idPedido']) ?>
+                                Pedido #<?= esc($pedido['numeroDiario'] ?? $pedido['idPedido']) ?>
                             </h2>
                             <div class="card-cala-fecha">
                                 <i class="bi bi-clock"></i>
@@ -322,7 +322,7 @@
 
                                     
                                         <form action="<?= base_url('admin/pedidos/verificar-pago/' .$pedido['idPedido']) ?>"
-                                            method="post" class="form-cala-confirmacion" data-mensaje="¿Confirmás que recibiste la transferencia del pedido #<?= esc($pedido['numeroPedido'] ?? $pedido['idPedido'], 'attr') ?>?">
+                                            method="post" class="form-cala-confirmacion" data-mensaje="¿Confirmás que recibiste la transferencia del pedido #<?= esc($pedido['numeroDiario'] ?? $pedido['idPedido'], 'attr') ?>?">
 
                                         <?= csrf_field() ?>
 
@@ -389,7 +389,7 @@
                             <?php $accion = $pedido['accion']; ?>
 
                             
-                                <form action="<?= base_url('admin/pedidos/actualizar-estado/' .$pedido['idPedido']) ?>" method="post" class="form-cala-confirmacion" data-mensaje="¿Querés continuar con la acción: <?= esc($accion['texto'], 'attr') ?> del pedido #<?= esc($pedido['numeroPedido'] ?? $pedido['idPedido'], 'attr') ?>?">
+                                <form action="<?= base_url('admin/pedidos/actualizar-estado/' .$pedido['idPedido']) ?>" method="post" class="form-cala-confirmacion" data-mensaje="¿Querés continuar con la acción: <?= esc($accion['texto'], 'attr') ?> del pedido #<?= esc($pedido['numeroDiario'] ?? $pedido['idPedido'], 'attr') ?>?">
 
                                 <?= csrf_field() ?>
 
@@ -501,14 +501,17 @@ document.addEventListener('DOMContentLoaded', function () {
     let elementoAnterior = null;
 
     function cerrarModal() {
-        modal.hidden = true;
-        modal.setAttribute('aria-hidden', 'true');
-        formularioPendiente = null;
 
+        // Devolver el foco al elemento que abrió el modal.
         if (elementoAnterior && elementoAnterior.isConnected) {
             elementoAnterior.focus();
         }
 
+        // Ahora sí, ocultar el modal.
+        modal.setAttribute('aria-hidden', 'true');
+        modal.hidden = true;
+
+        formularioPendiente = null;
         elementoAnterior = null;
     }
 
