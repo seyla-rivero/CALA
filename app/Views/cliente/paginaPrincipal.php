@@ -375,6 +375,22 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 });
+// Controlar el foco al cerrar el modal de éxito
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modalSuccess = document.getElementById("successModal");
+
+    if (!modalSuccess) return;
+
+    modalSuccess.addEventListener("hide.bs.modal", function () {
+
+        if (modalSuccess.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+
+    });
+
+});
 </script>
 <script>
 const promocionesDia = <?= json_encode($promoDelDia) ?>;

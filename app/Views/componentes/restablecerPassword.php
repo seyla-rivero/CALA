@@ -91,6 +91,7 @@
             ojo.classList.add('bi-eye');
         }
     }
+
 </script>
 
 <?= $this->endSection() ?>

@@ -174,5 +174,21 @@ document.addEventListener('DOMContentLoaded', function () {
         bootstrap.Modal.getOrCreateInstance(modal).show();
     }
 });
+// Controlar el foco al cerrar el modal de recuperar contraseña
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modalRecuperar = document.getElementById("recuperarModal");
+
+    if (!modalRecuperar) return;
+
+    modalRecuperar.addEventListener("hide.bs.modal", function () {
+
+        if (modalRecuperar.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+
+    });
+
+});
 </script>
 <?php endif; ?>
