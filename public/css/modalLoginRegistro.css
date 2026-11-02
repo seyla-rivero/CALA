@@ -74,3 +74,23 @@
     cursor: pointer;
     color: #ff4fa3;
 }
+
+/* Portada de recuperación de contraseña */
+.restablecer-portada {
+    background-image: url('../img/CALAPortada.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 540px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px 15px;
+}
+
+.restablecer-formulario {
+    width: 100%;
+    max-width: 500px;
+}

@@ -15,6 +15,11 @@ $routes->post('validar-login', 'Autenticacion::validarLogin');
 $routes->post('validar-registro', 'Autenticacion::validarRegistro');
 $routes->get('logout', 'Autenticacion::logout');
 
+// Recuperación de contraseña
+$routes->post('solicitar-recuperacion', 'Autenticacion::solicitarRecuperacion');
+$routes->get('restablecer-password/(:segment)', 'Autenticacion::mostrarRestablecerPassword/$1');
+$routes->post('actualizar-password', 'Autenticacion::actualizarPassword');
+
 $routes->get('menu', 'Home::menu');
 $routes->get('promociones', 'Home::promocion');
 
