@@ -175,6 +175,22 @@
             modalExito.show();
 
         });
+        // Controlar el foco al cerrar el modal de éxito
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const modalExito = document.getElementById("modalExito");
+
+            if (!modalExito) return;
+
+            modalExito.addEventListener("hide.bs.modal", function () {
+
+                if (modalExito.contains(document.activeElement)) {
+                    document.activeElement.blur();
+                }
+
+            });
+
+        });
     </script>
 
 <?php endif; ?>

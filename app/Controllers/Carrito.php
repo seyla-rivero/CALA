@@ -103,13 +103,13 @@ class Carrito extends BaseController
     {
         $session = session();
 
-        if (!$this->comprasHabilitadas()) {
+        /*if (!$this->comprasHabilitadas()) {
             return $this->response->setJSON([
                 'ok' => false,
                 'cerrado' => true,
                 'mensaje' => 'En este momento las sucursales están cerradas. No se pueden realizar pedidos.'
             ]);
-        }
+        }*/
 
         // Verificar si el cliente está logueado
         if (!$session->get('logueado')) {
@@ -562,10 +562,10 @@ class Carrito extends BaseController
 
         $idCliente = $session->get('idCliente');
 
-        if (!$this->comprasHabilitadas()) {
+        /*if (!$this->comprasHabilitadas()) {
             return redirect()->to('/carrito')
                 ->with('error', 'Las sucursales están cerradas. Podés realizar tu pedido durante el horario de atención.');
-        }
+        }*/
 
         $pedidoModel = new PedidoModel();
         $detallePedidoModel = new DetallePedidoModel();
@@ -670,13 +670,13 @@ class Carrito extends BaseController
 
         $idCliente = $session->get('idCliente');
 
-        if (!$this->comprasHabilitadas()) {
+        /*if (!$this->comprasHabilitadas()) {
             return $this->response->setJSON([
                 'ok' => false,
                 'cerrado' => true,
                 'mensaje' => 'No se puede confirmar el pedido porque las sucursales están cerradas.'
             ]);
-        }
+        }*/
 
         // Obtener los datos enviados desde JavaScript
         $datos = $this->request->getJSON(true);
@@ -834,13 +834,13 @@ class Carrito extends BaseController
         }
 
         // Verificar el horario de la sucursal correspondiente al pedido.
-        if (!$this->sucursalEstaAbierta((int) $idSucursal)) {
+        /*if (!$this->sucursalEstaAbierta((int) $idSucursal)) {
             return $this->response->setJSON([
                 'ok' => false,
                 'cerrado' => true,
                 'mensaje' => 'La sucursal seleccionada está cerrada. Elegí otra sucursal abierta o realizá tu pedido durante su horario de atención.'
             ]);
-        }
+        }*/
 
         // Calcular total
         $total = $subtotal + $costoEnvio;

@@ -366,10 +366,14 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    let modal = new bootstrap.Modal(
-        document.getElementById('successModal')
-    );
-    modal.show();
+
+    const elementoModal = document.getElementById('successModal');
+
+    if (elementoModal) {
+        const modal = new bootstrap.Modal(elementoModal);
+        modal.show();
+    }
+
 });
 </script>
 <script>

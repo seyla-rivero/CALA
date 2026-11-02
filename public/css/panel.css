@@ -413,11 +413,6 @@
 
 }
 
-
-/* =========================================
-   PANEL PRINCIPAL - RESUMEN DE PEDIDOS
-========================================= */
-
 .gestion-pedidos {
     margin-top: 35px;
     min-width: 0;
@@ -444,8 +439,6 @@
     font-size: .95rem;
 }
 
-/* Botón para acceder a los pedidos */
-
 .btn-ver-pedidos {
     display: inline-flex;
     align-items: center;
@@ -467,8 +460,6 @@
     color: #fff;
     transform: translateY(-1px);
 }
-
-/* Resumen por estado */
 
 .estados-pedidos {
     display: grid;
@@ -522,8 +513,6 @@
     color: #6c757d;
     font-size: .85rem;
 }
-
-/* Últimos pedidos */
 
 .ultimos-pedidos {
     min-width: 0;
@@ -658,10 +647,6 @@
 .sin-pedidos p {
     margin: 0;
 }
-
-/* =========================================
-   RESPONSIVE
-========================================= */
 
 @media (max-width: 1200px) {
     .estados-pedidos {

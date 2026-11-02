@@ -33,6 +33,37 @@ document.addEventListener("DOMContentLoaded", function () {
     bootstrap.Modal.getOrCreateInstance(elementoModal).show();
 
 });
+// Controlar el foco al cerrar el modal de Login
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const loginModal = document.getElementById("loginModal");
+
+    if (!loginModal) return;
+
+    let elementoAnterior = null;
+
+    loginModal.addEventListener("show.bs.modal", function (event) {
+        elementoAnterior = event.relatedTarget;
+    });
+
+    loginModal.addEventListener("hide.bs.modal", function () {
+
+        if (loginModal.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+
+    });
+
+    loginModal.addEventListener("hidden.bs.modal", function () {
+
+        if (elementoAnterior && elementoAnterior.isConnected) {
+            elementoAnterior.focus();
+        }
+
+    });
+
+});
 
 // Abrir modal detalle de Producto y Promocion
 let cantidadActual = 1;
@@ -188,8 +219,30 @@ function actualizarPrecio() {
 
 function cerrarModal() {
 
-    document.getElementById("modalProducto").style.display = "none";
+    const modal = document.getElementById("modalProducto");
+
+    if (modal && modal.contains(document.activeElement)) {
+        document.activeElement.blur();
+    }
+
+    modal.style.display = "none";
 }
+// Controlar el foco al cerrar el modal de producto agregado
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modalAgregado = document.getElementById("productoAgregadoModal");
+
+    if (!modalAgregado) return;
+
+    modalAgregado.addEventListener("hide.bs.modal", function () {
+
+        if (modalAgregado.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+
+    });
+
+});
 
 function aumentarCantidad() {
 

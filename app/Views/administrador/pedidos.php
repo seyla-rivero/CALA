@@ -165,8 +165,6 @@
 
                         <hr class="card-cala-separador">
 
-                        <!-- LISTADO DE PRODUCTOS -->
-
                         <?php foreach ($detalles as $detalle): ?>
 
                             <?php
@@ -257,7 +255,6 @@
 
                         <hr class="card-cala-separador">
 
-                        <!-- ENTREGA -->
                        <div class="card-cala-entrega <?= esc($claseEntrega) ?>">
                             <i class="bi <?= $esDelivery
                                 ? 'bi-bicycle'
@@ -300,7 +297,6 @@
                             </div>
                         </div>
 
-                        <!-- PAGO -->
                         <div class="card-cala-pago">
 
                             <div class="card-cala-pago-linea">
@@ -318,10 +314,8 @@
                                 <?php if (
                                     $claseMetodoPago === 'transferencia' &&
                                     $clasePago === 'pendiente'
-                                ): ?>
-
-                                    
-                                        <form action="<?= base_url('admin/pedidos/verificar-pago/' .$pedido['idPedido']) ?>"
+                                ): ?>                                    
+                                    <form action="<?= base_url('admin/pedidos/verificar-pago/' .$pedido['idPedido']) ?>"
                                             method="post" class="form-cala-confirmacion" data-mensaje="¿Confirmás que recibiste la transferencia del pedido #<?= esc($pedido['numeroDiario'] ?? $pedido['idPedido'], 'attr') ?>?">
 
                                         <?= csrf_field() ?>
@@ -381,8 +375,7 @@
                         </div>
 
                     </div>
-                 
-                    <!-- ACCION DEL ADMINISTRADOR -->
+
                     <div class="card-cala-acciones">
 
                         <?php if (!empty($pedido['accion'])): ?>
@@ -440,7 +433,6 @@
 
 </div>
 
-<!-- MODAL DE CONFIRMACIÓN CALA DELIVERY -->
 <div id="modalConfirmacionCala" class="cala-modal-fondo" aria-hidden="true" hidden>
 
     <div class="cala-modal" role="dialog" aria-modal="true" aria-labelledby="calaModalTitulo" aria-describedby="calaModalMensaje">

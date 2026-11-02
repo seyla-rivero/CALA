@@ -1,23 +1,14 @@
-/* ==============================
-   CONTENEDOR PRINCIPAL
-============================== */
-
 .pedidos-container {
     padding-top: 28px;
     padding-bottom: 28px;
 }
 
-/* Título principal */
 .pedidos-titulo {
     color: #111111;
     font-size: 38px;
     font-weight: 700;
     margin-bottom: 30px;
 }
-
-/* ==============================
-   TARJETA DE CADA PEDIDO
-============================== */
 
 .pedidos-card {
     background: #ffffff;
@@ -33,14 +24,9 @@
     box-shadow: 0 5px 14px rgba(0, 0, 0, 0.075);
 }
 
-/* Reduce el espacio interior de la tarjeta */
 .pedidos-card > .card-body {
     padding: 18px !important;
 }
-
-/* ==============================
-   ENCABEZADO DEL PEDIDO
-============================== */
 
 .pedidos-numero {
     color: #222222;
@@ -92,16 +78,11 @@
     color: #555555;
 }
 
-/* Separadores */
 .pedidos-separador {
     border-color: #e5e5e5;
     opacity: 0.8;
     margin: 13px 0;
 }
-
-/* ==============================
-   TÍTULOS DE LAS SECCIONES
-============================== */
 
 .pedidos-seccion-titulo {
     color: #222222;
@@ -116,16 +97,11 @@
     margin-right: 5px;
 }
 
-/* ==============================
-   PRODUCTOS DEL PEDIDO
-============================== */
-
 .pedidos-producto {
     padding: 4px 0;
     margin-bottom: 0 !important;
 }
 
-/* Imágenes más pequeñas */
 .pedidos-producto-imagen {
     width: 82px;
     height: 76px;
@@ -155,16 +131,11 @@
     overflow-wrap: anywhere;
 }
 
-/* Precio por producto */
 .pedidos-precio {
     color: #ff2f7d;
     font-size: 1.05rem;
     font-weight: 800;
 }
-
-/* ==============================
-   DATOS DE ENTREGA Y PAGO
-============================== */
 
 .pedidos-card .row.mt-2 {
     margin-top: 10px !important;
@@ -185,10 +156,6 @@
 .pedidos-datos strong {
     color: #222222;
 }
-
-/* ==============================
-   RESUMEN DE IMPORTES
-============================== */
 
 .pedidos-resumen {
     margin-top: 16px;
@@ -226,11 +193,6 @@
     font-weight: 800;
 }
 
-/* ==============================
-   SIN PEDIDOS
-============================== */
-/* Mensaje cuando todavía no hay pedidos */
-
 .pedidos-vacio {
     padding: 40px 22px;
     text-align: center;
@@ -258,7 +220,6 @@
     font-size: 0.92rem;
 }
 
-/* Botón para ir al menú */
 .pedidos-boton-menu {
     display: inline-block;
     background-color: #ff2f7d;
@@ -277,10 +238,6 @@
     border-color: #e91e6b;
     color: #ffffff;
 }
-
-/* ==============================
-   ADAPTACIÓN A CELULARES
-============================== */
 
 @media (max-width: 767px) {
 

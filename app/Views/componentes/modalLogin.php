@@ -76,15 +76,11 @@ $emailRecuperacion = session()->getFlashdata('emailRecuperacion');
         <div class="modal-content modal-cala">
 
             <div class="modal-header border-0">
-                <button type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="modal">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
                 </button>
             </div>
 
-            <img src="<?= base_url('img/logo Cala.png') ?>"
-                 class="logo-login d-block mx-auto mb-3"
-                 alt="Logo CALA">
+            <img src="<?= base_url('img/logo Cala.png') ?>" class="logo-login d-block mx-auto mb-3" alt="Logo CALA">
 
             <h5 class="titulo-login text-center mt-2">
                 Recuperar contraseña
@@ -115,13 +111,7 @@ $emailRecuperacion = session()->getFlashdata('emailRecuperacion');
                             Correo electrónico
                         </label>
 
-                        <input
-                            type="text"
-                            name="emailRecuperacion"
-                            class="form-control input-cala"
-                            placeholder="Correo electrónico"
-                            value="<?= esc($emailRecuperacion ?? '') ?>"
-                        >
+                        <input type="text" name="emailRecuperacion" class="form-control input-cala" placeholder="Correo electrónico" value="<?= esc($emailRecuperacion ?? '') ?>">
 
                         <?php if ($errorRecuperacion): ?>
                             <small class="text-danger d-block mt-1">
@@ -131,19 +121,14 @@ $emailRecuperacion = session()->getFlashdata('emailRecuperacion');
 
                     </div>
 
-                    <button type="submit"
-                            class="btn boton-login w-100 mt-2">
+                    <button type="submit" class="btn boton-login w-100 mt-2">
                         Enviar enlace
                     </button>
 
                 </form>
 
                 <div class="text-center mt-3">
-                    <a href="#"
-                       class="link-cala"
-                       data-bs-toggle="modal"
-                       data-bs-target="#loginModal"
-                       data-bs-dismiss="modal">
+                    <a href="#" class="link-cala" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">
                         Volver al inicio de sesión
                     </a>
                 </div>

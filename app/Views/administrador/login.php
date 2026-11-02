@@ -73,13 +73,8 @@
                 <?php endif; ?>
 
             </div>
-            <div class="text-end mt-1">
-                <a href="#" class="link-cala" data-bs-toggle="modal" data-bs-target="#recuperarModal">
-                    ¿Olvidaste tu contraseña?
-                </a>
-            </div>
 
-            <button type="submit" class="btn-login-admin mt-3">
+            <button type="submit" class="btn-login-admin mt-4">
 
                 Ingresar al panel
 

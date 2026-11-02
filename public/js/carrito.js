@@ -35,6 +35,22 @@ function mostrarModalSucursalCerrada() {
 
     modal.show();
 }
+// Controlar el foco al cerrar el modal de sucursal cerrada
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modalSucursal = document.getElementById("sucursalCerradaModal");
+
+    if (!modalSucursal) return;
+
+    modalSucursal.addEventListener("hide.bs.modal", function () {
+
+        if (modalSucursal.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+
+    });
+
+});
 
 // Boton de agregar al carrito
 function agregarAlCarrito() {

@@ -11,7 +11,6 @@
     <p>Panel de administración CALA Delivery Sandwich</p>
 </div>
 
-<!-- TARJETAS PRINCIPALES -->
 <div class="row g-4">
 
     <div class="col-md-4">
@@ -40,7 +39,6 @@
 
 </div>
 
-<!-- RESUMEN DE PEDIDOS -->
 <div class="gestion-pedidos">
 
     <div class="titulo-seccion-pedidos">
@@ -58,7 +56,6 @@
 
     <div class="estados-pedidos">
 
-        <!-- Pendientes -->
         <div class="estado-pedido">
             <i class="bi bi-clock"></i>
             <div>
@@ -69,7 +66,6 @@
             </div>
         </div>
 
-        <!-- En preparación -->
         <div class="estado-pedido">
             <i class="bi bi-fire"></i>
             <div>
@@ -80,7 +76,6 @@
             </div>
         </div>
 
-        <!-- Listos -->
         <div class="estado-pedido">
             <i class="bi bi-check-circle"></i>
             <div>
@@ -91,7 +86,6 @@
             </div>
         </div>
 
-        <!-- Finalizados -->
         <div class="estado-pedido">
             <i class="bi bi-bag-check"></i>
             <div>
@@ -104,7 +98,6 @@
 
     </div>
 
-    <!-- ÚLTIMOS PEDIDOS -->
     <div class="ultimos-pedidos">
 
         <div class="titulo-ultimos-pedidos">

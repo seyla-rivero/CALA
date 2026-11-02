@@ -152,7 +152,7 @@ class Producto extends BaseController
         }
 
         return redirect()->to(base_url('admin/productos'))
-            ->with('mensaje', 'Producto agregado correctamente.');
+            ->with('mensajeExito', 'Producto agregado correctamente.');
     }
 
     public function editarProducto(int $idItem)
@@ -245,7 +245,7 @@ class Producto extends BaseController
         }
 
         return redirect()->to(base_url('admin/productos'))
-            ->with('mensaje', 'Producto actualizado correctamente.');
+            ->with('mensajeExito', 'Producto actualizado correctamente.');
     }
 
     public function editarImagen(int $idItem)
@@ -363,7 +363,7 @@ class Producto extends BaseController
         }
 
         return redirect()->to(base_url('admin/productos'))
-            ->with('mensaje', 'Imagen actualizada correctamente.');
+            ->with('mensajeExito', 'Imagen actualizada correctamente.');
     }
 
     public function desactivarProducto(int $idItem)
