@@ -1,0 +1,12 @@
+# Configuracion local
+.env
+
+# Dependencias de Composer
+/vendor/
+
+# Archivos temporales de CodeIgniter
+/writable/cache/
+/writable/debugbar/
+/writable/logs/
+/writable/session/
+/writable/uploads/

@@ -14,6 +14,13 @@
         Agregar zona
     </a>
 </div>
+<?php if (session('error')): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= esc(session('error')) ?>
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+<?php endif; ?>
 
 <div class="tabla-productos">
     <div class="tabla-header">

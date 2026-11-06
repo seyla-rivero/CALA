@@ -80,7 +80,7 @@
                         </label>
                         <input type="password" name="password" id="registroPassword" class="form-control input-cala" placeholder="Contraseña">
                         <i class="fa-solid fa-eye toggle-eye" onclick="togglePassword('registroPassword',  this)"></i>
-                        <?php if(isset($errors['npassword'])): ?>
+                        <?php if(isset($errors['password'])): ?>
                             <small class="text-danger">
                                 <?= $errors['password'] ?>
                             </small>

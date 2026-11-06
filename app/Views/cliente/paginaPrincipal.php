@@ -363,6 +363,41 @@
     </div>
 
 </div>
+<!-- Modal: sucursal cerrada -->
+<div class="modal fade" id="sucursalCerradaModal" tabindex="-1"
+     aria-labelledby="sucursalCerradaTitulo" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-sucursal-cerrada">
+
+            <div class="modal-body text-center p-4">
+
+                <div class="icono-sucursal-cerrada mb-3">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+
+                <h5 class="titulo-sucursal-cerrada mb-3"
+                    id="sucursalCerradaTitulo">
+                    ¡En este momento estamos cerrados!
+                </h5>
+
+                <p class="mensaje-sucursal-cerrada mb-4">
+                    Podés consultar nuestro menú y elegir tus productos.
+                    Volvé durante nuestro horario de atención para
+                    realizar tu pedido.
+                </p>
+
+                <button type="button"
+                        class="btn btn-sucursal-cerrada"
+                        data-bs-dismiss="modal">
+                    Entendido
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -491,7 +526,9 @@ function verMasVendida() {
         masVendida.nombre,
         masVendida.descripcion,
         masVendida.precio,
-        "<?= base_url('img/') ?>" + masVendida.urlImagen
+        "<?= base_url('img/') ?>" + masVendida.urlImagen,
+        masVendida.incluyeBebida,
+        masVendida.incluyeEmpanadas
     );
 }
 </script>

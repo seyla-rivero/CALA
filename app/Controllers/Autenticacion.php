@@ -91,10 +91,11 @@ class Autenticacion extends BaseController
             ]
         ],
         'telefono' => [
-            'rules' => 'required|min_length[10]',
+            'rules' => 'required|numeric|min_length[10]',
             'errors' => [
                 'required' => 'El teléfono es obligatorio',
-                'min_length' => 'Coloque un telefono valido'
+                'numeric' => 'El teléfono debe contener solamente números',
+                'min_length' => 'El teléfono debe tener al menos 10 dígitos'
             ]
         ],
         'password' => [

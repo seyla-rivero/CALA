@@ -11,7 +11,13 @@
     </div>
 
 </div>
+<?php if (session('error')): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= esc(session('error')) ?>
 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+<?php endif; ?>
 <div class="formulario-producto">
 
     <form action="<?= site_url('admin/actualizar_zona/' . $zona['idZona']) ?>" method="post">
